@@ -4,6 +4,22 @@ A programmable MIDI mapper for the web
 
 > 🚨 Note this repo is still a work in progress
 
+---
+
+## Browser Support
+This project works in all browsers that natively support the [Web MIDI API](https://webaudio.github.io/web-midi-api/). Currently, the following browsers have built-in support:
+
+- Chrome (macOS, GNU/Linux, Android & Windows)
+- Opera (macOS, GNU/Linux, Windows)
+- Android WebView component (KitKat and above)
+- Edge (Windows)
+
+For more info, including on how to support Firefox, Internet Explorer, and Safari see the [WebMidi docs](https://github.com/djipco/webmidi#browser-support)
+
+> Starting with version 77, [Chrome deprecates Web MIDI usage on insecure origins](https://www.chromestatus.com/feature/5138066234671104). This means that, going forward, the page will need to be hosted on a secure origin (e.g. https://, localhost: or file:///) and the user will need to explicitely authorize usage (no matter if sysex is used or not).
+
+---
+
 ## Prereqs
 - Install [Git](https://git-scm.com/downloads)
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
