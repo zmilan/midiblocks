@@ -1,6 +1,8 @@
-# VueMIDIfier (vuemidifier)
+# VueMIDIfier [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
 
 A programmable MIDI mapper for the web
+
+> 🚨 Note this repo is still a work in progress
 
 ## Prereqs
 - Install [Git](https://git-scm.com/downloads)
