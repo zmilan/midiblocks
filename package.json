@@ -1,11 +1,12 @@
 {
-  "name": "vuemidifier",
+  "name": "midiblocks",
   "version": "0.0.1",
   "description": "A programmable MIDI mapper for the web",
-  "productName": "VueMIDIfier",
-  "author": "PatternTavern <oz@patterntavern.com>",
+  "productName": "MIDIBlocks",
+  "author": "Oz <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
+    "start": "quasar dev",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
@@ -18,7 +19,9 @@
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
-    "copy-webpack-plugin": "^6.0.3"
+    "copy-webpack-plugin": "^6.0.3",
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",

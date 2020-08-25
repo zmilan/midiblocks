@@ -63,6 +63,10 @@ module.exports = function (/* ctx */) {
 
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack (cfg) {
+        cfg.module.rules.push({
+          test: /\.pug$/,
+          loader: 'pug-plain-loader'
+        })
       },
     },
 
@@ -109,8 +113,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `VueMIDIfier`,
-        short_name: `VueMIDIfier`,
+        name: `MIDIBlocks`,
+        short_name: `MIDIBlocks`,
         description: `A programmable MIDI mapper for the web`,
         display: 'standalone',
         orientation: 'portrait',
@@ -176,7 +180,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'vuemidifier'
+        appId: 'midiblocks'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

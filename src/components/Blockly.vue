@@ -1,10 +1,8 @@
-<template>
-  <div style="min-height: inherit">
-    <div class="blockly-wrap" ref="blockly"></div>
-    <xml ref="toolbox" style="display: none">
-      <slot></slot>
-    </xml>
-  </div>
+<template lang="pug">
+div(style='min-height: inherit')
+  .blockly-wrap(ref='blockly')
+  xml(ref='toolbox' style='display: none')
+    slot
 </template>
 
 <script>
