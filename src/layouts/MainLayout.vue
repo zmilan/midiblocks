@@ -49,6 +49,7 @@ q-layout.full-height(view='lHh Lpr lFf')
 <script>
 import Blockly from '../components/Blockly'
 import BlocklyJS from 'blockly/javascript'
+import store from 'store'
 import '../blocks/blocks'
 import '../blocks/prompt'
 
@@ -71,6 +72,7 @@ export default {
       })
     },
     isHoriz () {
+      store.set('isHoriz', this.isHoriz)
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
@@ -78,9 +80,11 @@ export default {
   },
   
   data () {
+    const isHoriz = store.get('isHoriz')
+    
     return {
       // Whether we are horizontal (code above console) or not (code aside console)
-      isHoriz: true,
+      isHoriz,
       
       options: {
         media: 'media/',
@@ -95,7 +99,7 @@ export default {
       routerTab: 'overview',
       
       // Spliter width in pixels
-      splitter: minHeight
+      splitter: !isHoriz ? window.innerWidth / 3 : minHeight
     }
   },
 
@@ -105,7 +109,7 @@ export default {
      */
     toggleHoriz () {
       if (this.isHoriz) {
-        this.splitter = window.innerWidth / 2
+        this.splitter = window.innerWidth / 3
       } else {
         this.splitter = minHeight
       }
