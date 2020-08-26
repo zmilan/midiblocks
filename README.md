@@ -6,6 +6,19 @@ A programmable MIDI mapper for the web
 
 ---
 
+## WIP
+
+This project is a work in progress. Here's what's done so far:
+
+![](https://midiblocks.com/wp-content/uploads/2020/08/midiblocks-wip-2.jpg)
+
+- Includes the Blockly editor
+- Detects MIDI devices
+
+See more by flipping through our [daily devlogs](https://midiblocks.com/dailies)
+
+---
+
 ## Browser Support
 This project works in all browsers that natively support the [Web MIDI API](https://webaudio.github.io/web-midi-api/). Currently, the following browsers have built-in support:
 

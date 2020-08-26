@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-// import example from './module-example'
+import {set} from 'lodash'
 
 Vue.use(Vuex)
 
@@ -13,16 +12,27 @@ Vue.use(Vuex)
  * async/await or return a Promise which resolves
  * with the Store instance.
  */
-
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
-    modules: {
-      // example
+    state: {
+      devices: {
+        inputs: {},
+        outputs: {}
+      }
     },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEV
+    mutations: {
+      /**
+       * Helper for setting any state
+       * @param {*} state 
+       * @param {*} payload [stateId]
+       */
+      set (state, payload) {
+        set(state, payload[0], payload[1])
+
+        console.log(`🏪.${payload[0]} = `, payload[1])
+      }
+    }
   })
 
   return Store
