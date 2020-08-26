@@ -25,8 +25,7 @@
               span &nbsp;
 
           q-item-section(side)
-            q-badge(color='grey') &nbsp;
-    
+            q-badge.device-led(:color='input.led ? "green on" : "grey off"') &nbsp;
     //- Outputs
     .col-12.col-sm-6(v-if='Object.keys(devices.inputs).length')
       q-list(bordered padding)
@@ -81,6 +80,8 @@ export default {
       // Map array to object using device.id
       this.$webmidi.inputs.forEach(input => {
         inputs[input.id] = input
+        input.led = false
+        this.bindInput(input.id)
       })
       this.$webmidi.outputs.forEach(output => {
         outputs[output.id] = output
@@ -91,6 +92,88 @@ export default {
         outputs
       }])
     })
+  },
+
+  methods: {
+    /**
+     * Binds individiual inputs
+     */
+    bindInput (id) {
+      const input = this.$webmidi.getInputById(id)
+
+      // Toggle the light indicator
+      input.addListener('midimessage', 'all', e => {
+        this.$store.commit('set', [`devices.inputs['${e.target.id}'].led`, true])
+        setTimeout(() => {
+          this.$store.commit('set', [`devices.inputs['${e.target.id}'].led`, false])
+        }, 10)
+      })
+
+      // Map events
+      input.addListener('activesensing', 'all', e => {
+        console.log('🎹 Received "activesensing" message', e)
+      })
+      input.addListener('channelaftertouch', 'all', e => {
+        console.log('🎹 Received "channelaftertouch" message', e)
+      })
+      input.addListener('channelmode', 'all', e => {
+        console.log('🎹 Received "channelmode" message', e)
+      })
+      input.addListener('clock', 'all', e => {
+        console.log('🎹 Received "clock" message', e)
+      })
+      input.addListener('continue', 'all', e => {
+        console.log('🎹 Received "continue" message', e)
+      })
+      input.addListener('controlchange', 'all', e => {
+        console.log('🎹 Received "controlchange" message', e)
+      })
+      input.addListener('keyaftertouch', 'all', e => {
+        console.log('🎹 Received "keyaftertouch" message', e)
+      })
+      input.addListener('noteoff', 'all', e => {
+        console.log('🎹 Received "noteoff" message', e)
+      })
+      input.addListener('noteon', 'all', e => {
+        console.log('🎹 Received "noteon" message', e)
+      })
+      input.addListener('nrpn', 'all', e => {
+        console.log('🎹 Received "nrpn" message', e)
+      })
+      input.addListener('pitchbend', 'all', e => {
+        console.log('🎹 Received "pitchbend" message', e)
+      })
+      input.addListener('programchange', 'all', e => {
+        console.log('🎹 Received "programchange" message', e)
+      })
+      input.addListener('reset', 'all', e => {
+        console.log('🎹 Received "reset" message', e)
+      })
+      input.addListener('songposition', 'all', e => {
+        console.log('🎹 Received "songposition" message', e)
+      })
+      input.addListener('songselect', 'all', e => {
+        console.log('🎹 Received "songselect" message', e)
+      })
+      input.addListener('start', 'all', e => {
+        console.log('🎹 Received "start" message', e)
+      })
+      input.addListener('stop', 'all', e => {
+        console.log('🎹 Received "stop" message', e)
+      })
+      input.addListener('sysex', 'all', e => {
+        console.log('🎹 Received "sysex" message', e)
+      })
+      input.addListener('timecode', 'all', e => {
+        console.log('🎹 Received "timecode" message', e)
+      })
+      input.addListener('tuningrequest', 'all', e => {
+        console.log('🎹 Received "tuningrequest" message', e)
+      })
+      input.addListener('unknownsystemmessage', 'all', e => {
+        console.log('🎹 Received "unknownsystemmessage" message', e)
+      })
+    }
   }
 }
 </script>

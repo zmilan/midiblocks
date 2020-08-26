@@ -16,6 +16,17 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       devices: {
+        /**
+         * @see https://webmidijs.org/docs/v2.5.1/classes/Input.html#property_connection
+         * @prop connection
+         * @prop id
+         * @prop manufactuerer
+         * @prop name
+         * @prop state
+         * @prop type
+         * 
+         * @prop led {Boolean} True when a message is received, False a few frames later
+         */
         inputs: {},
         outputs: {}
       }
@@ -29,8 +40,6 @@ export default function (/* { ssrContext } */) {
        */
       set (state, payload) {
         set(state, payload[0], payload[1])
-
-        console.log(`🏪.${payload[0]} = `, payload[1])
       }
     }
   })
