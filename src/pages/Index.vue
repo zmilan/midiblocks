@@ -21,8 +21,7 @@
           q-item-section
             q-item-label(lines=1) {{input.name}}
             q-item-label(caption)
-              strong Last message:
-              span &nbsp;
+              span.device-last-message(v-html='input.lastMessage')
 
           q-item-section(side)
             q-badge.device-led(:color='input.led ? "green on" : "grey off"') &nbsp;
@@ -78,9 +77,11 @@ export default {
       this.err.webmidi.enable = err
 
       // Map array to object using device.id
+      // @note Any new properties must be set below or Vue won't refresh/update
       this.$webmidi.inputs.forEach(input => {
         inputs[input.id] = input
         input.led = false
+        input.lastMessage = ''
         this.bindInput(input.id)
       })
       this.$webmidi.outputs.forEach(output => {
@@ -127,15 +128,45 @@ export default {
       })
       input.addListener('controlchange', 'all', e => {
         console.log('🎹 Received "controlchange" message', e)
+        this.$store.commit('set', [
+          `devices.inputs['${e.target.id}'].lastMessage`,
+          `<div>
+            <strong>controlchange</strong>:
+            <code>${JSON.stringify(e.controller)}]</code>
+          </div>
+          <div>
+            <strong>data</strong>:
+            <code>${JSON.stringify(e.data)}]</code>
+          </div>`])
       })
       input.addListener('keyaftertouch', 'all', e => {
         console.log('🎹 Received "keyaftertouch" message', e)
       })
       input.addListener('noteoff', 'all', e => {
         console.log('🎹 Received "noteoff" message', e)
+        this.$store.commit('set', [
+          `devices.inputs['${e.target.id}'].lastMessage`,
+          `<div>
+            <strong>noteoff</strong>:
+            <code>${JSON.stringify(e.note)}]</code>
+          </div>
+          <div>
+            <strong>data</strong>:
+            <code>${JSON.stringify(e.data)}]</code>
+          </div>`])
       })
       input.addListener('noteon', 'all', e => {
         console.log('🎹 Received "noteon" message', e)
+        this.$store.commit('set', [
+          `devices.inputs['${e.target.id}'].lastMessage`,
+          `<div>
+            <strong>noteon</strong>:
+            <code>${JSON.stringify(e.note)}]</code>
+          </div>
+          <div>
+            <strong>data</strong>:
+            <code>${JSON.stringify(e.data)}]</code>
+          </div>`])
       })
       input.addListener('nrpn', 'all', e => {
         console.log('🎹 Received "nrpn" message', e)

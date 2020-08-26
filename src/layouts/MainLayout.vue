@@ -48,10 +48,11 @@ q-layout.full-height(view='lHh Lpr lFf')
 
 <script>
 import Blockly from '../components/Blockly'
+import BlocklyJS from 'blockly/javascript'
 import '../blocks/blocks'
 import '../blocks/prompt'
 
-import BlocklyJS from 'blockly/javascript'
+const minHeight = 200
 
 export default {
   name: 'MainLayout',
@@ -94,7 +95,7 @@ export default {
       routerTab: 'overview',
       
       // Spliter width in pixels
-      splitter: 300
+      splitter: minHeight
     }
   },
 
@@ -106,7 +107,7 @@ export default {
       if (this.isHoriz) {
         this.splitter = window.innerWidth / 2
       } else {
-        this.splitter = 300
+        this.splitter = minHeight
       }
 
       this.isHoriz = !this.isHoriz
