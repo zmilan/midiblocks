@@ -1,5 +1,5 @@
 <template lang="pug">
-div
+div.q-p-x-lg
   p Welcome to MIDIBlocks 🎹 {{version}}
 
   //- Display errors prominantly

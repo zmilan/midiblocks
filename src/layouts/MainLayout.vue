@@ -10,7 +10,10 @@ q-layout.full-height(view='lHh Lpr lFf')
       q-splitter.full-height(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
         //- Console
         template(v-slot:after)
-          router-view
+          q-tabs(v-model='routerTab' dense narrow-indicator align='left')
+            q-tab(name='welcome' label='Welcome')
+          q-separator
+          router-view.q-pa-md
         
         //- Editor
         template(v-slot:before)
@@ -87,6 +90,10 @@ export default {
           snap: true
         }
       },
+
+      routerTab: 'welcome',
+      
+      // Spliter width in pixels
       splitter: 200
     }
   },
