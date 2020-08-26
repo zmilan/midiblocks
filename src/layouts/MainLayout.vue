@@ -2,12 +2,12 @@
 q-layout.full-height(view='lHh Lpr lFf')
   q-page-container.full-height
     q-page.full-height
-      q-bar
+      q-bar#appbar
         q-space
         q-btn(v-if='isHoriz' dense flat icon='fas fa-columns' @click='toggleHoriz')
         q-btn(v-else dense flat icon='fas fa-columns fa-rotate-270' @click='toggleHoriz')
 
-      q-splitter.full-height(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
+      q-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
         //- Console
         template(v-slot:after)
           q-tabs(v-model='routerTab' dense narrow-indicator align='left')
@@ -94,7 +94,7 @@ export default {
       routerTab: 'welcome',
       
       // Spliter width in pixels
-      splitter: 200
+      splitter: 300
     }
   },
 
@@ -106,7 +106,7 @@ export default {
       if (this.isHoriz) {
         this.splitter = window.innerWidth / 2
       } else {
-        this.splitter = 200
+        this.splitter = 300
       }
 
       this.isHoriz = !this.isHoriz

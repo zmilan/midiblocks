@@ -1,14 +1,39 @@
 <template lang="pug">
-div.q-p-x-lg
-  p Welcome to MIDIBlocks 🎹 {{version}}
-
+.q-p-x-lg
   //- Display errors prominantly
   p(v-if='err.webmidi.enable')
     strong.text-negative Error starting webmidi:&nbsp;
     span {{err.webmidi.enable}}
+  div(v-else)
+    p(v-if='!$webmidi.inputs.length && !$webmidi.outputs.length')
+      strong.text-negative No MIDI Devices found
 
-  //- Logs
-  pre.log(v-html='log')
+  .row.q-col-gutter-md
+    //- Input
+    .col-12.col-sm-6(v-if='$webmidi.inputs.length')
+      q-list(bordered padding)
+        q-item-label(header) MIDI Inputs
+
+        q-item(v-for='input in $webmidi.inputs' clickable v-ripple :key='input.id')
+          q-item-section(avatar top)
+            q-avatar(icon='fas fa-sliders-h' color='primary' text-color='white')
+
+          q-item-section
+            q-item-label(lines=1) {{input.name}}
+            q-item-label(caption) {{input.manufacturer}}
+    
+    //- Outputs
+    .col-12.col-sm-6(v-if='$webmidi.inputs.length')
+      q-list(bordered padding)
+        q-item-label(header) MIDI Outputs
+
+        q-item(v-for='input in $webmidi.inputs' clickable v-ripple :key='input.id')
+          q-item-section(avatar top)
+            q-avatar(icon='fas fa-sliders-h' color='primary' text-color='white')
+
+          q-item-section
+            q-item-label(lines=1) {{input.name}}
+            q-item-label(caption) {{input.manufacturer}}
 </template>
 
 <script>
@@ -23,7 +48,6 @@ export default {
         }
       },
       
-      log: '',
       version: this.$version
     }
   },
