@@ -10,7 +10,7 @@
 
   .row.q-col-gutter-md
     //- Input
-    .col-12.col-sm-6(v-if='Object.keys(devices.inputs).length')
+    .col-12(v-if='Object.keys(devices.inputs).length' :class='{"col-sm-6": isHoriz}')
       q-list(bordered padding)
         q-item-label(header) MIDI Inputs
 
@@ -26,7 +26,7 @@
           q-item-section(side)
             q-badge.device-led(:color='input.led ? "green on" : "grey off"') &nbsp;
     //- Outputs
-    .col-12.col-sm-6(v-if='Object.keys(devices.inputs).length')
+    .col-12(v-if='Object.keys(devices.inputs).length' :class='{"col-sm-6": isHoriz}')
       q-list(bordered padding)
         q-item-label(header) MIDI Outputs
 
@@ -49,6 +49,8 @@ import {mapState} from 'vuex'
 
 export default {
   name: 'PageIndex',
+
+  props: ['isHoriz'],
 
   computed: mapState([
     'devices'
@@ -127,45 +129,49 @@ export default {
         console.log('🎹 Received "continue" message', e)
       })
       input.addListener('controlchange', 'all', e => {
+        const codeTag = this.isHoriz ? 'code' : 'pre';
         console.log('🎹 Received "controlchange" message', e)
+        
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
             <strong>controlchange</strong>:
-            <code>${JSON.stringify(e.controller)}]</code>
+            <${codeTag}>${JSON.stringify(e.controller, null, !this.isHoriz * 2)}</${codeTag}>
           </div>
           <div>
             <strong>data</strong>:
-            <code>${JSON.stringify(e.data)}]</code>
+            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
           </div>`])
       })
       input.addListener('keyaftertouch', 'all', e => {
         console.log('🎹 Received "keyaftertouch" message', e)
       })
       input.addListener('noteoff', 'all', e => {
+        const codeTag = this.isHoriz ? 'code' : 'pre';
         console.log('🎹 Received "noteoff" message', e)
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
             <strong>noteoff</strong>:
-            <code>${JSON.stringify(e.note)}]</code>
+            <${codeTag}>${JSON.stringify(e.note, null, !this.isHoriz * 2)}</${codeTag}>
           </div>
           <div>
             <strong>data</strong>:
-            <code>${JSON.stringify(e.data)}]</code>
+            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
           </div>`])
       })
       input.addListener('noteon', 'all', e => {
+        const codeTag = this.isHoriz ? 'code' : 'pre';
         console.log('🎹 Received "noteon" message', e)
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
             <strong>noteon</strong>:
-            <code>${JSON.stringify(e.note)}]</code>
+            <${codeTag}>${JSON.stringify(e.note, null, !this.isHoriz * 2)}</${codeTag}>
           </div>
           <div>
             <strong>data</strong>:
-            <code>${JSON.stringify(e.data)}]</code>
+            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
           </div>`])
       })
       input.addListener('nrpn', 'all', e => {

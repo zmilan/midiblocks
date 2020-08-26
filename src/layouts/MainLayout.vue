@@ -13,7 +13,7 @@ q-layout.full-height(view='lHh Lpr lFf')
           q-tabs(v-model='routerTab' dense narrow-indicator align='left')
             q-tab(name='overview' label='Overview')
           q-separator
-          router-view.q-pa-md
+          router-view.q-pa-md(:isHoriz='isHoriz')
         
         //- Editor
         template(v-slot:before)
