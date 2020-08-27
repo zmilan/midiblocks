@@ -1,0 +1,52 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" id="$BE-uUl85UT*TLs]PkIG" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="BOTTOM"></mutation>
+    <field name="NAME">when_midi_event</field>
+    <field name="INLINE">INT</field>
+    <field name="CONNECTIONS">BOTTOM</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="#aH~1u7;gJ,Xxu?IYhy:">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="x;;E#uiQ^d3zbYSb%S^N">
+            <field name="TEXT">When 🎹</field>
+          </block>
+        </statement>
+        <next>
+          <block type="input_dummy" id="EPYzgT`eXXz+howO,c~C">
+            <field name="ALIGN">LEFT</field>
+            <statement name="FIELDS">
+              <block type="field_dropdown" id="H8S*qR^q]Y9N=?KKXM[.">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">event</field>
+                <field name="USER0">Note On</field>
+                <field name="CPU0">noteon</field>
+                <field name="USER1">Note Off</field>
+                <field name="CPU1">noteoff</field>
+                <field name="USER2">Control Change</field>
+                <field name="CPU2">controlchange</field>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="])_Nmk9ly.vu$_~l0lA]" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Lc4sT?sPlIb|_=4XL(TJ" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="Zf[-TTL=MU%^cS+b:j`2"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Z3/Qx=dvBay6B6lfo;fx">
+        <mutation colour="#a5a55b"></mutation>
+        <field name="HUE">60</field>
+      </block>
+    </value>
+  </block></xml>

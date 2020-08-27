@@ -37,8 +37,7 @@
           q-item-section
             q-item-label(lines=1) {{input.name}}
             q-item-label(caption)
-              strong Last message:
-              span &nbsp;            
+              span.device-last-message &nbsp;
 
           q-item-section(side)
             q-badge(color='grey') &nbsp;

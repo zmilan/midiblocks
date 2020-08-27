@@ -35,22 +35,16 @@ q-layout.full-height(view='lHh Lpr lFf')
                 field(name='NUM') 123
               block(type='math_arithmetic')
               block(type='math_single')
-            category(name='Text' colour='%{BKY_TEXTS_HUE}')
-              block(type='text')
-              block(type='text_length')
-              block(type='text_print')
             category(name='Variables' custom='VARIABLE' colour='%{BKY_VARIABLES_HUE}')
-            category(name='Stocks' colour='%{BKY_LOOPS_HUE}')
-              block(type='stock_buy_simple')
-              block(type='stock_buy_prog')
-              block(type='stock_fetch_price')
+            category(name='🎹 MIDI Events' colour='#a5a55b')
+              block(type='when_midi_event')
 </template>
 
 <script>
 import Blockly from '../components/Blockly'
 import BlocklyJS from 'blockly/javascript'
 import store from 'store'
-import '../blocks/blocks'
+import '../blocks/midi-events'
 import '../blocks/prompt'
 
 const minHeight = 200
@@ -88,6 +82,12 @@ export default {
       
       options: {
         media: 'media/',
+        renderer: 'zelos',
+        zoom: {
+          controls: true,
+          pinch: true,
+          wheel: true
+        },
         grid: {
           spacing: 25,
           length: 3,
