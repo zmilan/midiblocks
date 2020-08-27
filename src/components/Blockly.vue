@@ -7,14 +7,28 @@ div(style='min-height: inherit')
 
 <script>
 import Blockly from 'blockly'
+import {mapState} from 'vuex'
 
 export default {
   name: 'Blockly',
   props: ['options'],
 
+  watch: {
+    'workspace.code' (newVal) {
+      this.interpreter = null
+      this.interpreter = new window.Interpreter(this.workspace.code, this.setupInterpreter)
+      this.interpreter.run()
+    }
+  },
+
+  computed: {
+    ...mapState(['workspace'])
+  },
+
   data () {
     return {
-      worspace: null
+      blockly: null,
+      interpreter: null
     }
   },
 
@@ -29,8 +43,8 @@ export default {
     }
 
     // Create workspace and add bindings
-    this.workspace = Blockly.inject(this.$refs.blockly, options)
-    this.workspace.addChangeListener(this.onChange)
+    this.blockly = Blockly.inject(this.$refs.blockly, options)
+    this.blockly.addChangeListener(this.onChange)
   },
 
   methods: {
@@ -47,9 +61,21 @@ export default {
         case Blockly.Events.VAR_CREATE:
         case Blockly.Events.VAR_DELETE:
         case Blockly.Events.VAR_RENAME:
-          this.$store.commit('set', ['workspace.code', Blockly.JavaScript.workspaceToCode(this.workspace)])
+          this.$store.commit('set', ['workspace.code', Blockly.JavaScript.workspaceToCode(this.blockly)])
         break;
       }
+    },
+
+    /**
+     * Sets up the interpreter
+     */
+    setupInterpreter (acorn, globalObject) {
+      /**
+       * Console.log
+       */
+      acorn.setProperty(globalObject, 'log', acorn.createNativeFunction(function () {
+        console.log(arguments)
+      }))
     }
   }
 }

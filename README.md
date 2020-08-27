@@ -34,6 +34,12 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ---
 
+## Limitations
+
+- **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be providing ES6 support soon!
+
+---
+
 ## Prereqs
 - Install [Git](https://git-scm.com/downloads)
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
