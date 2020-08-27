@@ -2,22 +2,25 @@
 q-layout.full-height(view='lHh Lpr lFf')
   q-page-container.full-height
     q-page.full-height
+      //- Appbar
       q-bar#appbar
         q-space
-        q-btn(v-if='isHoriz' dense flat icon='fas fa-columns' @click='toggleHoriz')
-        q-btn(v-else dense flat icon='fas fa-columns fa-rotate-270' @click='toggleHoriz')
+        q-btn(dense flat icon='fas fa-play' :color='isRunning ? "green" : "grey-8"' @click='isRunning = !isRunning')
+        q-space
+        q-btn(dense flat :icon='"fas fa-columns " + (!isHoriz && "fa-rotate-270")' @click='toggleHoriz')
 
       q-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
         //- Console
         template(v-slot:after)
-          q-tabs(v-model='routerTab' dense narrow-indicator align='left')
-            q-tab(name='overview' label='Overview')
+          q-tabs(dense narrow-indicator align='left')
+            q-route-tab(to='/' label='Overview')
+            q-route-tab(to='/code' label='Code')
           q-separator
           router-view.q-pa-md(:isHoriz='isHoriz')
         
         //- Editor
         template(v-slot:before)
-          blockly.blockly(ref='foo' :options='options')
+          Blockly.blockly(ref='foo' :options='options')
             category(name='Logic' colour='%{BKY_LOGIC_HUE}')
               block(type='controls_if')
               block(type='logic_compare')
@@ -79,7 +82,12 @@ export default {
     return {
       // Whether we are horizontal (code above console) or not (code aside console)
       isHoriz,
+
+      // Whether the app is running or not
+      isRunning: true,
       
+      // Blockly options
+      // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {
         media: 'media/',
         renderer: 'zelos',
@@ -96,8 +104,6 @@ export default {
         }
       },
 
-      routerTab: 'overview',
-      
       // Spliter width in pixels
       splitter: !isHoriz ? window.innerWidth / 3 : minHeight
     }

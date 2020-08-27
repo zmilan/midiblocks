@@ -15,6 +15,16 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
+      /**
+       * Represents the current workspace
+       */
+      workspace: {
+        code: ''
+      },
+
+      /**
+       * Represents devices, categorized into inputs and outputs
+       */
       devices: {
         /**
          * @see https://webmidijs.org/docs/v2.5.1/classes/Input.html#property_connection

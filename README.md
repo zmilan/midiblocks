@@ -13,7 +13,8 @@ This project is a work in progress. Here's what's done so far:
 ![](https://midiblocks.com/wp-content/uploads/2020/08/midiblocks-wip-2.jpg)
 
 - Includes the Blockly editor
-- Detects MIDI devices
+- Automatically detects MIDI devices
+- Displays last MIDI message under each device for easy mapping
 
 See more by flipping through our [daily devlogs](https://midiblocks.com/dailies)
 
