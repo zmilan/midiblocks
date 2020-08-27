@@ -1,5 +1,5 @@
 <template lang="pug">
-.q-p-x-lg
+.q-p-x-lg.q-pa-md
   //- Display errors prominantly
   p(v-if='err.webmidi.enable')
     strong.text-negative Error starting webmidi:&nbsp;

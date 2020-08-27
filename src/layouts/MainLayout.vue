@@ -9,14 +9,14 @@ q-layout.full-height(view='lHh Lpr lFf')
         q-space
         q-btn(dense flat :icon='"fas fa-columns " + (!isHoriz && "fa-rotate-270")' @click='toggleHoriz')
 
-      q-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
+      q-splitter#main-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse)
         //- Console
         template(v-slot:after)
           q-tabs(dense narrow-indicator align='left')
             q-route-tab(to='/' label='Overview')
             q-route-tab(to='/code' label='Code')
           q-separator
-          router-view.q-pa-md(:isHoriz='isHoriz')
+          router-view(:isHoriz='isHoriz')
         
         //- Editor
         template(v-slot:before)

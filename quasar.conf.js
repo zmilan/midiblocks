@@ -2,7 +2,6 @@
  * This file runs in a Node context (it's NOT transpiled by Babel), so use only
  * the ES6 features that are supported by your Node version. https://node.green/
  */
-
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 
@@ -67,6 +66,16 @@ module.exports = function (/* ctx */) {
           test: /\.pug$/,
           loader: 'pug-plain-loader'
         })
+
+        const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
+        cfg.plugins.push(new MonacoEditorPlugin({
+          // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+          // Include a subset of languages support
+          // Some language extensions like typescript are so huge that may impact build performance
+          // e.g. Build full languages support with webpack 4.0 takes over 80 seconds
+          // Languages are loaded on demand at runtime
+          languages: ['javascript', 'typescript']
+        }))
       },
     },
 
