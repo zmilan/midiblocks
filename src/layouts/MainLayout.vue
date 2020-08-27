@@ -5,7 +5,7 @@ q-layout.full-height(view='lHh Lpr lFf')
       //- Appbar
       q-bar#appbar
         q-space
-        q-btn(dense flat icon='fas fa-play' :color='isRunning ? "green" : "grey-8"' @click='isRunning = !isRunning')
+        q-btn(dense flat icon='fas fa-play' :color='workspace.isRunning ? "green" : "grey-8"' @click='workspace.isRunning = !workspace.isRunning')
         q-space
         q-btn(dense flat :icon='"fas fa-columns " + (!isHoriz && "fa-rotate-270")' @click='toggleHoriz')
 
@@ -44,6 +44,7 @@ q-layout.full-height(view='lHh Lpr lFf')
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import Blockly from '../components/Blockly'
 import BlocklyJS from 'blockly/javascript'
 import store from 'store'
@@ -54,6 +55,10 @@ const minHeight = 200
 
 export default {
   name: 'MainLayout',
+
+  computed: {
+    ...mapState(['workspace'])
+  },
 
   components: {
     Blockly
@@ -83,9 +88,6 @@ export default {
       // Whether we are horizontal (code above console) or not (code aside console)
       isHoriz,
 
-      // Whether the app is running or not
-      isRunning: true,
-      
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {

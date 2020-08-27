@@ -1,8 +1,9 @@
-# MIDIBlocks [![Built on Blockly](https://tinyurl.com/built-on-blockly)](https://github.com/google/blockly)
-
-A programmable MIDI mapper for the web
-
-> 🚨 Note this repo is still a work in progress
+<div align="center">
+  <h1>MIDIBlocks <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></h1>
+  <h2>A programmable MIDI mapper for the web</h2>
+  <br>
+  <p><img src="public/img/mascot/logo-coming-soon.png">
+</div>
 
 ---
 
@@ -10,7 +11,7 @@ A programmable MIDI mapper for the web
 
 This project is a work in progress. Here's what's done so far:
 
-![](https://midiblocks.com/wp-content/uploads/2020/08/midiblocks-wip-2.jpg)
+![](https://149476186.v2.pressablecdn.com/wp-content/uploads/2020/08/Annotation-2020-08-26-233851-1024x565.jpg)
 
 - Includes the Blockly editor
 - Automatically detects MIDI devices

@@ -19,7 +19,8 @@ export default function (/* { ssrContext } */) {
        * Represents the current workspace
        */
       workspace: {
-        code: ''
+        code: '',
+        isRunning: true
       },
 
       /**
