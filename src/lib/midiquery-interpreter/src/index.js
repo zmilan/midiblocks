@@ -14,13 +14,10 @@ console = {
  */
 $m = function (event, callback) {
   var selector = event.split(' ')
-  var eventName = selector[0]
-  var note = selector[1]
-  var data = selector[2]
 
   // Listen to a generic event
   if (selector.length === 1) {
-    $m.on(eventName, callback)
+    $m.on(selector, callback)
   }
 
   return $m
@@ -50,8 +47,19 @@ $m.trigger = function (eventName, payload) {
  * @see https://webmidijs.org/docs/v2.5.1/classes/Input.html#events
  */
 $m.on = function (eventName, cb) {
+  if (typeof eventName === 'object') {
+    eventName = [eventName]
+  }
+  
   if (!$m.events[eventName]) {
     $m.events[eventName] = []
   }
   $m.events[eventName].push(cb)
+}
+
+/**
+ * Play a note
+ */
+$m.play = function (eventName, cb) {
+  console.log(eventName, cb)
 }

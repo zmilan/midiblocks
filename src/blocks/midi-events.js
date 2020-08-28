@@ -1,23 +1,27 @@
 import * as Blockly from 'blockly/core'
 
+/**
+ * When MIDI {Event}
+ */
 Blockly.JavaScript['when_midi_event'] = function(block) {
-  const dropdown_event = block.getFieldValue('event');
+  const dropdown_event = block.getFieldValue('event')
   
 let code = `$m('*').on('${dropdown_event}', function (event, note) {
   console.log(event.name, note)
-});\n`;
+});\n`
 
-  return code;
+  return code
 };
 
+/**
+ * Send note {note} to device {device} on channel {channel}
+ */
 Blockly.JavaScript['midi_send_note'] = function(block) {
-  let text_note = block.getFieldValue('note');
-  let text_channel = block.getFieldValue('channel');
-  let value_meta = Blockly.JavaScript.valueToCode(block, 'meta', Blockly.JavaScript.ORDER_ATOMIC);
+  let text_note = block.getFieldValue('note')
+  let text_device  = block.getFieldValue('device')
+  let text_channel = block.getFieldValue('channel')
 
-let code = `$m('note ${text_note}').play({
-  channel: ${text_channel}
-})`
+  let code = `$m('note ${text_note} ${text_channel} ${text_device}').play()`
 
   return code
 }
@@ -45,10 +49,11 @@ Blockly.Blocks['when_midi_event'] = {
 
 Blockly.Blocks['midi_send_note'] = {
   init: function() {
-    this.appendValueInput("meta")
-        .setCheck("String")
-        .appendField("Play Note")
+    this.appendDummyInput()
+        .appendField("Play note")
         .appendField(new Blockly.FieldTextInput("C"), "note")
+        .appendField("on device")
+        .appendField(new Blockly.FieldTextInput("all"), "device")
         .appendField("on channel")
         .appendField(new Blockly.FieldTextInput("all"), "channel");
     this.setPreviousStatement(true, null);

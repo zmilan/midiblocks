@@ -41,6 +41,8 @@ q-layout.full-height(view='lHh Lpr lFf')
             category(name='Variables' custom='VARIABLE' colour='%{BKY_VARIABLES_HUE}')
             category(name='🎹 MIDI Events' colour='#a5a55b')
               block(type='when_midi_event')
+            category(name='🔼 Send MIDI' colour='#a5a55b')
+              block(type='midi_send_note')
 </template>
 
 <script>

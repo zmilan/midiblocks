@@ -55,23 +55,33 @@
     <field name="INLINE">AUTO</field>
     <field name="CONNECTIONS">BOTH</field>
     <statement name="INPUTS">
-      <block type="input_value" id="SpahN*c*Wmyy#+sCjpP7">
-        <field name="INPUTNAME">meta</field>
+      <block type="input_dummy" id=")c3V=8Ih-i_{G}P)haew">
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id="rZWH~=xnoeDF3o-K-^S%">
-            <field name="TEXT">Play Note</field>
+            <field name="TEXT">Play note</field>
             <next>
               <block type="field_input" id="cAbdJ.y|7?HiXe:gH7^:">
                 <field name="TEXT">C</field>
                 <field name="FIELDNAME">note</field>
                 <next>
-                  <block type="field_static" id="ga_g1r,1k6uv(]0pmVY#">
-                    <field name="TEXT">on channel</field>
+                  <block type="field_static" id="TN{XLEm^,kMYPFe2do|#">
+                    <field name="TEXT">on device</field>
                     <next>
-                      <block type="field_input" id="vbg/g,I~WzUC,}%3v=[O">
+                      <block type="field_input" id=".$~loZy,p,K-gET%Hihb">
                         <field name="TEXT">all</field>
-                        <field name="FIELDNAME">channel</field>
+                        <field name="FIELDNAME">device</field>
+                        <next>
+                          <block type="field_static" id="ga_g1r,1k6uv(]0pmVY#">
+                            <field name="TEXT">on channel</field>
+                            <next>
+                              <block type="field_input" id="vbg/g,I~WzUC,}%3v=[O">
+                                <field name="TEXT">all</field>
+                                <field name="FIELDNAME">channel</field>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
                       </block>
                     </next>
                   </block>
@@ -80,10 +90,6 @@
             </next>
           </block>
         </statement>
-        <value name="TYPE">
-          <shadow type="type_null" id="weZ$VP]A2ESp)-prulK1"></shadow>
-          <block type="type_string" id="?On!q.(m|%=V|f;_FyGS"></block>
-        </value>
       </block>
     </statement>
     <value name="TOOLTIP">
