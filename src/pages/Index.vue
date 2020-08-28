@@ -52,7 +52,8 @@ export default {
   props: ['isHoriz'],
 
   computed: mapState([
-    'devices'
+    'devices',
+    'workspace'
   ]),
 
   data () {
@@ -127,10 +128,18 @@ export default {
       input.addListener('continue', 'all', e => {
         console.log('🎹 Received "continue" message', e)
       })
+
+      /**
+       * controlchange - When a slider, turny-thing, or other controls change their state
+       */
       input.addListener('controlchange', 'all', e => {
         const codeTag = this.isHoriz ? 'code' : 'pre';
-        console.log('🎹 Received "controlchange" message', e)
-        
+
+        if (this.workspace.code) {
+          this.workspace.interpreter.appendCode(`$m.trigger('controlchange')`)
+          this.workspace.interpreter.run()
+        }
+
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
@@ -145,9 +154,19 @@ export default {
       input.addListener('keyaftertouch', 'all', e => {
         console.log('🎹 Received "keyaftertouch" message', e)
       })
+
+
+      /**
+       * noteoff - When a pad, key, or other pressable thing is released
+       */
       input.addListener('noteoff', 'all', e => {
         const codeTag = this.isHoriz ? 'code' : 'pre';
-        console.log('🎹 Received "noteoff" message', e)
+
+        if (this.workspace.code) {
+          this.workspace.interpreter.appendCode(`$m.trigger('noteoff')`)
+          this.workspace.interpreter.run()
+        }
+
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
@@ -159,9 +178,18 @@ export default {
             <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
           </div>`])
       })
+
+      /**
+       * noteon - When a pad, key, or other pressable thing is pressed
+       */
       input.addListener('noteon', 'all', e => {
         const codeTag = this.isHoriz ? 'code' : 'pre';
-        console.log('🎹 Received "noteon" message', e)
+
+        if (this.workspace.code) {
+          this.workspace.interpreter.appendCode(`$m.trigger('noteon')`)
+          this.workspace.interpreter.run()
+        }
+        
         this.$store.commit('set', [
           `devices.inputs['${e.target.id}'].lastMessage`,
           `<div>
@@ -173,6 +201,7 @@ export default {
             <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
           </div>`])
       })
+
       input.addListener('nrpn', 'all', e => {
         console.log('🎹 Received "nrpn" message', e)
       })

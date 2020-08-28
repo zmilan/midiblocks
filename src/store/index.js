@@ -20,6 +20,8 @@ export default function (/* { ssrContext } */) {
        */
       workspace: {
         code: '',
+        // @see https://neil.fraser.name/software/JS-Interpreter/docs.html
+        interpreter: null,
         isRunning: true
       },
 

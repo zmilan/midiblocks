@@ -15,7 +15,7 @@ $m.events = {}
  * @param {*} payload
  */
 $m.trigger = function (eventName, payload) {
-  $m.events[eventName].forEach(function (event) {
+  $m.events[eventName] && $m.events[eventName].forEach(function (event) {
     event(payload)
   })
 }

@@ -16,9 +16,8 @@ export default {
 
   watch: {
     'workspace.code' (newVal) {
-      this.interpreter = null
-      this.interpreter = new window.Interpreter(STRING_MidiqueryInterpreter + ';\n' + this.workspace.code, this.setupInterpreter)
-      this.interpreter.run()
+      this.$store.commit('set', ['workspace.interpreter', new window.Interpreter(STRING_MidiqueryInterpreter + ';\n' + this.workspace.code, this.setupInterpreter)])
+      this.workspace.interpreter.run()
     }
   },
 
