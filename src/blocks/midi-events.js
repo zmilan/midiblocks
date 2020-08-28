@@ -3,7 +3,7 @@ import * as Blockly from 'blockly/core'
 Blockly.JavaScript['when_midi_event'] = function(block) {
   const dropdown_event = block.getFieldValue('event');
 var code = `$m.on('${dropdown_event}', function (note) {
-  log('test')
+  log(note)
 });\n`;
   return code;
 };

@@ -71,7 +71,7 @@ export default {
    * Initialize WebMidi
    */
   mounted () {
-    this.$webmidi.enable((err) => {
+    this.$m.enable((err) => {
       const inputs = {}
       const outputs = {}
       
@@ -79,13 +79,13 @@ export default {
 
       // Map array to object using device.id
       // @note Any new properties must be set below or Vue won't refresh/update
-      this.$webmidi.inputs.forEach(input => {
+      this.$m.inputs.forEach(input => {
         inputs[input.id] = input
         input.led = false
         input.lastMessage = ''
         this.bindInput(input.id)
       })
-      this.$webmidi.outputs.forEach(output => {
+      this.$m.outputs.forEach(output => {
         outputs[output.id] = output
       })
       
@@ -101,7 +101,7 @@ export default {
      * Binds individiual inputs
      */
     bindInput (id) {
-      const input = this.$webmidi.getInputById(id)
+      const input = this.$m.getInputById(id)
 
       // Toggle the light indicator
       input.addListener('midimessage', 'all', e => {

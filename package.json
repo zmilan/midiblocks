@@ -16,8 +16,7 @@
     "quasar": "^1.0.0",
     "store": "^2.0.12",
     "sweetalert2": "^9.17.1",
-    "vue-monaco": "^1.2.1",
-    "webmidi": "^2.5.1"
+    "vue-monaco": "^1.2.1"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
