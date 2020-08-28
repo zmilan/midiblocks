@@ -73,8 +73,8 @@ export default {
       /**
        * Console.log
        */
-      acorn.setProperty(globalObject, 'log', acorn.createNativeFunction(function () {
-        console.log('📦', ...arguments)
+      acorn.setProperty(globalObject, 'log', acorn.createNativeFunction(function (dataStr) {
+        console.log('📦', ...JSON.parse(dataStr))
       }))
     }
   }

@@ -2,7 +2,29 @@
  * IMPORTANT NOTE
  * This project MUST be ES5 compliant as that is what the JS Interpreter uses
  */
-$m = function () {}
+
+console = {
+  log: function (arguments) {
+    log(JSON.stringify(arguments))
+  }
+}
+ 
+/**
+ * Accepts a selector, in the form:  
+ */
+$m = function (event, callback) {
+  var selector = event.split(' ')
+  var eventName = selector[0]
+  var note = selector[1]
+  var data = selector[2]
+
+  // Listen to a generic event
+  if (selector.length === 1) {
+    $m.on(eventName, callback)
+  }
+
+  return $m
+}
 
 /**
  * Events in the form {eventName: [listOfCallbacks]}
@@ -16,7 +38,8 @@ $m.events = {}
  */
 $m.trigger = function (eventName, payload) {
   $m.events[eventName] && $m.events[eventName].forEach(function (event) {
-    event(JSON.parse(payload))
+    event.name = eventName
+    event(event, JSON.parse(payload))
   })
 }
 

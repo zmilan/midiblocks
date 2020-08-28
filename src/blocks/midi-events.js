@@ -2,9 +2,11 @@ import * as Blockly from 'blockly/core'
 
 Blockly.JavaScript['when_midi_event'] = function(block) {
   const dropdown_event = block.getFieldValue('event');
-let code = `$m.on('${dropdown_event}', function (note) {
-  log(note)
+  
+let code = `$m('*').on('${dropdown_event}', function (event, note) {
+  console.log(event.name, note)
 });\n`;
+
   return code;
 };
 
@@ -13,7 +15,7 @@ Blockly.JavaScript['midi_send_note'] = function(block) {
   let text_channel = block.getFieldValue('channel');
   let value_meta = Blockly.JavaScript.valueToCode(block, 'meta', Blockly.JavaScript.ORDER_ATOMIC);
 
-  let code = `$m('note ${text_note}').play({
+let code = `$m('note ${text_note}').play({
   channel: ${text_channel}
 })`
 
