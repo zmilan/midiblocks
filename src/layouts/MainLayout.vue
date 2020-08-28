@@ -90,6 +90,9 @@ export default {
         inputs,
         outputs
       }])
+
+      // Setup listeners
+      this.$root.$on('$m.triggerEvent', this.triggerEvent)
     })
   },
 
@@ -165,6 +168,13 @@ export default {
      */
     bindInput (id) {
       const input = this.$m.getInputById(id)
+      const events = [/*'midimessage',*/ 'activesensing', 'channelaftertouch', 'channelmode', 'clock', 'continue', 'controlchange', 'keyaftertouch', 'noteoff', 'noteon', 'nrpn', 'pitchbend', 'programchange', 'reset', 'songposition', 'songselect', 'start', 'stop', 'sysex', 'timecode', 'tuningrequest', 'unknownsystemmessage']
+
+      events.forEach(eventName => {
+        input.addListener(eventName, 'all', e => {
+          this.$root.$emit('$m.triggerEvent', eventName, e)
+        })
+      })
 
       // Toggle the light indicator
       input.addListener('midimessage', 'all', e => {
@@ -173,142 +183,45 @@ export default {
           this.$store.commit('set', [`devices.inputs['${e.target.id}'].led`, false])
         }, 10)
       })
+    },
 
-      // Map events
-      input.addListener('activesensing', 'all', e => {
-        console.log('🎹 Received "activesensing" message', e)
-      })
-      input.addListener('channelaftertouch', 'all', e => {
-        console.log('🎹 Received "channelaftertouch" message', e)
-      })
-      input.addListener('channelmode', 'all', e => {
-        console.log('🎹 Received "channelmode" message', e)
-      })
-      input.addListener('clock', 'all', e => {
-        console.log('🎹 Received "clock" message', e)
-      })
-      input.addListener('continue', 'all', e => {
-        console.log('🎹 Received "continue" message', e)
-      })
-
-      /**
-       * controlchange - When a slider, turny-thing, or other controls change their state
-       */
-      input.addListener('controlchange', 'all', e => {
-        const codeTag = this.isHoriz ? 'code' : 'pre';
-
-        if (this.workspace.code) {
-          const data = Object.assign({}, e)
-          delete data.target
-          
-          this.workspace.interpreter.appendCode(`$m.trigger('controlchange', '${JSON.stringify(data)}')`)
-          this.workspace.interpreter.run()
-        }
-
-        this.$store.commit('set', [
-          `devices.inputs['${e.target.id}'].lastMessage`,
-          `<div>
-            <strong>controlchange</strong>:
-            <${codeTag}>${JSON.stringify(e.controller, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>
-          <div>
-            <strong>data</strong>:
-            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>`])
-      })
-      input.addListener('keyaftertouch', 'all', e => {
-        console.log('🎹 Received "keyaftertouch" message', e)
-      })
-
-
-      /**
-       * noteoff - When a pad, key, or other pressable thing is released
-       */
-      input.addListener('noteoff', 'all', e => {
-        const codeTag = this.isHoriz ? 'code' : 'pre';
-
-        if (this.workspace.code) {
-          const data = Object.assign({}, e)
-          delete data.target
-          
-          this.workspace.interpreter.appendCode(`$m.trigger('noteoff', '${JSON.stringify(data)}')`)
-          this.workspace.interpreter.run()
-        }
-
-        this.$store.commit('set', [
-          `devices.inputs['${e.target.id}'].lastMessage`,
-          `<div>
-            <strong>noteoff</strong>:
-            <${codeTag}>${JSON.stringify(e.note, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>
-          <div>
-            <strong>data</strong>:
-            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>`])
-      })
-
-      /**
-       * noteon - When a pad, key, or other pressable thing is pressed
-       */
-      input.addListener('noteon', 'all', e => {
-        const codeTag = this.isHoriz ? 'code' : 'pre';
-
-        if (this.workspace.code) {
-          const data = Object.assign({}, e)
-          delete data.target
-          
-          this.workspace.interpreter.appendCode(`$m.trigger('noteon', '${JSON.stringify(data)}')`)
-          this.workspace.interpreter.run()
-        }
+    /**
+     * Runs the code (if isPlaying)
+     */
+    triggerEvent (eventName, ev) {
+      // Run the code
+      if (this.workspace.code) {
+        const data = Object.assign({}, ev)
+        delete data.target
         
-        this.$store.commit('set', [
-          `devices.inputs['${e.target.id}'].lastMessage`,
-          `<div>
-            <strong>noteon</strong>:
-            <${codeTag}>${JSON.stringify(e.note, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>
-          <div>
-            <strong>data</strong>:
-            <${codeTag}>${JSON.stringify(e.data, null, !this.isHoriz * 2)}</${codeTag}>
-          </div>`])
-      })
+        this.workspace.interpreter.appendCode(`$m.trigger('${eventName}', '${JSON.stringify(data)}')`)
+        this.workspace.interpreter.run()
+      }
 
-      input.addListener('nrpn', 'all', e => {
-        console.log('🎹 Received "nrpn" message', e)
-      })
-      input.addListener('pitchbend', 'all', e => {
-        console.log('🎹 Received "pitchbend" message', e)
-      })
-      input.addListener('programchange', 'all', e => {
-        console.log('🎹 Received "programchange" message', e)
-      })
-      input.addListener('reset', 'all', e => {
-        console.log('🎹 Received "reset" message', e)
-      })
-      input.addListener('songposition', 'all', e => {
-        console.log('🎹 Received "songposition" message', e)
-      })
-      input.addListener('songselect', 'all', e => {
-        console.log('🎹 Received "songselect" message', e)
-      })
-      input.addListener('start', 'all', e => {
-        console.log('🎹 Received "start" message', e)
-      })
-      input.addListener('stop', 'all', e => {
-        console.log('🎹 Received "stop" message', e)
-      })
-      input.addListener('sysex', 'all', e => {
-        console.log('🎹 Received "sysex" message', e)
-      })
-      input.addListener('timecode', 'all', e => {
-        console.log('🎹 Received "timecode" message', e)
-      })
-      input.addListener('tuningrequest', 'all', e => {
-        console.log('🎹 Received "tuningrequest" message', e)
-      })
-      input.addListener('unknownsystemmessage', 'all', e => {
-        console.log('🎹 Received "unknownsystemmessage" message', e)
-      })
+      // Update device message
+      let eventSpecificData
+      switch (eventName) {
+        case 'noteon':
+        case 'noteoff':
+          eventSpecificData = 'note'
+          break;
+
+        case 'controlchange':
+          eventSpecificData = 'controller'
+          break;
+      }
+      
+      const codeTag = this.isHoriz ? 'code' : 'pre';
+      this.$store.commit('set', [
+        `devices.inputs['${ev.target.id}'].lastMessage`,
+        `<div>
+          <strong>${eventName}</strong>:
+          <${codeTag}>${JSON.stringify(ev[eventSpecificData], null, !this.isHoriz * 2)}</${codeTag}>
+        </div>
+        <div>
+          <strong>data</strong>:
+          <${codeTag}>${JSON.stringify(ev.data, null, !this.isHoriz * 2)}</${codeTag}>
+        </div>`])
     }
   }
 }
