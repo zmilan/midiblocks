@@ -16,7 +16,7 @@ $m.events = {}
  */
 $m.trigger = function (eventName, payload) {
   $m.events[eventName] && $m.events[eventName].forEach(function (event) {
-    event(payload)
+    event(JSON.parse(payload))
   })
 }
 
