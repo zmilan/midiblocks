@@ -1,3 +1,6 @@
 [submodule "public/lib/JS-Interpreter"]
 	path = public/lib/JS-Interpreter
 	url = https://github.com/NeilFraser/JS-Interpreter
+[submodule "src/lib/midiquery"]
+	path = src/lib/midiquery
+	url = https://github.com/midiblocks/midiquery

@@ -8,6 +8,7 @@ div(style='min-height: inherit')
 <script>
 import Blockly from 'blockly'
 import {mapState} from 'vuex'
+import STRING_MidiqueryInterpreter from '!!raw-loader!!../lib/midiquery-interpreter/src/index.js'
 
 export default {
   name: 'Blockly',
@@ -16,7 +17,7 @@ export default {
   watch: {
     'workspace.code' (newVal) {
       this.interpreter = null
-      this.interpreter = new window.Interpreter(this.workspace.code, this.setupInterpreter)
+      this.interpreter = new window.Interpreter(STRING_MidiqueryInterpreter + ';\n' + this.workspace.code, this.setupInterpreter)
       this.interpreter.run()
     }
   },
@@ -74,7 +75,7 @@ export default {
        * Console.log
        */
       acorn.setProperty(globalObject, 'log', acorn.createNativeFunction(function () {
-        console.log(arguments)
+        console.log('📦', ...arguments)
       }))
     }
   }
