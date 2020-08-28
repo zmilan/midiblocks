@@ -199,28 +199,28 @@ export default {
       }
 
       // Update device message
-      let eventSpecificData
+      let midiName
+      let midiData
       switch (eventName) {
         case 'noteon':
         case 'noteoff':
-          eventSpecificData = 'note'
+          midiName = `[${ev.note.number}, ${ev.note.name}, ${ev.note.octave}]`
           break;
 
         case 'controlchange':
-          eventSpecificData = 'controller'
+          midiName = `[${ev.controller.number}, ${ev.controller.name}]`
           break;
       }
       
-      const codeTag = this.isHoriz ? 'code' : 'pre';
       this.$store.commit('set', [
         `devices.inputs['${ev.target.id}'].lastMessage`,
         `<div>
           <strong>${eventName}</strong>:
-          <${codeTag}>${JSON.stringify(ev[eventSpecificData], null, !this.isHoriz * 2)}</${codeTag}>
+          <span>${midiName}</span>
         </div>
         <div>
           <strong>data</strong>:
-          <${codeTag}>${JSON.stringify(ev.data, null, !this.isHoriz * 2)}</${codeTag}>
+          <span>[${ev.data[0]}, ${ev.data[1]}, ${ev.data[2]}]</span>
         </div>`])
     }
   }
