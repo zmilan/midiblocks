@@ -23,6 +23,7 @@ q-layout.full-height(view='lHh Lpr lFf')
           Blockly.blockly(ref='foo' :options='options')
             category(name='🎹 MIDI Events' colour='#9fa55b')
               block(type='midi_on_event')
+              block(type='midi_arg_compare_note')
             category(name='🎵 Send MIDI' colour='#9fa55b')
               block(type='midi_send_note')
             sep
@@ -262,6 +263,7 @@ import Blockly from '../components/Blockly'
 import BlocklyJS from 'blockly/javascript'
 import store from 'store'
 import '../blocks/midi-events'
+import '../blocks/midi-args'
 import '../blocks/midi-send'
 import '../blocks/prompt'
 

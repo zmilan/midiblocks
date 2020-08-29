@@ -16,7 +16,7 @@ export default {
 
   watch: {
     'workspace.code' (newVal) {
-      this.$store.commit('set', ['workspace.interpreter', new window.Interpreter(STRING_WebmidiInterpreter + ';\n' + this.workspace.code, this.setupInterpreter)])
+      this.$store.commit('set', ['workspace.interpreter', new window.Interpreter(STRING_WebmidiInterpreter + '\n' + this.workspace.code, this.setupInterpreter)])
       this.workspace.interpreter.run()
     }
   },
