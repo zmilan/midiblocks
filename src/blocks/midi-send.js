@@ -8,7 +8,12 @@ Blockly.JavaScript['midi_send_note'] = function(block) {
   let text_device  = block.getFieldValue('device')
   let text_channel = block.getFieldValue('channel')
 
-  let code = `playNote('${text_note}', '${text_channel}', '${text_device}');\n`
+let code = `playNote({
+  event: typeof event !== 'undefined' ? event : null,
+  note: '${text_note}',
+  channel: '${text_channel}',
+  device: '${text_device}'
+});`
 
   return code
 }

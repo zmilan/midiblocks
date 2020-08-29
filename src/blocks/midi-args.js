@@ -34,7 +34,7 @@ Blockly.Blocks['midi_arg_compare_note'] = {
   init: function() {
     this.appendValueInput("args")
         .setCheck("midi_arg")
-        .appendField("note")
+        .appendField("when note")
         .appendField(new Blockly.FieldDropdown([["is","is"], ["is not","is not"]]), "condition")
         .appendField(new Blockly.FieldTextInput("any"), "note");
     this.setOutput(true, "midi_arg");

@@ -9,7 +9,7 @@
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
           <block type="field_static" id=".5|;+wLm?BW`iXx)cxx`">
-            <field name="TEXT">note</field>
+            <field name="TEXT">when note</field>
             <next>
               <block type="field_dropdown" id="Y-5t^XYmCp_{6t8`MC8n">
                 <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
@@ -47,7 +47,7 @@
       </block>
     </value>
     <value name="OUTPUTTYPE">
-      <shadow type="type_null" id="o/+%?uCna^7Vs[!gKEm("></shadow>
+      <shadow type="type_null" id="3K,.bDps5OLjz=z$c_sA"></shadow>
       <block type="type_other" id="$mlkO0*K@+p*22N]hnBU">
         <field name="TYPE">midi_arg</field>
       </block>

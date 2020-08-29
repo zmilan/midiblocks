@@ -44,7 +44,7 @@ triggerEvent = function (eventName, payload) {
   _events[eventName] && _events[eventName].forEach(function (event) {
     event.callback({
       args: event.args,
-      payload: payload
+      payload: JSON.parse(payload)
     })
   })
 }
@@ -52,10 +52,6 @@ triggerEvent = function (eventName, payload) {
 /**
  * Plays a note
  */
-playNote = function (note, device, channel) {
-  _playNote(JSON.stringify({
-    note: note,
-    device: device,
-    channel: channel
-  }))
+playNote = function (payload) {
+  _playNote(JSON.stringify(payload));
 }

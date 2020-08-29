@@ -10,7 +10,10 @@ Blockly.JavaScript['midi_on_event'] = function(block) {
   const statements_statements = Blockly.JavaScript.statementToCode(block, 'statements');
 
 let code = `addEventListener('${dropdown_event}', [${value_args}], function (event) {
-  ${statements_statements}
+  var data = event.payload;
+  var args = event.args;
+  
+${statements_statements}
 });\n`
 
   return code
