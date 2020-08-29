@@ -22,7 +22,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['workspace'])
+    ...mapState(['workspace', 'devices'])
   },
 
   data () {
@@ -73,8 +73,22 @@ export default {
       /**
        * Console.log
        */
-      acorn.setProperty(globalObject, 'log', acorn.createNativeFunction(function (dataStr) {
-        console.log('📦', ...JSON.parse(dataStr))
+      acorn.setProperty(globalObject, 'log', acorn.createNativeFunction((dataStr) => {
+        console.log('📦 log: ', ...JSON.parse(dataStr))
+      }))
+
+      /**
+       * Play a midi sound
+       */
+      acorn.setProperty(globalObject, '_playNote', acorn.createNativeFunction((dataStr) => {
+        let data = JSON.parse(dataStr)
+        
+        if (data.device === 'all') {
+          Object.keys(this.devices.outputs).forEach(key => {
+            const output = this.$m.getOutputById(key)
+            output.playNote(data.note, data.channel)
+          })
+        }
       }))
     }
   }

@@ -40,3 +40,14 @@ triggerEvent = function (eventName, payload) {
     callback(JSON.parse(payload))
   })
 }
+
+/**
+ * Plays a note
+ */
+playNote = function (note, device, channel) {
+  _playNote(JSON.stringify({
+    note: note,
+    device: device,
+    channel: channel
+  }))
+}

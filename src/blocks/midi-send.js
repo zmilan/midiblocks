@@ -8,7 +8,7 @@ Blockly.JavaScript['midi_send_note'] = function(block) {
   let text_device  = block.getFieldValue('device')
   let text_channel = block.getFieldValue('channel')
 
-  let code = `playNote('${text_note}', '${text_channel}', '${text_device}');`
+  let code = `playNote('${text_note}', '${text_channel}', '${text_device}');\n`
 
   return code
 }
@@ -25,7 +25,7 @@ Blockly.Blocks['midi_send_note'] = {
   init: function() {
     this.appendDummyInput()
         .appendField("Play note")
-        .appendField(new Blockly.FieldTextInput("C"), "note")
+        .appendField(new Blockly.FieldTextInput("C4"), "note")
         .appendField("on device")
         .appendField(new Blockly.FieldTextInput("all"), "device")
         .appendField("on channel")
