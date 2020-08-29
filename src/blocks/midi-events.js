@@ -6,8 +6,8 @@ import * as Blockly from 'blockly/core'
 Blockly.JavaScript['when_midi_event'] = function(block) {
   const dropdown_event = block.getFieldValue('event')
   
-let code = `$m('*').on('${dropdown_event}', function (event, note) {
-  console.log(event.name, note)
+let code = `addEventListener('${dropdown_event}', function (event) {
+  console.log(event)
 });\n`
 
   return code
@@ -21,7 +21,7 @@ Blockly.JavaScript['midi_send_note'] = function(block) {
   let text_device  = block.getFieldValue('device')
   let text_channel = block.getFieldValue('channel')
 
-  let code = `$m('note ${text_note} ${text_channel} ${text_device}').play()`
+  let code = `playNote('note ${text_note} ${text_channel} ${text_device}')`
 
   return code
 }

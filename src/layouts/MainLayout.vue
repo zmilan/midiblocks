@@ -94,7 +94,7 @@ export default {
       }])
 
       // Setup listeners
-      this.$root.$on('$m.triggerEvent', this.triggerEvent)
+      this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
     })
   },
 
@@ -173,8 +173,8 @@ export default {
       const events = [/*'midimessage',*/ 'activesensing', 'channelaftertouch', 'channelmode', 'clock', 'continue', 'controlchange', 'keyaftertouch', 'noteoff', 'noteon', 'nrpn', 'pitchbend', 'programchange', 'reset', 'songposition', 'songselect', 'start', 'stop', 'sysex', 'timecode', 'tuningrequest', 'unknownsystemmessage']
 
       events.forEach(eventName => {
-        input.addListener(eventName, 'all', e => {
-          this.$root.$emit('$m.triggerEvent', eventName, e)
+        input.addListener(eventName, 'all', ev => {
+          this.$root.$emit('interpreter.triggerEvent', eventName, ev)
         })
       })
 
@@ -196,7 +196,7 @@ export default {
         const data = Object.assign({}, ev)
         delete data.target
         
-        this.workspace.interpreter.appendCode(`$m.trigger('${eventName}', '${JSON.stringify(data)}')`)
+        this.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${JSON.stringify(data)}')`)
         this.workspace.interpreter.run()
       }
 
