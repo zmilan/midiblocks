@@ -8,30 +8,20 @@
         <field name="INPUTNAME">args</field>
         <field name="ALIGN">LEFT</field>
         <statement name="FIELDS">
-          <block type="field_dropdown" id="Mogd_wQaPzf6b2P_!7#g">
-            <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
-            <field name="FIELDNAME">condition0</field>
-            <field name="USER0">and</field>
-            <field name="CPU0">and</field>
-            <field name="USER1">or</field>
-            <field name="CPU1">or</field>
+          <block type="field_static" id=".5|;+wLm?BW`iXx)cxx`">
+            <field name="TEXT">note</field>
             <next>
-              <block type="field_static" id=".5|;+wLm?BW`iXx)cxx`">
-                <field name="TEXT">note</field>
+              <block type="field_dropdown" id="Y-5t^XYmCp_{6t8`MC8n">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">condition</field>
+                <field name="USER0">is</field>
+                <field name="CPU0">is</field>
+                <field name="USER1">is not</field>
+                <field name="CPU1">is not</field>
                 <next>
-                  <block type="field_dropdown" id="Y-5t^XYmCp_{6t8`MC8n">
-                    <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
-                    <field name="FIELDNAME">condition1</field>
-                    <field name="USER0">is</field>
-                    <field name="CPU0">is</field>
-                    <field name="USER1">is not</field>
-                    <field name="CPU1">is not</field>
-                    <next>
-                      <block type="field_input" id="q04@#7aLww|pU$;;RGu5">
-                        <field name="TEXT">any</field>
-                        <field name="FIELDNAME">note</field>
-                      </block>
-                    </next>
+                  <block type="field_input" id="q04@#7aLww|pU$;;RGu5">
+                    <field name="TEXT">any</field>
+                    <field name="FIELDNAME">note</field>
                   </block>
                 </next>
               </block>
@@ -57,7 +47,10 @@
       </block>
     </value>
     <value name="OUTPUTTYPE">
-      <shadow type="type_null" id="2GCX.WWV24x1gO802`;9"></shadow>
+      <shadow type="type_null" id="o/+%?uCna^7Vs[!gKEm("></shadow>
+      <block type="type_other" id="$mlkO0*K@+p*22N]hnBU">
+        <field name="TYPE">midi_arg</field>
+      </block>
     </value>
     <value name="COLOUR">
       <block type="colour_hue" id="52pCu;m{zL#EVO.aQZeM">

@@ -21,13 +21,18 @@ console = {
 /**
  * target.addEventListener subsitution
  * @param {String} eventName The eventName to store this callback under
+ * @param {Array} args The list of arguments
  * @param {Function} callback The function to call when this event is triggered
  */
-addEventListener = function (eventName, callback) {
+addEventListener = function (eventName, args, callback) {
   if (!_events[eventName]) {
     _events[eventName] = []
   }
-  _events[eventName].push(callback)
+
+  _events[eventName].push({
+    args: args,
+    callback: callback
+  })
 }
 
 /**
@@ -36,8 +41,11 @@ addEventListener = function (eventName, callback) {
  * @param {*} payload
  */
 triggerEvent = function (eventName, payload) {
-  _events[eventName] && _events[eventName].forEach(function (callback) {
-    callback(JSON.parse(payload))
+  _events[eventName] && _events[eventName].forEach(function (event) {
+    event.callback({
+      args: event.args,
+      payload: payload
+    })
   })
 }
 

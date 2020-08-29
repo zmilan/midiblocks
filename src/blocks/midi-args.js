@@ -4,14 +4,13 @@ import * as Blockly from 'blockly/core'
  * Compare note
  */
 Blockly.JavaScript['midi_arg_compare_note'] = function(block) {
-  var dropdown_condition0 = block.getFieldValue('condition0');
-  var dropdown_condition1 = block.getFieldValue('condition1');
+  var dropdown_condition = block.getFieldValue('condition');
   var text_note = block.getFieldValue('note');
   var value_args = Blockly.JavaScript.valueToCode(block, 'args', Blockly.JavaScript.ORDER_ATOMIC);
 
 var code = `{
-  conditional0: '${dropdown_condition0}',
-  conditional1: '${dropdown_condition1}',
+  type: 'midi_arg_compare_note',
+  condition: '${dropdown_condition}',
   note: '${text_note}'
 }`
 
@@ -35,11 +34,10 @@ Blockly.Blocks['midi_arg_compare_note'] = {
   init: function() {
     this.appendValueInput("args")
         .setCheck("midi_arg")
-        .appendField(new Blockly.FieldDropdown([["and","and"], ["or","or"]]), "condition0")
         .appendField("note")
-        .appendField(new Blockly.FieldDropdown([["is","is"], ["is not","is not"]]), "condition1")
+        .appendField(new Blockly.FieldDropdown([["is","is"], ["is not","is not"]]), "condition")
         .appendField(new Blockly.FieldTextInput("any"), "note");
-    this.setOutput(true, null);
+    this.setOutput(true, "midi_arg");
     this.setColour(45);
  this.setTooltip("Compares the MIDI note");
  this.setHelpUrl("https://midiblocks.com/block/midi_arg_compare_note");
