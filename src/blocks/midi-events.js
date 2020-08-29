@@ -3,9 +3,11 @@ import * as Blockly from 'blockly/core'
 /**
  * When MIDI {Event}
  */
-Blockly.JavaScript['when_midi_event'] = function(block) {
-  const dropdown_event = block.getFieldValue('event')
-  const statements_statements = Blockly.JavaScript.statementToCode(block, 'statements')
+Blockly.JavaScript['midi_on_event'] = function(block) {
+  const dropdown_event = block.getFieldValue('event');
+  const text_device = block.getFieldValue('device');
+  const value_args = Blockly.JavaScript.valueToCode(block, 'args', Blockly.JavaScript.ORDER_ATOMIC);
+  const statements_statements = Blockly.JavaScript.statementToCode(block, 'statements');
 
 let code = `addEventListener('${dropdown_event}', function (event) {
   ${statements_statements}
@@ -21,16 +23,19 @@ let code = `addEventListener('${dropdown_event}', function (event) {
  * - Select ONLY "Block Definitions" in JavaScript format
  * - Copy paste code below
  */
-Blockly.Blocks['when_midi_event'] = {
+Blockly.Blocks['midi_on_event'] = {
   init: function() {
-    this.appendDummyInput()
-        .appendField("When 🎹");
+    this.appendValueInput("args")
+        .setCheck("midi_arg")
+        .appendField("On MIDI")
+        .appendField(new Blockly.FieldDropdown([["Note On","noteon"], ["Note Off","noteoff"], ["Control Change","controlchange"]]), "event")
+        .appendField("from device")
+        .appendField(new Blockly.FieldTextInput("any"), "device");
     this.appendStatementInput("statements")
-        .setCheck(null)
-        .appendField(new Blockly.FieldDropdown([["Note On","noteon"], ["Note Off","noteoff"], ["Control Change","controlchange"]]), "event");
+        .setCheck(null);
     this.setInputsInline(false);
     this.setColour(60);
- this.setTooltip("");
- this.setHelpUrl("");
+ this.setTooltip("Runs the midiblock when the selected MIDI event is triggered from the specified device. Attach MIDI Args to the right to fine-tune the event");
+ this.setHelpUrl("https://midiblocks.com/block/midi_on_event");
   }
 };

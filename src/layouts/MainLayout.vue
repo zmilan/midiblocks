@@ -22,7 +22,7 @@ q-layout.full-height(view='lHh Lpr lFf')
         template(v-slot:before)
           Blockly.blockly(ref='foo' :options='options')
             category(name='🎹 MIDI Events' colour='#9fa55b')
-              block(type='when_midi_event')
+              block(type='midi_on_event')
             category(name='🎵 Send MIDI' colour='#9fa55b')
               block(type='midi_send_note')
             sep
