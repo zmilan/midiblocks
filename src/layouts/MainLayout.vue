@@ -408,10 +408,14 @@ export default {
     triggerEvent (eventName, ev) {
       // Run the code
       if (this.workspace.code) {
-        const data = Object.assign({}, ev)
-        delete data.target
+        let data = Object.assign({}, ev)
+        data.target = Object.assign({}, data.target)
+        delete data.target._midiInput
+        delete data.target._userHandlers
+        delete data.target.lastMessage
+        data = JSON.stringify(data)
         
-        this.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${JSON.stringify(data)}')`)
+        this.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
         this.workspace.interpreter.run()
       }
 

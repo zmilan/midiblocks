@@ -9,9 +9,27 @@ Blockly.JavaScript['midi_on_event'] = function(block) {
   const value_args = Blockly.JavaScript.valueToCode(block, 'args', Blockly.JavaScript.ORDER_ATOMIC);
   const statements_statements = Blockly.JavaScript.statementToCode(block, 'statements');
 
-let code = `addEventListener('${dropdown_event}', [${value_args}], function (event) {
+let code = `addEventListener('${dropdown_event}', [{
+  type: 'midi_arg_compare_device',
+  condition: 'is',
+  device: '${text_device}'
+}, ${value_args}], function (event) {
   var data = event.payload;
   var args = event.args;
+
+  // Exit if midi_args fail
+  var isValid = true;
+  event.args.forEach(function (arg) {
+    switch (arg.type) {
+      case 'midi_arg_compare_device':
+        if (!isAny(arg.device) && !compare(arg.device, arg.condition, data.target.id)) isValid = false;
+      break;
+      // case 'midi_arg_compare_note':
+      //   if (!isAny(arg.condition) && !compare(arg.device, arg.condition, data.target.id)) isValid = false;
+      // break;
+    }
+  });
+  if (!isValid) return;
   
 ${statements_statements}
 });\n`

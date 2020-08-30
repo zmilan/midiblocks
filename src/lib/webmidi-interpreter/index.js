@@ -55,3 +55,29 @@ triggerEvent = function (eventName, payload) {
 playNote = function (payload) {
   _playNote(JSON.stringify(payload));
 }
+
+/**
+ * Compre helper for working with "is", "is not", etc
+ */
+compare = function (a, compare, b) {
+  switch (compare) {
+    case 'is':
+      return a == b;
+    case 'is not':
+      return a != b;
+  }
+}
+
+/**
+ * Checks if a string belongs to the "is any" family ("all", "any", etc)
+ */
+isAny = function (str) {
+  var list = ['any', 'all'];
+  var isValid = false
+
+  list.forEach(function (item) {
+    if (str === item) isValid = true;
+  });
+
+  return isValid;
+}
