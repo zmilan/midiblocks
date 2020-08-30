@@ -13,8 +13,8 @@ let code = `playNote({
   note: '${text_note}',
   channel: '${text_channel}',
   device: '${text_device}'
-});`
-
+});
+`
   return code
 }
 

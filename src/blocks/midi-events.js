@@ -17,6 +17,8 @@ let code = `addEventListener('${dropdown_event}', [{
   var data = event.payload;
   var args = event.args;
 
+  console.log('event', event);
+  
   // Exit if midi_args fail
   var isValid = true;
   event.args.forEach(function (arg) {
@@ -24,9 +26,9 @@ let code = `addEventListener('${dropdown_event}', [{
       case 'midi_arg_compare_device':
         if (!isAny(arg.device) && !compare(arg.device, arg.condition, data.target.id)) isValid = false;
       break;
-      // case 'midi_arg_compare_note':
-      //   if (!isAny(arg.condition) && !compare(arg.device, arg.condition, data.target.id)) isValid = false;
-      // break;
+      case 'midi_arg_compare_note':
+        if (!isAny(arg.note) && !isNote(arg.note, arg.condition, data.note)) isValid = false;
+      break;
     }
   });
   if (!isValid) return;

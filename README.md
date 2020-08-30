@@ -11,13 +11,18 @@
 
 This project is a work in progress. Here's what's done so far:
 
-![](https://149476186.v2.pressablecdn.com/wp-content/uploads/2020/08/Annotation-2020-08-26-233851-1024x565.jpg)
+![](https://149476186.v2.pressablecdn.com/wp-content/uploads/2020/08/Annotation-2020-08-29-183739.jpg)
 
-- Includes the Blockly editor
-- Automatically detects MIDI devices
-- Displays last MIDI message under each device for easy mapping
+- <kbd>Event</kbd> blocks:
+  - `On MIDI {event} from {device}`
+- <kbd>Argument</kbd> blocks:
+  - `when {note}`
+- <kbd>Action</kbd> blocks:
+  - `Play {note} on {device} on {channel}`
+- Plus the core blocks for logic, loops, functions, and more!
 
-See more by flipping through our [daily devlogs](https://midiblocks.com/dailies)
+
+See the [coming soon](https://midiblocks.com) page for more!
 
 ---
 

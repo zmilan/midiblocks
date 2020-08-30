@@ -4,6 +4,11 @@
  */
 
 /**
+ * Simple tests
+ */
+hasNumber = /\d/
+ 
+/**
  * Stores events being listened to
  * {eventName: [...callbacks]}
  */
@@ -53,7 +58,7 @@ triggerEvent = function (eventName, payload) {
  * Plays a note
  */
 playNote = function (payload) {
-  _playNote(JSON.stringify(payload));
+  _playNote(JSON.stringify(payload))
 }
 
 /**
@@ -62,9 +67,9 @@ playNote = function (payload) {
 compare = function (a, compare, b) {
   switch (compare) {
     case 'is':
-      return a == b;
+      return a == b
     case 'is not':
-      return a != b;
+      return a != b
   }
 }
 
@@ -72,12 +77,34 @@ compare = function (a, compare, b) {
  * Checks if a string belongs to the "is any" family ("all", "any", etc)
  */
 isAny = function (str) {
-  var list = ['any', 'all'];
+  var list = ['any', 'all']
   var isValid = false
 
   list.forEach(function (item) {
-    if (str === item) isValid = true;
+    if (str === item) isValid = true
   });
 
-  return isValid;
+  return isValid
+}
+
+/**
+ * Checks if a given note matches a webmidi.name
+ * - If no octave present, then matches the key in any octave
+ */
+isNote = function (a, compare, b) {
+  switch (compare) {
+    case 'is':
+      if (hasNumber.test()) {
+        return a == b.name.concat(b.octave)
+      } else {
+        return a == b.name
+      }
+
+    case 'is not':
+      if (hasNumber.test()) {
+        return a != b.name.concat(b.octave)
+      } else {
+        return a != b.name
+      }
+  }
 }
