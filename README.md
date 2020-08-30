@@ -51,9 +51,9 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
 - Open command line and install Yarn with: `npm install -g yarn`
 - Install Quasar CLI globally with: `npm install -g @quasar/cli`
-- Recursively download this repository with: `git clone --recurse-sumbodules -j8 https://github.com/MIDIBlocks/midiblocks`
+- 👉 **Recursively** download this repository with: `git clone --recursive -j8 https://github.com/MIDIBlocks/midiblocks`
 - Install dependencies by running `yarn` from the projects root
-- Start the app with: `quasar dev`
+- Start the app with: `npm start`
 
 ## Command line scripts
 ```bash
@@ -61,7 +61,7 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 npm start
 
 # Build the app for production
-quasar build
+npm run build
 ```
 
 ## Dev Notes

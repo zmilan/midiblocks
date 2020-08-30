@@ -4,6 +4,7 @@
  */
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
+const pkg = require('./package.json')
 
 module.exports = function (/* ctx */) {
   return {
@@ -44,6 +45,8 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
+      distDir: 'C:\\Users\\midib\\projects\\midiblocks.com\\app\\public\\wp-content\\themes\\wordpress\\midiblocks\\v\\' + pkg.version,
+      
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
@@ -76,7 +79,7 @@ module.exports = function (/* ctx */) {
           // Languages are loaded on demand at runtime
           languages: ['javascript', 'typescript']
         }))
-      },
+      }
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
