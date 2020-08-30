@@ -16,7 +16,7 @@
 
         q-item(v-for='input in devices.inputs' clickable v-ripple :key='input.id')
           q-item-section(avatar top)
-            q-avatar(icon='fas fa-sliders-h' color='primary' text-color='white')
+            q-avatar(icon='fab fa-usb' color='blockly-send-midi' text-color='white')
 
           q-item-section
             q-item-label(lines=1) {{input.name}}
@@ -32,7 +32,7 @@
 
         q-item(v-for='input in devices.inputs' clickable v-ripple :key='input.id')
           q-item-section(avatar top)
-            q-avatar(icon='fas fa-sliders-h' color='primary' text-color='white')
+            q-avatar(icon='fab fa-usb' color='blockly-send-midi' text-color='white')
 
           q-item-section
             q-item-label(lines=1) {{input.name}}

@@ -1,6 +1,6 @@
 {
   "name": "midiblocks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A programmable MIDI mapper for the web",
   "productName": "MIDIBlocks",
   "author": "Oz <midiblocks@gmail.com>",
