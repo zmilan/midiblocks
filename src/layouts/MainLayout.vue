@@ -21,11 +21,11 @@ q-layout.full-height(view='lHh Lpr lFf')
         //- Editor
         template(v-slot:before)
           Blockly.blockly(ref='foo' :options='options')
-            category(name='🎹 MIDI Events' colour='#9fa55b')
+            category(name='MIDI Events' colour='#9fa55b')
               block(type='midi_on_event')
-            category(name='🔢 MIDI Arguments' colour='#9fa55b')
+            category(name='MIDI Arguments' colour='#a5935b')
               block(type='midi_arg_compare_note')
-            category(name='🎵 Send MIDI' colour='#9fa55b')
+            category.block-category-send-midi(name='Send MIDI' colour='#5ba5a5')
               block(type='midi_send_note')
             sep
             category(name='Logic' colour='#5b80a5')
@@ -123,135 +123,135 @@ q-layout.full-height(view='lHh Lpr lFf')
                   shadow(type='math_number')
                     field(name='NUM') 100
               block(type='math_random_float')
-            category(name='Text' colour='#5ba58c')
-              block(type='text')
-                field(name='TEXT')
-              block(type='text_join')
-                mutation(items='2')
-              block(type='text_append')
-                field(name='VAR' id='AHM@IhCozpbm(mnOWJdU') item
-                value(name='TEXT')
-                  shadow(type='text')
-                    field(name='TEXT')
-              block(type='text_length')
-                value(name='VALUE')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-              block(type='text_isEmpty')
-                value(name='VALUE')
-                  shadow(type='text')
-                    field(name='TEXT')
-              block(type='text_indexOf')
-                field(name='END') FIRST
-                value(name='VALUE')
-                  block(type='variables_get')
-                    field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
-                value(name='FIND')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-              block(type='text_charAt')
-                mutation(at='true')
-                field(name='WHERE') FROM_START
-                value(name='VALUE')
-                  block(type='variables_get')
-                    field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
-              block(type='text_getSubstring')
-                mutation(at1='true' at2='true')
-                field(name='WHERE1') FROM_START
-                field(name='WHERE2') FROM_START
-                value(name='STRING')
-                  block(type='variables_get')
-                    field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
-              block(type='text_changeCase')
-                field(name='CASE') UPPERCASE
-                value(name='TEXT')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-              block(type='text_trim')
-                field(name='MODE') BOTH
-                value(name='TEXT')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-              block(type='text_print')
-                value(name='TEXT')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-              block(type='text_prompt_ext')
-                mutation(type='TEXT')
-                field(name='TYPE') TEXT
-                value(name='TEXT')
-                  shadow(type='text')
-                    field(name='TEXT') abc
-            category(name='Lists' colour='#745ba5')
-              block(type='lists_create_with')
-                mutation(items='0')
-              block(type='lists_create_with')
-                mutation(items='3')
-              block(type='lists_repeat')
-                value(name='NUM')
-                  shadow(type='math_number')
-                    field(name='NUM') 5
-              block(type='lists_length')
-              block(type='lists_isEmpty')
-              block(type='lists_indexOf')
-                field(name='END') FIRST
-                value(name='VALUE')
-                  block(type='variables_get')
-                    field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
-              block(type='lists_getIndex')
-                mutation(statement='false' at='true')
-                field(name='MODE') GET
-                field(name='WHERE') FROM_START
-                value(name='VALUE')
-                  block(type='variables_get')
-                    field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
-              block(type='lists_setIndex')
-                mutation(at='true')
-                field(name='MODE') SET
-                field(name='WHERE') FROM_START
-                value(name='LIST')
-                  block(type='variables_get')
-                    field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
-              block(type='lists_getSublist')
-                mutation(at1='true' at2='true')
-                field(name='WHERE1') FROM_START
-                field(name='WHERE2') FROM_START
-                value(name='LIST')
-                  block(type='variables_get')
-                    field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
-              block(type='lists_split')
-                mutation(mode='SPLIT')
-                field(name='MODE') SPLIT
-                value(name='DELIM')
-                  shadow(type='text')
-                    field(name='TEXT') ,
-              block(type='lists_sort')
-                field(name='TYPE') NUMERIC
-                field(name='DIRECTION') 1
-            category(name='Color' colour='#a5745b')
-              block(type='colour_picker')
-                field(name='COLOUR') #ff0000
-              block(type='colour_random')
-              block(type='colour_rgb')
-                value(name='RED')
-                  shadow(type='math_number')
-                    field(name='NUM') 100
-                value(name='GREEN')
-                  shadow(type='math_number')
-                    field(name='NUM') 50
-                value(name='BLUE')
-                  shadow(type='math_number')
-                    field(name='NUM') 0
-              block(type='colour_blend')
-                value(name='COLOUR1')
-                  shadow(type='colour_picker')
-                    field(name='COLOUR') #ff0000
-                value(name='COLOUR2')
-                  shadow(type='colour_picker')
-                    field(name='COLOUR') #3333ff
-                value(name='RATIO')
-                  shadow(type='math_number')
-                    field(name='NUM') 0.5
+            //- category(name='Text' colour='#5ba58c')
+            //-   block(type='text')
+            //-     field(name='TEXT')
+            //-   block(type='text_join')
+            //-     mutation(items='2')
+            //-   block(type='text_append')
+            //-     field(name='VAR' id='AHM@IhCozpbm(mnOWJdU') item
+            //-     value(name='TEXT')
+            //-       shadow(type='text')
+            //-         field(name='TEXT')
+            //-   block(type='text_length')
+            //-     value(name='VALUE')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //-   block(type='text_isEmpty')
+            //-     value(name='VALUE')
+            //-       shadow(type='text')
+            //-         field(name='TEXT')
+            //-   block(type='text_indexOf')
+            //-     field(name='END') FIRST
+            //-     value(name='VALUE')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
+            //-     value(name='FIND')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //-   block(type='text_charAt')
+            //-     mutation(at='true')
+            //-     field(name='WHERE') FROM_START
+            //-     value(name='VALUE')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
+            //-   block(type='text_getSubstring')
+            //-     mutation(at1='true' at2='true')
+            //-     field(name='WHERE1') FROM_START
+            //-     field(name='WHERE2') FROM_START
+            //-     value(name='STRING')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='IKPMutPmnS`RhpSFFD-*') text
+            //-   block(type='text_changeCase')
+            //-     field(name='CASE') UPPERCASE
+            //-     value(name='TEXT')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //-   block(type='text_trim')
+            //-     field(name='MODE') BOTH
+            //-     value(name='TEXT')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //-   block(type='text_print')
+            //-     value(name='TEXT')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //-   block(type='text_prompt_ext')
+            //-     mutation(type='TEXT')
+            //-     field(name='TYPE') TEXT
+            //-     value(name='TEXT')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') abc
+            //- category(name='Lists' colour='#745ba5')
+            //-   block(type='lists_create_with')
+            //-     mutation(items='0')
+            //-   block(type='lists_create_with')
+            //-     mutation(items='3')
+            //-   block(type='lists_repeat')
+            //-     value(name='NUM')
+            //-       shadow(type='math_number')
+            //-         field(name='NUM') 5
+            //-   block(type='lists_length')
+            //-   block(type='lists_isEmpty')
+            //-   block(type='lists_indexOf')
+            //-     field(name='END') FIRST
+            //-     value(name='VALUE')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
+            //-   block(type='lists_getIndex')
+            //-     mutation(statement='false' at='true')
+            //-     field(name='MODE') GET
+            //-     field(name='WHERE') FROM_START
+            //-     value(name='VALUE')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
+            //-   block(type='lists_setIndex')
+            //-     mutation(at='true')
+            //-     field(name='MODE') SET
+            //-     field(name='WHERE') FROM_START
+            //-     value(name='LIST')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
+            //-   block(type='lists_getSublist')
+            //-     mutation(at1='true' at2='true')
+            //-     field(name='WHERE1') FROM_START
+            //-     field(name='WHERE2') FROM_START
+            //-     value(name='LIST')
+            //-       block(type='variables_get')
+            //-         field(name='VAR' id='FCjet]zykpk;L@@J9Ht,') list
+            //-   block(type='lists_split')
+            //-     mutation(mode='SPLIT')
+            //-     field(name='MODE') SPLIT
+            //-     value(name='DELIM')
+            //-       shadow(type='text')
+            //-         field(name='TEXT') ,
+            //-   block(type='lists_sort')
+            //-     field(name='TYPE') NUMERIC
+            //-     field(name='DIRECTION') 1
+            //- category(name='Color' colour='#a5745b')
+            //-   block(type='colour_picker')
+            //-     field(name='COLOUR') #ff0000
+            //-   block(type='colour_random')
+            //-   block(type='colour_rgb')
+            //-     value(name='RED')
+            //-       shadow(type='math_number')
+            //-         field(name='NUM') 100
+            //-     value(name='GREEN')
+            //-       shadow(type='math_number')
+            //-         field(name='NUM') 50
+            //-     value(name='BLUE')
+            //-       shadow(type='math_number')
+            //-         field(name='NUM') 0
+            //-   block(type='colour_blend')
+            //-     value(name='COLOUR1')
+            //-       shadow(type='colour_picker')
+            //-         field(name='COLOUR') #ff0000
+            //-     value(name='COLOUR2')
+            //-       shadow(type='colour_picker')
+            //-         field(name='COLOUR') #3333ff
+            //-     value(name='RATIO')
+            //-       shadow(type='math_number')
+            //-         field(name='NUM') 0.5
             sep
             category(name='Variables' colour='#a55b80' custom='VARIABLE')
             category(name='Functions' colour='#995ba5' custom='PROCEDURE')

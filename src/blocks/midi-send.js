@@ -37,7 +37,7 @@ Blockly.Blocks['midi_send_note'] = {
         .appendField(new Blockly.FieldTextInput("all"), "channel");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(60);
+    this.setColour(180);
  this.setTooltip("");
  this.setHelpUrl("");
   }
