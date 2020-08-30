@@ -359,8 +359,9 @@ export default {
         },
         grid: {
           spacing: 25,
-          length: 3,
-          colour: '#ccc',
+          length: 1,
+          opacity: 0.4,
+          colour: 'rgba(255,255,255,0.35)',
           snap: true
         }
       },
