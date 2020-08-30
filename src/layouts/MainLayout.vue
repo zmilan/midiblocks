@@ -260,6 +260,7 @@ q-layout.full-height(view='lHh Lpr lFf')
 
 <script>
 import {mapState} from 'vuex'
+import {throttle} from 'lodash'
 import Blockly from '../components/Blockly'
 import BlocklyJS from 'blockly/javascript'
 import store from 'store'
@@ -317,22 +318,25 @@ export default {
     /**
      * Resize main splitter
      */
-    splitter () {
+    splitter: throttle(function () {
+      store.set('splitter', this.splitter)
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    },
-    isHoriz () {
+    }, 50, {leading: true, trailing: true}),
+
+    /**
+     * Relayout
+     */
+    isHoriz: throttle(function () {
       store.set('isHoriz', this.isHoriz)
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }
+    }, 50, {leading: true, trailing: true})
   },
   
   data () {
-    const isHoriz = store.get('isHoriz')
-    
     return {
       errors: {
         webmidi: {
@@ -341,7 +345,7 @@ export default {
       },
       
       // Whether we are horizontal (code above console) or not (code aside console)
-      isHoriz,
+      isHoriz: store.get('isHoriz'),
 
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
@@ -362,7 +366,7 @@ export default {
       },
 
       // Spliter width in pixels
-      splitter: !isHoriz ? window.innerWidth / 3 : minHeight
+      splitter: store.get('splitter') || window.innerWidth / 3
     }
   },
 

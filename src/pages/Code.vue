@@ -18,7 +18,9 @@ export default {
   data: () => ({
     // @see
     options: {
-      readOnly: true      
+      automaticLayout: true,
+      readOnly: true,
+      minimap: {enabled: false}
     }
   })
 }
