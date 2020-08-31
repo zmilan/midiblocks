@@ -14,7 +14,7 @@ const routes = [
     component: () => import('layouts/ReadOnly.vue'),
     children: [
       {
-        path: ':id', component: () => import('pages/Block.vue')
+        path: ':id', component: () => import('pages/NoPointerEvents.vue')
       }
     ]
   },

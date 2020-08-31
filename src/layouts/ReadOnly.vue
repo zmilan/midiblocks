@@ -4,7 +4,7 @@ q-layout.full-height(view='lHh Lpr lFf')
     q-page.full-height
       router-view
       Blockly.blockly(ref='blockly' :options='options' style="right: 0")
-        category(name='MIDI Events' colour='#9fa55b')
+        category(name='Readonly')
           block(v-for='block in blocks' :type='block.type' :key='block.type')
 </template>
 
@@ -34,9 +34,8 @@ export default {
       options: {
         media: 'media/',
         grid: null,
-        readOnly: true,
         sounds: false,
-        toolbox: null,
+        toolbox: false,
         trashcan: false,
         zoom: false
       }
@@ -47,7 +46,7 @@ export default {
    * Load the blockly data from the server
    */
   mounted () {
-    // document.querySelector('body').classList.add('transparent')
+    document.querySelector('body').classList.add('transparent')
     
     this.$axios.get(`${process.env.api.base}block/${this.$route.params.id}`).then(resp => {
       // Build blocks
@@ -64,6 +63,9 @@ export default {
         const theBlock = this.$refs.blockly.blockly.newBlock(block.title)
         theBlock.initSvg()
         theBlock.render()
+
+        // Center the block
+        this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
       })
     })
     // @TODO show error

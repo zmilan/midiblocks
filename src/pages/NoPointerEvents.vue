@@ -1,3 +1,3 @@
 <template lang="pug">
-  div
+.no-pointer-events-modal
 </template>
