@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import pkg from '../../package.json'
+import axios from 'axios'
 
-// Ignored elements for Blockly
+/**
+ * Ignored elements for Blockly
+ */
 Vue.config.ignoredElements = ['field','block','category','xml','mutation','value','sep']
 
 /**
@@ -26,4 +29,8 @@ console.log(`,-------.                    .----.
 |   (                    (        |
 \`----\`                    \`-------'`)
 
+/**
+ * Prototypes
+ */
 Vue.prototype.$version = pkg.version
+Vue.prototype.$axios = axios
