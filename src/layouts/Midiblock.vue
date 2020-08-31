@@ -20,7 +20,7 @@ q-layout.full-height(view='lHh Lpr lFf')
         
         //- Editor
         template(v-slot:before)
-          Blockly.blockly(ref='foo' :options='options')
+          Blockly.blockly(ref='blockly' :options='options')
             category(name='MIDI Events' colour='#9fa55b')
               block(type='midi_on_event')
             category(name='MIDI Arguments' colour='#a5935b')

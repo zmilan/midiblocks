@@ -1,13 +1,14 @@
 {
   "name": "midiblocks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A programmable MIDI mapper for the web",
   "productName": "MIDIBlocks",
   "author": "Oz <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
     "start": "cross-env QENV=development quasar dev",
-    "build": "cross-env QENV=production quasar build",
+    "build:dev": "cross-env QENV=development quasar build",
+    "build:prod": "cross-env QENV=production quasar build",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {

@@ -5,7 +5,11 @@
   <h3>🚧 coming soon! 🚧</h3>
 </div>
 
+
+
 ---
+
+
 
 ## WIP
 
@@ -24,7 +28,11 @@ This project is a work in progress. Here's what's done so far:
 
 See the [coming soon](https://midiblocks.com) page for more!
 
+
+
 ---
+
+
 
 ## Browser Support
 This project works in all browsers that natively support the [Web MIDI API](https://webaudio.github.io/web-midi-api/). Currently, the following browsers have built-in support:
@@ -38,13 +46,21 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 > Starting with version 77, [Chrome deprecates Web MIDI usage on insecure origins](https://www.chromestatus.com/feature/5138066234671104). This means that, going forward, the page will need to be hosted on a secure origin (e.g. https://, localhost: or file:///) and the user will need to explicitely authorize usage (no matter if sysex is used or not).
 
+
+
 ---
+
+
 
 ## Limitations
 
 - **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be providing ES6 support soon!
 
+
+
 ---
+
+
 
 ## Prereqs
 - Install [Git](https://git-scm.com/downloads)
@@ -61,8 +77,11 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 # Start the app in development mode (hot-code reloading, error reporting, etc.)
 npm start
 
-# Build the app for production
-npm run build
+# Build the app with dev environment variables
+npm run build:dev
+
+# Build the app with production environment variables
+npm run build:prod
 ```
 
 ## Dev Notes
@@ -70,23 +89,22 @@ npm run build
 - Blockly
   - [Blockly Dev Tools](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html)
   - [JS Interpreter](https://neil.fraser.name/software/JS-Interpreter/docs.html)
+- [Explore the API](https://midiblocks.com/api)
 
-## API Endpoints
-All APIs use the `api.base` inside `./quasar.env.json`
 
-### `GET /getBlock`
-#### Payload
-```json
-{
-  "id": "slug, title, or ID"
-}
-```
-#### Response
-```json
+## Local Server
+We use WordPress with the JSON Rest API as the database and user management system. To work locally (or to set it up on your own server):
+- Install a `midiblocks.local` WordPress site through [Local by Flywheel](https://localwp.com/)
+- [Install our WordPress theme](https://github.com/midiblocks/wordpress)
+- Update `package.json` to build into your Local WordPress directory
+- Run a build to move Midiblocks into your WordPress directory
+- Update `.quasar.env.json` with your credentials
 
-```
+
 
 ---
+
+
 
 # License: [MIT](https://opensource.org/licenses/MIT)
 

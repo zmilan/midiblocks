@@ -11,7 +11,7 @@ const routes = [
 
   {
     path: '/block',
-    component: () => import('layouts/Blank.vue'),
+    component: () => import('layouts/ReadOnly.vue'),
     children: [
       {
         path: ':id', component: () => import('pages/Block.vue')
