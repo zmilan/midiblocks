@@ -1,17 +1,19 @@
 {
   "name": "midiblocks",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A programmable MIDI mapper for the web",
   "productName": "MIDIBlocks",
   "author": "Oz <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "quasar dev",
-    "build": "quasar build",
+    "start": "cross-env QENV=development quasar dev",
+    "build:dev": "cross-env QENV=development quasar build",
+    "build:prod": "cross-env QENV=production quasar build",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "axios": "^0.20.0",
     "blockly": "^3.20200625.2",
     "core-js": "^3.6.5",
     "quasar": "^1.0.0",
@@ -22,7 +24,9 @@
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
+    "@quasar/quasar-app-extension-qenv": "^1.0.3",
     "copy-webpack-plugin": "^6.0.3",
+    "cross-env": "^7.0.2",
     "monaco-editor-webpack-plugin": "^1.9.0",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
