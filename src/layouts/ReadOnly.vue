@@ -4,7 +4,7 @@ q-layout.full-height(view='lHh Lpr lFf')
     q-page.full-height
       router-view
       Blockly.blockly(ref='blockly' :options='options' style="right: 0")
-        category(name='Readonly')
+        category(name='Readonly' colour='#fff')
           block(v-for='block in blocks' :type='block.type' :key='block.type')
 </template>
 
@@ -35,7 +35,7 @@ export default {
         media: 'media/',
         grid: null,
         sounds: false,
-        toolbox: false,
+        toolbox: null,
         trashcan: false,
         zoom: false
       }
@@ -66,6 +66,7 @@ export default {
 
         // Center the block
         this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
+        this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX - 150, this.$refs.blockly.blockly.scrollY)
       })
     })
     // @TODO show error
