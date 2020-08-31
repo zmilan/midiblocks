@@ -6,8 +6,8 @@
   "author": "Oz <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "quasar dev",
-    "build": "quasar build",
+    "start": "cross-env QENV=development quasar dev",
+    "build": "cross-env QENV=production quasar build",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
@@ -23,7 +23,9 @@
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
+    "@quasar/quasar-app-extension-qenv": "^1.0.3",
     "copy-webpack-plugin": "^6.0.3",
+    "cross-env": "^7.0.2",
     "monaco-editor-webpack-plugin": "^1.9.0",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",

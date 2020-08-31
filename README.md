@@ -53,6 +53,7 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 - Install Quasar CLI globally with: `npm install -g @quasar/cli`
 - 👉 **Recursively** download this repository with: `git clone --recursive -j8 https://github.com/MIDIBlocks/midiblocks`
 - Install dependencies by running `yarn` from the projects root
+- Copy `TEMPLATE.quasar.env.json` into `.quasar.env.json` and replace fields with your own
 - Start the app with: `npm start`
 
 ## Command line scripts
@@ -69,6 +70,21 @@ npm run build
 - Blockly
   - [Blockly Dev Tools](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html)
   - [JS Interpreter](https://neil.fraser.name/software/JS-Interpreter/docs.html)
+
+## API Endpoints
+All APIs use the `api.base` inside `./quasar.env.json`
+
+### `GET /getBlock`
+#### Payload
+```json
+{
+  "id": "slug, title, or ID"
+}
+```
+#### Response
+```json
+
+```
 
 ---
 

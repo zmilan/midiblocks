@@ -56,7 +56,12 @@ export default {
    * Load the blockly data from the server
    */
   mounted () {
-    console.log(this.$route.params.id)
+    this.$axios.get(process.env.api.base + 'getBlock', {id: this.$route.params.id}).then(resp => {
+      console.log('✅ Reponse: ', resp)
+    })
+    .catch(err => {
+      console.log('🚨 Error: ', err)
+    })
   }
 }
 </script>
