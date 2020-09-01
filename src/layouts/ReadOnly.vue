@@ -2,16 +2,19 @@
 q-layout.full-height(view='lHh Lpr lFf')
   q-page-container.full-height
     q-page.full-height
-      router-view
-      Blockly.blockly(ref='blockly' :options='options' style="right: 0")
-        category(name='Readonly' colour='#fff')
-          block(v-for='block in blocks' :type='block.type' :key='block.type')
+      Loader(v-if='isChecking')
+      .full-height(v-else)
+        Blockly.blockly(v-if='blocks.length' ref='blockly' :options='options' style="right: 0")
+          category(name='Readonly' colour='#fff')
+            block(v-for='block in blocks' :type='block.type' :key='block.type')
+        router-view(v-else)
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import BlocklyJS from 'blockly'
 import Blockly from '../components/Blockly'
+import Loader from '../components/Loader'
 
 export default {
   name: 'ReadOnly',
@@ -21,11 +24,14 @@ export default {
   },
 
   components: {
-    Blockly
+    Blockly,
+    Loader
   },
 
   data () {
     return {
+      isChecking: true,
+      
       // Collection of blocks
       blocks: [],
       
@@ -49,8 +55,11 @@ export default {
     document.querySelector('body').classList.add('transparent')
     
     this.$axios.get(`${process.env.api.base}block/${this.$route.params.id}`).then(resp => {
+      if (!this.$refs.blockly) return
+
       // Build blocks
       this.blocks = resp.data.blocks
+
       this.blocks.forEach(block => {
         BlocklyJS.Blocks[block.title] = {
           init: function () {
@@ -72,6 +81,9 @@ export default {
     // @TODO show error
     .catch(err => {
       console.log('🚨 Error: ', err)
+    })
+    .finally(() => {
+      this.isChecking = false
     })
   }
 }
