@@ -76,7 +76,7 @@ export default {
   
           // Center the block
           this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
-          this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX - 150, this.$refs.blockly.blockly.scrollY)
+          this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX, this.$refs.blockly.blockly.scrollY)
         })
       })
     })
