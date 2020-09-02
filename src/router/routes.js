@@ -1,11 +1,15 @@
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/Midiblock.vue'),
     children: [
-      { path: '/', component: () => import('pages/Index.vue') },
-      { path: '/code', component: () => import('pages/Code.vue') }
+      { 
+        name: 'midiblocksHome',
+        path: '/', component: () => import('pages/Index.vue')
+      },
+      {
+        name: 'midiblocksCode',
+        path: '/code', component: () => import('pages/Code.vue') }
     ]
   },
 
@@ -14,7 +18,8 @@ const routes = [
     component: () => import('layouts/ReadOnly.vue'),
     children: [
       {
-        path: ':id', component: () => import('pages/Empty.vue')
+        name: 'readOnlyHome',
+        path: ':id', component: () => import('pages/Block404.vue')
       }
     ]
   },
