@@ -57,27 +57,27 @@ export default {
     document.querySelector('body').classList.add('transparent')
     
     this.$axios.get(`${process.env.api.base}block/${this.$route.params.id}`).then(resp => {
-      if (!this.$refs.blockly) return
-
-      // Build blocks
+      this.isChecking = false
       this.blocks = resp.data.blocks
 
-      this.blocks.forEach(block => {
-        BlocklyJS.Blocks[block.title] = {
-          init: function () {
-            this.jsonInit(JSON.parse(block.block_definition))
+      this.$nextTick(() => {
+        this.blocks.forEach(block => {
+          BlocklyJS.Blocks[block.title] = {
+            init: function () {
+              this.jsonInit(JSON.parse(block.block_definition))
+            }
           }
-        }
-        BlocklyJS.JavaScript[block.title] = () => ''
-
-        // Inject into workspace
-        const theBlock = this.$refs.blockly.blockly.newBlock(block.title)
-        theBlock.initSvg()
-        theBlock.render()
-
-        // Center the block
-        this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
-        this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX - 150, this.$refs.blockly.blockly.scrollY)
+          BlocklyJS.JavaScript[block.title] = () => ''
+  
+          // Inject into workspace
+          const theBlock = this.$refs.blockly.blockly.newBlock(block.title)
+          theBlock.initSvg()
+          theBlock.render()
+  
+          // Center the block
+          this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
+          this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX - 150, this.$refs.blockly.blockly.scrollY)
+        })
       })
     })
     // @TODO show error
