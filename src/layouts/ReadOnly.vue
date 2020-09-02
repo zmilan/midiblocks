@@ -7,7 +7,7 @@ q-layout.full-height(view='lHh Lpr lFf')
         Blockly.blockly(v-if='blocks.length' ref='blockly' :options='options' style="right: 0")
           category(name='Readonly' colour='#fff')
             block(v-for='block in blocks' :type='block.type' :key='block.type')
-        router-view(v-else)
+        router-view(v-else :id='this.id')
 </template>
 
 <script>
@@ -31,6 +31,8 @@ export default {
   data () {
     return {
       isChecking: true,
+
+      id: this.$route.params.id,
       
       // Collection of blocks
       blocks: [],
