@@ -1,0 +1,1 @@
+<?php include(get_template_directory() . '/dist/spa/index.html') ?>

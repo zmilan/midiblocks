@@ -40,7 +40,12 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 
 ## Prereqs
+
+### WordPress
 - Install a vanilla [WordPress](https://wordpress.org/) site (I use [Local by Flywheel](https://localwp.com/) to do this quickly)
+- Install [CPT UI](https://wordpress.org/plugins/custom-post-type-ui/) and [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/)
+
+### Quasar
 - Install [Git](https://git-scm.com/downloads)
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
 - Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`

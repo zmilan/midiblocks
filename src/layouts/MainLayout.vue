@@ -1,52 +1,23 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+<template lang="pug">
+q-layout(view='lHh Lpr lFf')
+  q-header(elevated)
+    q-toolbar
+      q-btn(flat dense round icon='menu' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
+      q-toolbar-title
+        | Midiblocks
+        small.q-ml-sm(style='font-size: .65em') {{version}}
+      div Quasar v{{ $q.version }}
+  q-drawer(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
+    q-list
+      q-item-label.text-grey-8(header)
+        | Essential Links
+      EssentialLink(v-for='link in essentialLinks' :key='link.title' v-bind='link')
+  q-page-container
+    router-view
 </template>
 
 <script>
+import pkg from '../../package.json'
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksData = [
@@ -96,9 +67,12 @@ const linksData = [
 
 export default {
   name: 'MainLayout',
+
   components: { EssentialLink },
+  
   data () {
     return {
+      version: pkg.version,
       leftDrawerOpen: false,
       essentialLinks: linksData
     }
