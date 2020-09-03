@@ -6,15 +6,6 @@
 
 <script>
 export default {
-  name: 'App',
-
-  /**
-   * Sets up WP API and initial payload
-   */
-  mounted () {
-    if (process.env.DEV) {
-      
-    }
-  }
+  name: 'App'
 }
 </script>

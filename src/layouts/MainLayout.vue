@@ -16,57 +16,21 @@ q-layout(view='lHh Lpr lFf')
       MainNavLink(v-for='link in links' :key='link.title' v-bind='link')
   q-page-container
     router-view
+
+  //- Errors
+  q-dialog(v-model='!!errors.boot' persistent )
+    q-card.bg-negative
+      q-card-section.row.items-center
+        q-avatar.text-negative(icon='fas fa-exclamation-triangle' color='white')
+        span.q-ml-sm.text-white {{errors.boot}}
+      q-card-actions(align='right')
+        q-btn.bg-white(:to='{name: "Home"}') Go to home page
 </template>
 
 <script>
 import {get} from 'lodash'
 import pkg from '../../package.json'
 import MainNavLink from 'components/mainNavPanel/Link.vue'
-
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
 
 export default {
   name: 'MainLayout',
@@ -77,7 +41,12 @@ export default {
     return {
       version: pkg.version,
       leftDrawerOpen: false,
-      links: linksData
+      links: [],
+
+      // Will display different modals based on error messages
+      errors: {
+        boot: ''
+      }
     }
   },
 
@@ -89,6 +58,11 @@ export default {
 
     if (boot) {
       this.loadLayout(boot)
+    } else {
+      this.$axios.get(this.$api.base + 'boot')
+        .catch(err => {
+          this.errors.boot = err
+        })
     }
   },
 
