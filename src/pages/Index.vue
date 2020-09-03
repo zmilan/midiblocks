@@ -2,7 +2,7 @@
   q-page.flex.flex-center
     div.text-center
       p
-        img(src='/favicon.png')
+        img(src='~assets/favicon.png')
       h1 Midiblocks
 </template>
 

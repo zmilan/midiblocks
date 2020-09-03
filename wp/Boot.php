@@ -6,9 +6,15 @@ class App_Boot {
         'links' => $this->getMainNavPanelLinks()
       ]
     ];
+  }
 
-    $json = json_encode($this->data);
-    echo "<script>app = {boot: $json}</script>";
+  /**
+   * Returns JSON
+   * @param {*} $opts Options passed into json_encode
+   * @see https://www.php.net/manual/en/function.json-encode.php
+   */
+  function getJSON ($opts) {
+    return json_encode($this->data, $opts);
   }
 
   /**
@@ -18,7 +24,7 @@ class App_Boot {
     $items = wp_get_nav_menu_items(get_nav_menu_locations()['mainNavPanel']);
     return array_map(function ($item) {
       return [
-        'label' => $item->title,
+        'title' => $item->title,
         'description' => $item->description
       ];
     }, $items);
