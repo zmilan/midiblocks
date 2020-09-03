@@ -19,6 +19,7 @@ q-layout(view='lHh Lpr lFf')
 </template>
 
 <script>
+import {get} from 'lodash'
 import pkg from '../../package.json'
 import MainNavLink from 'components/mainNavPanel/Link.vue'
 
@@ -77,6 +78,26 @@ export default {
       version: pkg.version,
       leftDrawerOpen: false,
       links: linksData
+    }
+  },
+
+  /**
+   * Load and setup payload
+   */
+  mounted () {
+    let boot = get(window, 'app.boot')
+
+    if (boot) {
+      this.loadLayout(boot)
+    }
+  },
+
+  methods: {
+    /**
+     * Parses layout data so that the page renders completely
+     */
+    loadLayout (data) {
+      console.log('data', data)
     }
   }
 }

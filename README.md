@@ -64,11 +64,7 @@ yarn run build
 ```
 
 ## Dev Notes
-- [Customize the configuration](https://quasar.dev/quasar-cli/quasar-conf-js)
-- Blockly
-  - [Blockly Dev Tools](https://blockly-demo.appspot.com/static/demos/blockfactory/index.html)
-  - [JS Interpreter](https://neil.fraser.name/software/JS-Interpreter/docs.html)
-- [Explore the API](https://midiblocks.com/api)
+- On startup, we check `!!window.app.boot` and either use it to populate the first render if it exists or load from server if it doesn't
 
 
 
