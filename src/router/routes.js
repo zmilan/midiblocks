@@ -1,12 +1,24 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/Main.vue'),
     children: [
       {
         name: 'Home',
         path: '',
-        component: () => import('pages/Index.vue')
+        component: () => import('pages/Home.vue')
+      }
+    ]
+  },
+
+  {
+    path: '/readonly',
+    component: () => import('layouts/Blank.vue'),
+    children: [
+      {
+        name: 'ReadOnly',
+        path: ':id',
+        component: () => import('pages/ReadOnly.vue')
       }
     ]
   },

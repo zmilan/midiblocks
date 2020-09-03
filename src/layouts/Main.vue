@@ -1,5 +1,6 @@
 <template lang="pug">
 q-layout(view='lHh Lpr lFf')
+  //- Header
   q-header(elevated)
     q-toolbar
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
@@ -9,10 +10,14 @@ q-layout(view='lHh Lpr lFf')
           | Midiblocks
         small.q-ml-sm(style='font-size: .65em') {{version}}
       div Quasar v{{ $q.version }}
+
+  //- Sidebar
   q-drawer(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
     q-list(v-if='boot.mainNavPanel')
       q-item-label.text-grey-8(header) Navigation
       MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
+
+  //- Page
   q-page-container
     router-view
 
@@ -72,15 +77,6 @@ export default {
           })
       }
     })
-  },
-
-  methods: {
-    /**
-     * Parses layout data so that the page renders completely
-     */
-    loadLayout (data) {
-      console.log('data', data)
-    }
   }
 }
 </script>
