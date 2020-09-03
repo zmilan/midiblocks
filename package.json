@@ -1,6 +1,6 @@
 {
   "name": "midiblocks-wordpress",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "A tightly integrated WordPress Quasar SPA theme with sandboxed Midiblocks",
   "productName": "Midiblocks",
   "author": "Oz Ramos <midiblocks@gmail.com>",

@@ -7,7 +7,7 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 
-module.exports = function (/* ctx */) {
+module.exports = function (ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -46,7 +46,7 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      publicPath: 'wp-content/themes/midiblocks-wordpress/dist/spa',
+      publicPath: ctx.dev ? null : 'wp-content/themes/midiblocks-wordpress/dist/spa',
       
       // transpile: false,
 

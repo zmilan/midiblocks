@@ -4,21 +4,23 @@ q-layout(view='lHh Lpr lFf')
     q-toolbar
       q-btn(flat dense round icon='menu' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
       q-toolbar-title
-        | Midiblocks
+        router-link.text-decoration-none.text-white(:to='{name: "Home"}')
+          img.q-mr-sm(src='/favicon.png' height=32 style='vertical-align: middle')
+          | Midiblocks
         small.q-ml-sm(style='font-size: .65em') {{version}}
       div Quasar v{{ $q.version }}
   q-drawer(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
     q-list
       q-item-label.text-grey-8(header)
         | Essential Links
-      EssentialLink(v-for='link in essentialLinks' :key='link.title' v-bind='link')
+      MainNavLink(v-for='link in links' :key='link.title' v-bind='link')
   q-page-container
     router-view
 </template>
 
 <script>
 import pkg from '../../package.json'
-import EssentialLink from 'components/EssentialLink.vue'
+import MainNavLink from 'components/mainNavPanel/Link.vue'
 
 const linksData = [
   {
@@ -68,13 +70,13 @@ const linksData = [
 export default {
   name: 'MainLayout',
 
-  components: { EssentialLink },
+  components: { MainNavLink },
   
   data () {
     return {
       version: pkg.version,
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      links: linksData
     }
   }
 }
