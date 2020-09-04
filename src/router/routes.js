@@ -7,18 +7,16 @@ const routes = [
         name: 'Home',
         path: '',
         component: () => import('pages/Home.vue')
-      }
-    ]
-  },
-
-  {
-    path: '/studio',
-    component: () => import('layouts/Main.vue'),
-    children: [
+      },
       {
         name: 'Studio',
-        path: '',
+        path: '/studio',
         component: () => import('pages/StudioHome.vue')
+      },
+      {
+        name: 'Library',
+        path: '/library',
+        component: () => import('pages/LibraryHome.vue')
       }
     ]
   },

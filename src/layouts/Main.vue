@@ -24,15 +24,6 @@ q-layout(view='lHh Lpr lFf')
   //- Page
   q-page-container.bg-grey-1
     router-view
-
-  //- Errors
-  q-dialog(v-model='!!errors.boot' persistent )
-    q-card.bg-negative
-      q-card-section.row.items-center
-        q-avatar.text-negative(icon='fas fa-exclamation-triangle' color='white')
-        span.q-ml-sm.text-white {{errors.boot}}
-      q-card-actions(align='right')
-        q-btn.bg-white(:to='{name: "Home"}') Go to home page
 </template>
 
 <script>
@@ -61,12 +52,7 @@ export default {
       
       version: pkg.version,
       leftDrawerOpen: false,
-      links: [],
-
-      // Will display different modals based on error messages
-      errors: {
-        boot: ''
-      }
+      links: []
     }
   },
 
@@ -87,7 +73,7 @@ export default {
             set(window, 'app.boot', resp.data)
           })
           .catch(err => {
-            this.errors.boot = err
+            this.$root.$emit('error', err)
           })
       }
     })
