@@ -21,7 +21,7 @@ add_action('rest_api_init', function () {
       if (is_numeric($args['id'])) {
         $query['include'] = [intval($args['id'])];
       } else {
-        $query['post_name'] = $args['id'];
+        $query['post_name__in'] = [$args['id']];
       }
       $posts = get_posts($query);
 
