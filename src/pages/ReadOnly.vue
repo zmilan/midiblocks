@@ -8,16 +8,15 @@
         q-card-section.row.items-center
           q-avatar.text-negative(icon='fas fa-exclamation-triangle' color='white')
           span.q-ml-sm.text-white <code>/block/{{id}}</code> does not exist
-    //- Blockly.blockly(v-if='blocks.length' ref='blockly' :options='options' style="right: 0")
+    Workspace.blockly(v-if='blocks.length' ref='workspace' :options='options' style="right: 0")
       category(name='Readonly' colour='#fff')
         block(v-for='block in blocks' :type='block.type' :key='block.type')
 </template>
 
 <script>
 import {mapState} from 'vuex'
-// import BlocklyJS from 'blockly'
-// import Blockly from '../components/Blockly'
-// import Loader from '../components/Loader'
+import BlocklyJS from 'blockly'
+import Workspace from '../components/Workspace'
 
 export default {
   name: 'PageReadOnly',
@@ -27,7 +26,7 @@ export default {
   },
 
   components: {
-    // Blockly
+    Workspace
   },
 
   data () {
@@ -58,7 +57,7 @@ export default {
   mounted () {
     document.querySelector('body').classList.add('transparent')
     
-    this.$axios.get(this.$api.base  + 'block' + this.$route.params.id).then(resp => {
+    this.$axios.get(this.$api.base  + 'block/' + this.$route.params.id).then(resp => {
       this.isChecking = false
       this.blocks = resp.data.blocks
 
@@ -72,13 +71,13 @@ export default {
           BlocklyJS.JavaScript[block.title] = () => ''
   
           // Inject into workspace
-          const theBlock = this.$refs.blockly.blockly.newBlock(block.title)
+          const theBlock = this.$refs.workspace.blockly.newBlock(block.title)
           theBlock.initSvg()
           theBlock.render()
   
           // Center the block
-          this.$refs.blockly.blockly.centerOnBlock(theBlock.id)
-          this.$refs.blockly.blockly.scroll(this.$refs.blockly.blockly.scrollX, this.$refs.blockly.blockly.scrollY)
+          this.$refs.workspace.blockly.centerOnBlock(theBlock.id)
+          this.$refs.workspace.blockly.scroll(this.$refs.workspace.blockly.scrollX, this.$refs.workspace.blockly.scrollY)
         })
       })
     })

@@ -14,6 +14,7 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
+    "blockly": "^3.20200625.2",
     "core-js": "^3.6.5",
     "quasar": "^1.0.0"
   },
@@ -25,7 +26,8 @@
     "eslint-loader": "^3.0.3",
     "eslint-plugin-vue": "^6.1.2",
     "pug": "^3.0.0",
-    "pug-plain-loader": "^1.0.0"
+    "pug-plain-loader": "^1.0.0",
+    "raw-loader": "^4.0.1"
   },
   "browserslist": [
     "last 10 Chrome versions",

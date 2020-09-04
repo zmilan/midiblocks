@@ -1,0 +1,116 @@
+body.transparent
+  svg.blocklySvg
+    background: none
+  .blocklyMainBackground
+    stroke: none
+  .blocklyMainWorkspaceScrollbar,
+  .blocklyToolboxDiv
+    display: none
+
+.blockly-wrap
+  height: 100%
+
+.blockly
+  position: absolute
+  top: 0
+  right: 0
+  width: 100%
+  height: 100%
+
+  &:not(:first-child)
+    right: 50%
+
+svg.blocklySvg
+  background: #495e6b
+  background: -webkit-linear-gradient(to right, #2a353c, #495e6b)
+  background: linear-gradient(to right, #2a353c, #495e6b)
+
+.blocklyMainBackground
+  stroke: $separator-dark-color
+  
+.blocklyToolboxDiv
+  background: $dark-page
+  padding: $panel-padding
+  border: 1px solid $separator-dark-color
+  border-right-width: 2px
+
+.blocklyTreeRoot,
+  background: $dark-page-inset
+  box-shadow: $inset-shadow
+
+  .blocklyTreeRow
+    border-left: none !important
+  
+.blocklyFlyoutBackground
+  fill: $dark-page-inset
+  stroke: $separator-dark-color
+  stroke-width: 2px
+
+.blocklyTreeSeparator
+  border-left: none !important
+  border-bottom-color: $dark-page
+
+// Scrollbars
+.blocklyMainWorkspaceScrollbar
+  background: $scrollbar-background
+
+.blocklyScrollbarHandle
+  fill: $scrollbar-draggable !important
+
+  &:hover
+    fill: $scrollbar-draggable-hover !important
+  
+// Category colors
+.blocklyTreeLabel:before
+  font-family: 'Font Awesome 5 Free'
+  font-weight: 600
+  margin-right: 10px
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(1)
+    color: $blockly-midi-events
+    .blocklyTreeLabel:before
+      content: '\f519'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(2)
+    color: $blockly-midi-arguments
+    .blocklyTreeLabel:before
+      content: '\f085'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(3)
+    color: $blockly-send-midi
+    .blocklyTreeLabel:before
+      font-family: 'Font Awesome 5 Brands'
+      content: '\f287'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(5)
+    color: $blockly-logic
+    .blocklyTreeLabel:before
+      content: '\f0b0'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(6)
+    color: $blockly-loops
+    .blocklyTreeLabel:before
+      content: '\f534'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(7)
+    color: $blockly-math
+    .blocklyTreeLabel:before
+      content: '\f1ec'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(9)
+    color: $blockly-variables
+    .blocklyTreeLabel:before
+      content: '\f187'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(10)
+    color: $blockly-functions
+    .blocklyTreeLabel:before
+      content: '\f1e6'
