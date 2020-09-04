@@ -39,13 +39,14 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 
 
-## Prereqs
+# Setup
 
-### WordPress
+## WordPress
 - Install a vanilla [WordPress](https://wordpress.org/) site (I use [Local by Flywheel](https://localwp.com/) to do this quickly)
 - Install [CPT UI](https://wordpress.org/plugins/custom-post-type-ui/) and [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/)
+- See [#wordpress-finalization]
 
-### Quasar
+## Quasar
 - Install [Git](https://git-scm.com/downloads)
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
 - Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`
@@ -54,7 +55,7 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 - Install dependencies by running `yarn` from the projects root
 - Start the app with: `yarn start`
 
-## Command line scripts
+### Command line scripts
 ```bash
 # Start the app in development mode (hot-code reloading, error reporting, etc.)
 yarn start
@@ -78,6 +79,19 @@ yarn run build
 # Override the api baseurl (useful for testing between enviroments)
 ?apiDomain=https://example.com
 ```
+
+
+
+---
+
+
+# WordPress Finalization
+
+The following will also need to be completed on your WordPress site
+- Create a menu and add it to the `Main Nav Panel` [menu location](https://midiblocks.local/wp-admin/nav-menus.php)
+  - Add [Font Awesome](https://fontawesome.com/icons?d=gallery) classes (`fas fa-home`) and descriptions. You may need to click <kbd>Screen Options</kbd> and enable them to see these options
+  - Add at least the following custom links: `/`, `/studio`
+
 
 
 

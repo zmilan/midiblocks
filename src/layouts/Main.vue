@@ -12,7 +12,7 @@ q-layout(view='lHh Lpr lFf')
       div Quasar v{{ $q.version }}
 
   //- Sidebar
-  q-drawer(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
+  q-drawer.main-sidebar(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
     q-list
       q-item-label.text-grey-8(header) Navigation
       template(v-if='boot.mainNavPanel')

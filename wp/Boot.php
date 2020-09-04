@@ -25,7 +25,9 @@ class App_Boot {
     return array_map(function ($item) {
       return [
         'title' => $item->title,
-        'description' => $item->description
+        'description' => $item->description,
+        'link' => $item->url,
+        'icon' => implode(' ', $item->classes)
       ];
     }, $items);
   }
