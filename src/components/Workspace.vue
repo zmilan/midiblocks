@@ -13,7 +13,7 @@ import webmidi from 'webmidi'
 
 export default {
   name: 'Blockly',
-  props: ['options'],
+  props: ['options', 'blocks'],
 
   watch: {
     'workspace.code' (newVal) {
@@ -46,6 +46,9 @@ export default {
     // Create workspace and add bindings
     this.blockly = Blockly.inject(this.$refs.blockly, options)
     this.blockly.addChangeListener(this.onChange)
+
+    // Add blocks
+    this.addBlocks()
   },
 
   methods: {
@@ -91,6 +94,29 @@ export default {
           })
         }
       }))
+    },
+
+    /**
+     * Adds blocks to the workspace
+     */
+    addBlocks () {
+      this.blocks.forEach(block => {
+        Blockly.Blocks[block.title] = {
+          init: function () {
+            this.jsonInit(JSON.parse(block.block_definition))
+          }
+        }
+        Blockly.JavaScript[block.title] = () => ''
+
+        // Inject into workspace
+        const theBlock = this.blockly.newBlock(block.title)
+        theBlock.initSvg()
+        theBlock.render()
+
+        // Center the block
+        this.blockly.centerOnBlock(theBlock.id)
+        this.blockly.scroll(this.blockly.scrollX, this.blockly.scrollY)
+      })
     }
   }
 }

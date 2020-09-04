@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import {set, trimEnd} from 'lodash'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
@@ -67,6 +68,12 @@ export default function (/* { ssrContext } */) {
        */
       set (state, payload) {
         set(state, payload[0], payload[1])
+      }
+    },
+
+    actions: {
+      apiGet ({getters}, payload) {
+        return axios.get(getters.endpoint(payload))
       }
     }
   })
