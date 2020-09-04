@@ -13,9 +13,12 @@ q-layout(view='lHh Lpr lFf')
 
   //- Sidebar
   q-drawer(v-model='leftDrawerOpen' show-if-above bordered content-class='bg-grey-1')
-    q-list(v-if='boot.mainNavPanel')
+    q-list
       q-item-label.text-grey-8(header) Navigation
-      MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
+      template(v-if='boot.mainNavPanel')
+        MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
+      .text-center(v-else)
+        q-spinner(color='primary')
 
   //- Page
   q-page-container
