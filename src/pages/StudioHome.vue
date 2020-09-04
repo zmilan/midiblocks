@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  Workspace.blockly(ref='blockly' :options='options')
+  Workspace.blockly(ref='blockly' :options='options' :blocks='[]')
     category(name='MIDI Events' colour='#9fa55b')
       block(type='midi_on_event')
     category(name='MIDI Arguments' colour='#a5935b')

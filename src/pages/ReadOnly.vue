@@ -2,15 +2,20 @@
 .full-height
   div.full-height.center-children(v-if='isChecking')
     q-spinner(color='primary' size='5em')
-  .full-height(v-else)
-    Workspace.blockly(v-if='blocks.length' ref='workspace' :options='options' style="right: 0")
+  .full-height(v-else-if='blocks.length')
+    Workspace.blockly(ref='workspace' :options='options' style="right: 0" :blocks='blocks')
       category(name='Readonly' colour='#fff')
         block(v-for='block in blocks' :type='block.type' :key='block.type')
+  div.full-height.center-children(v-else)
+    div.text-center
+      h1 404 - Block not found
+      p.text-subtitle1
+        | Could not find block: <code>{{id}}</code>
 </template>
 
 <script>
 import {mapState} from 'vuex'
-import BlocklyJS from 'blockly'
+import Blockly from 'blockly'
 import Workspace from '../components/Workspace'
 
 export default {
@@ -55,32 +60,7 @@ export default {
     this.$store.dispatch('apiGet', 'block/' + this.id).then(resp => {
       this.isChecking = false
       this.blocks = resp.data.blocks
-
-      this.$nextTick(() => {
-        this.blocks.forEach(block => {
-          BlocklyJS.Blocks[block.title] = {
-            init: function () {
-              this.jsonInit(JSON.parse(block.block_definition))
-            }
-          }
-          BlocklyJS.JavaScript[block.title] = () => ''
-  
-          // Inject into workspace
-          const theBlock = this.$refs.workspace.blockly.newBlock(block.title)
-          theBlock.initSvg()
-          theBlock.render()
-  
-          // Center the block
-          this.$refs.workspace.blockly.centerOnBlock(theBlock.id)
-          this.$refs.workspace.blockly.scroll(this.$refs.workspace.blockly.scrollX, this.$refs.workspace.blockly.scrollY)
-        })
-      })
-
-      if (!resp.data.blocks || !resp.data.blocks.length) {
-        this.$root.$emit('error', `/block/${this.id} does not exist`)
-      }
     })
-    // @TODO show error
     .catch(err => {
       this.$root.$emit('error', err)
     })
