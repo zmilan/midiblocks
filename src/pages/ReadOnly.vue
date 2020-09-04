@@ -52,7 +52,7 @@ export default {
   mounted () {
     document.querySelector('body').classList.add('transparent')
 
-    this.$axios.get(this.$store.getters.endpoint('block/' + this.id)).then(resp => {
+    this.$store.dispatch('apiGet', 'block/' + this.id).then(resp => {
       this.isChecking = false
       this.blocks = resp.data.blocks
 
