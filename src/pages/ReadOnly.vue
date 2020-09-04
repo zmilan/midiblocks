@@ -56,8 +56,8 @@ export default {
    */
   mounted () {
     document.querySelector('body').classList.add('transparent')
-    
-    this.$axios.get(this.$api.base  + 'block/' + this.$route.params.id).then(resp => {
+
+    this.$axios.get(this.$store.getters.endpoint('block/' + this.$route.params.id)).then(resp => {
       this.isChecking = false
       this.blocks = resp.data.blocks
 

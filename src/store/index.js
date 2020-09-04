@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {set} from 'lodash'
+import {set, trimEnd} from 'lodash'
 
 Vue.use(Vuex)
 
@@ -15,6 +15,14 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
+      /**
+       * Represents the api
+       */
+      api: {
+        domain: process.env.DEV ? 'http://midiblocks.local' : 'https://midiblocks.com',
+        base: 'wp-json/midiblocks'
+      },
+      
       /**
        * Represents the current workspace
        */
@@ -42,6 +50,12 @@ export default function (/* { ssrContext } */) {
          */
         inputs: {},
         outputs: {}
+      }
+    },
+
+    getters: {
+      endpoint: state => endpoint => {
+        return trimEnd(state.api.domain, '/') + '/' + trimEnd(state.api.base, '/') + '/' + endpoint
       }
     },
 

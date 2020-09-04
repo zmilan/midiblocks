@@ -67,7 +67,7 @@ export default {
       // Load boot data
       this.boot = get(window, 'app.boot', {})
       if (!this.boot.mainNavPanel) {
-        this.$axios.get(this.$api.base + 'boot')
+        this.$axios.get(this.$store.getters.endpoint('boot'))
           .then(resp => {
             this.boot = resp.data
             set(window, 'app.boot', resp.data)

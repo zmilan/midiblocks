@@ -67,6 +67,12 @@ yarn run build
 - On startup, we check `!!window.app.boot` and either use it to populate the first render if it exists or load from server if it doesn't
 
 
+## Querystring overrides
+```bash
+# Override the api baseurl
+?apiDomain=https://example.com
+```
+
 
 ---
 
