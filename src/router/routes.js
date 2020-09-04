@@ -12,6 +12,18 @@ const routes = [
   },
 
   {
+    path: '/studio',
+    component: () => import('layouts/Main.vue'),
+    children: [
+      {
+        name: 'Studio',
+        path: '',
+        component: () => import('pages/StudioHome.vue')
+      }
+    ]
+  },
+
+  {
     path: '/readonly',
     component: () => import('layouts/Blank.vue'),
     children: [

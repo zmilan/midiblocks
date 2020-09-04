@@ -1,0 +1,61 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" id="K4JVxY7ytEtA,?kvLe54" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="LEFT"></mutation>
+    <field name="NAME">midi_arg_compare_note</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">LEFT</field>
+    <statement name="INPUTS">
+      <block type="input_value" id=":*pJQj1)TmBO3]7uVc4E">
+        <field name="INPUTNAME">args</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id=".5|;+wLm?BW`iXx)cxx`">
+            <field name="TEXT">when note</field>
+            <next>
+              <block type="field_dropdown" id="Y-5t^XYmCp_{6t8`MC8n">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">condition</field>
+                <field name="USER0">is</field>
+                <field name="CPU0">is</field>
+                <field name="USER1">is not</field>
+                <field name="CPU1">is not</field>
+                <next>
+                  <block type="field_input" id="q04@#7aLww|pU$;;RGu5">
+                    <field name="TEXT">any</field>
+                    <field name="FIELDNAME">note</field>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="0Mco9qK9/3R_j,7R$/$z"></shadow>
+          <block type="type_other" id="dz99i#gEy(31bCRn)zn)">
+            <field name="TYPE">midi_arg</field>
+          </block>
+        </value>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="~#nUw(N7l+_@otQx~uRR" deletable="false" movable="false">
+        <field name="TEXT">Compares the MIDI note</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="XN_wREd8KOv)FrDXCAi}" deletable="false" movable="false">
+        <field name="TEXT">https://midiblocks.com/block/midi_arg_compare_note</field>
+      </block>
+    </value>
+    <value name="OUTPUTTYPE">
+      <shadow type="type_null" id="3K,.bDps5OLjz=z$c_sA"></shadow>
+      <block type="type_other" id="$mlkO0*K@+p*22N]hnBU">
+        <field name="TYPE">midi_arg</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="52pCu;m{zL#EVO.aQZeM">
+        <mutation colour="#a5935b"></mutation>
+        <field name="HUE">45</field>
+      </block>
+    </value>
+  </block></xml>

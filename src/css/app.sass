@@ -1,8 +1,12 @@
 // Core
-html,
-body,
-#q-app
+html, body, #q-app
   height: 100%
+
+h2
+  font-size: 1.5em
+  margin-top: 0
+  font-weight: 500
+  line-height: 2em
 
 // Helpers
 .text-decoration-none
@@ -12,3 +16,21 @@ body,
   display: flex
   justify-content: center
   align-items: center
+
+// Device lists
+.device-led.off
+  transition: background .5s ease
+
+.device-led.on
+  transition: none
+
+// Splitter
+#main-splitter > .q-splitter__after
+  display: flex
+  flex-direction: column
+
+  > hr
+    min-height: 1px
+
+  > div:last-child
+    flex: 1

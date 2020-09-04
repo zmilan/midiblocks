@@ -1,5 +1,5 @@
 <template lang="pug">
-q-item(clickable tag='a' :to='link')
+q-item(clickable tag='a' :to='link' exact)
   q-item-section(v-if='link' avatar)
     img(v-if='title !== "Home"' src='~/assets/favicon.png' style='height: 32px')
     q-icon(v-else :name='icon' color='primary')
