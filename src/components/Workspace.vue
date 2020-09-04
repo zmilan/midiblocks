@@ -9,6 +9,7 @@ div(style='min-height: inherit')
 import Blockly from 'blockly'
 import {mapState} from 'vuex'
 import STRING_WebmidiInterpreter from '!!raw-loader!!../lib/webmidi-interpreter.js'
+import webmidi from 'webmidi'
 
 export default {
   name: 'Blockly',
@@ -85,7 +86,7 @@ export default {
         
         if (data.device === 'all') {
           Object.keys(this.devices.outputs).forEach(key => {
-            const output = this.$m.getOutputById(key)
+            const output = webmidi.getOutputById(key)
             output.playNote(data.note, data.channel)
           })
         }

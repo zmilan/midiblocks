@@ -247,6 +247,12 @@ import '../assets/blocks/midi-args'
 import '../assets/blocks/midi-send'
 import '../assets/blocks/prompt'
 import webmidi from 'webmidi'
+import * as acorn from 'JS-Interpreter/acorn'
+import {Interpreter} from 'JS-Interpreter/acorn_interpreter'
+
+// Necessary for Blockly
+window.Interpreter = Interpreter
+window.acorn = acorn
 
 const minHeight = 200
 
@@ -338,9 +344,9 @@ export default {
         },
         grid: {
           spacing: 25,
-          length: 1,
-          opacity: 0.4,
-          colour: 'rgba(255,255,255,0.35)',
+          length: 10,
+          opacity: 0,
+          colour: '#efefef',
           snap: true
         }
       },

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "JS-Interpreter": "https://github.com/NeilFraser/JS-Interpreter",
     "axios": "^0.18.1",
     "blockly": "^3.20200625.2",
     "core-js": "^3.6.5",
