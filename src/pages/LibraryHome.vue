@@ -7,7 +7,7 @@ q-page.full-height
       q-spinner(color='primary' size='5em')
     template(v-else-if='blocks.length')
       .row.q-col-gutter-md
-        .col.col-md-6.col-lg-4(v-for='block in blocks' :key='block.title')
+        .col-12.col-sm-6.col-lg-4.col-xl-3(v-for='block in blocks' :key='block.title')
           q-card
             q-card-section
               Workspace.blockly.inline(:options='options' style="right: 0" :blocks='[block]')
