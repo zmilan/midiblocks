@@ -12,7 +12,7 @@ q-layout(view='lHh Lpr lFf')
       //- div Quasar v{{ $q.version }}
 
   //- Sidebar
-  q-drawer.main-sidebar(v-model='leftDrawerOpen' show-if-above bordered)
+  q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered)
     q-toolbar.bg-primary.text-white.shadow-5
       //- q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
     q-list.q-pa-sm
@@ -20,6 +20,10 @@ q-layout(view='lHh Lpr lFf')
         MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
       .text-center(v-else)
         q-spinner(color='primary')
+    q-space
+    q-item
+      q-item-section
+        q-btn(type='a' color='primary' href='/wp-admin') Login
 
   //- Page
   q-page-container.bg-grey-1
@@ -30,11 +34,16 @@ q-layout(view='lHh Lpr lFf')
 import {get, set} from 'lodash'
 import pkg from '../../package.json'
 import MainNavLink from 'components/mainNavPanel/Link.vue'
+import {mapState} from 'vuex'
 
 export default {
   name: 'MainLayout',
 
   components: { MainNavLink },
+
+  computed: {
+    ...mapState(['user'])
+  },
 
   watch: {
     leftDrawerOpen () {

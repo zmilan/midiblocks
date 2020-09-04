@@ -25,6 +25,13 @@ export default function (/* { ssrContext } */) {
       },
 
       /**
+       * User info
+       */
+      user: {
+        isLoggedIn: false
+      },
+
+      /**
        * Post data
        */
       post: {
@@ -80,13 +87,18 @@ export default function (/* { ssrContext } */) {
 
     actions: {
       apiGet ({getters}, payload) {
+        let path
+        let params = {}
+        
         if (typeof payload === 'string') {
-          payload = {
-            path: payload
-          }
+          path = payload
+        } else {
+          path = payload.path
+          delete payload.path
+          params = payload
         }
         
-        return axios.get(getters.endpoint(payload.path), {params: payload})
+        return axios.get(getters.endpoint(path), params)
       }
     }
   })
