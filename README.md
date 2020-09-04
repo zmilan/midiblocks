@@ -5,7 +5,9 @@
   <h3>🚧 coming soon! 🚧</h3>
 </div>
 
+<br>
 
+![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
 
 ---
 
@@ -43,8 +45,8 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ## WordPress
 - Install a vanilla [WordPress](https://wordpress.org/) site (I use [Local by Flywheel](https://localwp.com/) to do this quickly)
-- Install [CPT UI](https://wordpress.org/plugins/custom-post-type-ui/) and [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/)
-- See [#wordpress-finalization]
+- Install the theme once the Quasar setup below is complete
+- [Finalize the WordPress](#WordPress-Finalization) install
 
 ## Quasar
 - Install [Git](https://git-scm.com/downloads)
@@ -53,6 +55,7 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 - Install [Quasar CLI](https://quasar.dev/quasar-cli/installation) globally with: `npm install -g @quasar/cli`
 - Clone this repository into your `/wp-content/themes/` folder with: `git clone https://github.com/midiblocks/midiblocks-wordpress`
 - Install dependencies by running `yarn` from the projects root
+- Build the project with: `yarn build`
 - Start the app with: `yarn start`
 
 ### Command line scripts
@@ -87,6 +90,7 @@ yarn run build
 
 # WordPress Finalization
 
+<!-- @TODO Use defaults for when no menu is setup yet -->
 The following will also need to be completed on your WordPress site
 - Create a menu and add it to the `Main Nav Panel` [menu location](https://midiblocks.local/wp-admin/nav-menus.php)
   - Add [Font Awesome](https://fontawesome.com/icons?d=gallery) classes (`fas fa-home`) and descriptions. You may need to click <kbd>Screen Options</kbd> and enable them to see these options

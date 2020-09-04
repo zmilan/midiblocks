@@ -3,7 +3,8 @@
 node_modules
 
 # Build
-#dist
+dist
+.vscode/sftp.json
 
 # Quasar core related directories
 .quasar

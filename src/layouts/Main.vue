@@ -43,6 +43,16 @@ export default {
   name: 'MainLayout',
 
   components: { MainNavLink },
+
+  watch: {
+    leftDrawerOpen () {
+      Array.from(Array(20).keys()).forEach(interval => {
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+        }, interval * 25)
+      })
+    }
+  },
   
   data () {
     return {

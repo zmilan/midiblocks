@@ -47,7 +47,8 @@ module.exports = function (ctx) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      publicPath: ctx.dev ? null : 'wp-content/themes/midiblocks-wordpress/dist/spa',
+      // @todo Move this to .env
+      publicPath: ctx.dev ? null : 'wp-content/themes/midiblocks/dist/spa',
       
       // transpile: false,
 
