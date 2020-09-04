@@ -6,9 +6,17 @@ q-page.full-height
     div.center-children(v-if='isChecking')
       q-spinner(color='primary' size='5em')
     template(v-else-if='blocks.length')
-      Workspace.blockly.inline(v-for='block in blocks' ref='workspace' :options='options' style="right: 0" :key='block.title' :blocks='[block]')
-        category(name='Readonly' colour='#fff')
-          block(v-for='block in blocks' :type='block.type' :key='block.type')
+      .row.q-col-gutter-md
+        .col.col-md-6.col-lg-4(v-for='block in blocks' :key='block.title')
+          q-card
+            q-card-section
+              Workspace.blockly.inline(:options='options' style="right: 0" :blocks='[block]')
+                category(name='Readonly' colour='#fff')
+                  block(v-for='block in blocks' :type='block.type' :key='block.type')
+            q-separator
+            q-card-section
+              h3 {{block.title}}
+              p {{block.short_description[0]}}
 </template>
 
 <script>
