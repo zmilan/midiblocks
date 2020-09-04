@@ -5,7 +5,7 @@ q-page.full-height
 
     div.center-children(v-if='post.isChecking')
       q-spinner(color='primary' size='5em')
-    div(v-else) {{post.content}}
+    div(v-else v-html='post.content')
     template(if='blocks.length')
       .row.q-col-gutter-md
         .col-12.col-sm-6.col-lg-4.col-xl-3(v-for='block in blocks' :key='block.title')

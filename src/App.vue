@@ -32,8 +32,13 @@ export default {
         url: this.$route.path
       })
         .then(resp => {
-          console.log('received', resp.data)
-          this.$store.commit('set', ['post', resp.data]);
+          const data = resp.data || {}
+
+          if (data.content) {
+            data.content = this.$markdown.render(data.content)
+          }
+          
+          this.$store.commit('set', ['post', data]);
         })
         .finally(() => {
           this.$store.commit('set', ['post.isChecking', false]);
