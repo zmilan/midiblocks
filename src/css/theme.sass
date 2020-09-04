@@ -1,2 +1,17 @@
-.bg-blockly-send-midi
-  background: $blockly-send-midi
+// Fixes
+// Fixes a 1px gap between main app toolbar and where it joins with the sidebars toolbar
+.main-header-left-pixel-gap-fix:before
+  content: ''
+  position: absolute
+  left: -1px
+  width: 1px
+  height: 100%
+  background: $primary
+
+.q-item.q-router-link--exact-active
+  background: $primary
+  color: #fff
+
+  .fas,
+  .q-item__label--caption
+    color: #fff !important
