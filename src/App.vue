@@ -18,12 +18,26 @@ export default {
 
   watch: {
     /**
-     * Check query string for new API domain 
+     * Check query string for new API domain and fetches post content
      */
     $route (to) {
       if (to.query.apiDomain) {
         this.$store.commit('set', ['api.domain', to.query.apiDomain])
       }
+
+      // Load post data
+      this.$store.commit('set', ['post.isChecking', true])
+      this.$store.dispatch('apiGet', {
+        path: 'post',
+        url: this.$route.path
+      })
+        .then(resp => {
+          console.log('received', resp.data)
+          this.$store.commit('set', ['post', resp.data]);
+        })
+        .finally(() => {
+          this.$store.commit('set', ['post.isChecking', false]);
+        })
     }
   },
 

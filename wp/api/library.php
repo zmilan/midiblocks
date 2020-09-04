@@ -21,8 +21,7 @@ add_action('rest_api_init', function () {
         $json['blocks'][] = [
           'title' => $post->post_title,
           'short_description' => get_post_meta($post->ID, 'short_description'),
-          'block_definition' => get_post_meta($post->ID, 'block_definition'),
-          'generator_stub' => get_post_meta($post->ID, 'generator_stub')
+          'block_definition' => get_post_meta($post->ID, 'block_definition')
         ];
       }
 
