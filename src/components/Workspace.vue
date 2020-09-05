@@ -57,6 +57,10 @@ export default {
      * @see https://developers.google.com/blockly/guides/configure/web/events
      */
     onChange (ev) {
+      // Turns the workspace into code
+      // @todo remove this requirement
+      if (this.options.isFactory) return
+      
       switch (ev.type) {
         case Blockly.Events.BLOCK_CREATE:
         case Blockly.Events.BLOCK_DELETE:
