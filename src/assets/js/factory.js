@@ -772,7 +772,7 @@ function init() {
     });
 
   var expandList = [
-    document.getElementById('blockly'),
+    // document.getElementById('blockly'),
     document.getElementById('blocklyMask'),
     document.getElementById('preview'),
     document.getElementById('languagePre'),
@@ -817,4 +817,4 @@ function init() {
   document.getElementById('language')
       .addEventListener('change', updatePreview);
 }
-window.addEventListener('load', init);
+// window.addEventListener('load', init);

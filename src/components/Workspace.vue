@@ -1,5 +1,5 @@
 <template lang="pug">
-div(style='min-height: inherit')
+.blockly(style='min-height: inherit')
   .blockly-wrap(ref='blockly')
   xml(ref='toolbox' style='display: none')
     slot
