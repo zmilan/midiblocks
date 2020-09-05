@@ -1,166 +1,106 @@
-<template>
-<q-page style='height: 1px'>
-  <table>
-    <tr>
-      <td width="50%" height="5%">
-        <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
-          <a href="../index.html">Demos</a> &gt; Block Factory
-        </h1>
-      </td>
-      <td width="50%" height="5%">
-        <table>
-          <tr>
-            <td style="vertical-align: bottom;">
-              <h3>
-                Preview:
-                <select id="direction">
-                  <option value="ltr">LTR</option>
-                  <option value="rtl">RTL</option>
-                </select>
-              </h3>
-            </td>
-            <td style="vertical-align: middle; text-align: right;">
-              <button id="linkButton" title="Save and link to blocks.">
-              <img src="link.png" height="21" width="21">
-              </button>
-              <button id="linkButton" title="Save and link to blocks.">
-              <img src="link.png" height="21" width="21">
-              </button>
-              <button id="helpButton" title="View documentation in new window.">
-              <span>Help</span>
-              </button>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td width="50%" height="95%" style="padding: 2px;">
-        <div id="blockly"></div>
-        <div id="blocklyMask"></div>
-      </td>
-      <td width="50%" height="95%">
-        <table>
-          <tr>
-            <td height="30%">
-              <div id="preview"></div>
-            </td>
-          </tr>
-          <tr>
-            <td height="5%">
-              <h3>
-                Language code:
-                <select id="format">
-                  <option value="JSON">JSON</option>
-                  <option value="JavaScript">JavaScript</option>
-                  <option value="Manual">Manual edit&hellip;</option>
-                </select>
-              </h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="30%">
-              <pre id="languagePre" class="prettyprint lang-js"></pre>
-              <textarea id="languageTA"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td height="5%">
-              <h3>
-                Generator stub:
-                <select id="language">
-                  <option value="JavaScript">JavaScript</option>
-                  <option value="Python">Python</option>
-                  <option value="PHP">PHP</option>
-                  <option value="Lua">Lua</option>
-                  <option value="Dart">Dart</option>
-                </select>
-              </h3>
-            </td>
-          </tr>
-          <tr>
-            <td height="30%">
-              <pre id="generatorPre" class="prettyprint lang-js"></pre>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="Input">
-      <block type="input_value">
-        <value name="TYPE">
-          <shadow type="type_null"></shadow>
-        </value>
-      </block>
-      <block type="input_statement">
-        <value name="TYPE">
-          <shadow type="type_null"></shadow>
-        </value>
-      </block>
-      <block type="input_dummy"></block>
-    </category>
-    <category name="Field">
-      <block type="field_static"></block>
-      <block type="field_input"></block>
-      <block type="field_number"></block>
-      <block type="field_angle"></block>
-      <block type="field_dropdown"></block>
-      <block type="field_checkbox"></block>
-      <block type="field_colour"></block>
-      <block type="field_variable"></block>
-      <block type="field_image"></block>
-    </category>
-    <category name="Type">
-      <block type="type_group"></block>
-      <block type="type_null"></block>
-      <block type="type_boolean"></block>
-      <block type="type_number"></block>
-      <block type="type_string"></block>
-      <block type="type_list"></block>
-      <block type="type_other"></block>
-    </category>
-    <category name="Colour" id="colourCategory">
-      <block type="colour_hue">
-        <mutation colour="20"></mutation>
-        <field name="HUE">20</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="65"></mutation>
-        <field name="HUE">65</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="120"></mutation>
-        <field name="HUE">120</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="160"></mutation>
-        <field name="HUE">160</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="210"></mutation>
-        <field name="HUE">210</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="230"></mutation>
-        <field name="HUE">230</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="260"></mutation>
-        <field name="HUE">260</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="290"></mutation>
-        <field name="HUE">290</field>
-      </block>
-      <block type="colour_hue">
-        <mutation colour="330"></mutation>
-        <field name="HUE">330</field>
-      </block>
-    </category>
-  </xml>
-</q-page>
+<template lang="pug">
+q-page(style='height: 1px')
+  //- @TODO remove these depdendencys @see ./assets/js/factory.js
+  .hidden
+    select#direction
+      option(value='ltr') LTR
+      option(value='rtl') RTL
+    button#linkButton(title='Save and link to blocks.')
+    button#helpButton(title='View documentation in new window.')
+      span Help
+
+  table
+    tr
+      td(width='50%' style='padding: 2px;')
+        #blockly
+        #blocklyMask
+      td(width='50%')
+        table
+          tr
+            td(height='30%')
+              #preview
+          tr
+            td(height='5%')
+              h3
+                | Language code:
+                select#format
+                  option(value='JSON') JSON
+                  option(value='JavaScript') JavaScript
+                  option(value='Manual') Manual edit&mldr;
+          tr
+            td(height='30%')
+              pre#languagePre.prettyprint.lang-js.
+                
+              textarea#languageTA
+          tr
+            td(height='5%')
+              h3
+                | Generator stub:
+                select#language
+                  option(value='JavaScript') JavaScript
+                  option(value='Python') Python
+                  option(value='PHP') PHP
+                  option(value='Lua') Lua
+                  option(value='Dart') Dart
+          tr
+            td(height='30%')
+              pre#generatorPre.prettyprint.lang-js.
+                
+  xml#toolbox(xmlns='https://developers.google.com/blockly/xml' style='display: none')
+    category(name='Input')
+      block(type='input_value')
+        value(name='TYPE')
+          shadow(type='type_null')
+      block(type='input_statement')
+        value(name='TYPE')
+          shadow(type='type_null')
+      block(type='input_dummy')
+    category(name='Field')
+      block(type='field_static')
+      block(type='field_input')
+      block(type='field_number')
+      block(type='field_angle')
+      block(type='field_dropdown')
+      block(type='field_checkbox')
+      block(type='field_colour')
+      block(type='field_variable')
+      block(type='field_image')
+    category(name='Type')
+      block(type='type_group')
+      block(type='type_null')
+      block(type='type_boolean')
+      block(type='type_number')
+      block(type='type_string')
+      block(type='type_list')
+      block(type='type_other')
+    category#colourCategory(name='Colour')
+      block(type='colour_hue')
+        mutation(colour='20')
+        field(name='HUE') 20
+      block(type='colour_hue')
+        mutation(colour='65')
+        field(name='HUE') 65
+      block(type='colour_hue')
+        mutation(colour='120')
+        field(name='HUE') 120
+      block(type='colour_hue')
+        mutation(colour='160')
+        field(name='HUE') 160
+      block(type='colour_hue')
+        mutation(colour='210')
+        field(name='HUE') 210
+      block(type='colour_hue')
+        mutation(colour='230')
+        field(name='HUE') 230
+      block(type='colour_hue')
+        mutation(colour='260')
+        field(name='HUE') 260
+      block(type='colour_hue')
+        mutation(colour='290')
+        field(name='HUE') 290
+      block(type='colour_hue')
+        mutation(colour='330')
+        field(name='HUE') 330
 </template>
 
 <script>
@@ -196,23 +136,6 @@ export default {
 </script>
 
 <style scoped>
-  html, body {
-    height: 100%;
-  }
-  body {
-    background-color: #fff;
-    font-family: sans-serif;
-    margin: 0 5px;
-    overflow: hidden
-  }
-  h1 {
-    font-weight: normal;
-    font-size: 140%;
-  }
-  h3 {
-    margin-top: 5px;
-    margin-bottom: 0;
-  }
   table {
     height: 100%;
     width: 100%;
@@ -246,31 +169,5 @@ export default {
     display: none;
     font-family: monospace;
     font-size: 10pt;
-  }
-
-  button {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-    background-color: #eee;
-    color: #000;
-    padding: 10px;
-    margin: 0 5px;
-    font-size: large;
-  }
-  button:hover:not(:disabled) {
-    box-shadow: 2px 2px 5px #888;
-  }
-  button:disabled {
-    opacity: 0.6;
-  }
-  button>* {
-    opacity: 0.6;
-    vertical-align: text-bottom;
-  }
-  button:hover:not(:disabled)>* {
-    opacity: 1;
-  }
-  #linkButton {
-    display: none;
   }
 </style>
