@@ -358,19 +358,6 @@ export default {
 
   methods: {
     /**
-     * Flip the layout from Vertical <-> Horizontal
-     */
-    toggleHoriz () {
-      if (this.isHoriz) {
-        this.splitter = window.innerWidth / 3
-      } else {
-        this.splitter = minHeight
-      }
-
-      this.isHoriz = !this.isHoriz
-    },
-    
-    /**
      * Binds individiual inputs
      */
     bindInput (id) {

@@ -60,7 +60,7 @@ q-page(style='height: 1px')
 
 <script>
 import Workspace from '../components/Workspace'
-import '../assets/blocks/code'
+import '../assets/blocks/factory'
 
 export default {
   name: 'PageCodeHome',

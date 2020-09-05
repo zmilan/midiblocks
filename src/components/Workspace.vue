@@ -8,7 +8,7 @@ div(style='min-height: inherit')
 <script>
 import Blockly from 'blockly'
 import {mapState} from 'vuex'
-import STRING_WebmidiInterpreter from '!!raw-loader!!../lib/webmidi-interpreter.js'
+import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interpreter.js'
 import webmidi from 'webmidi'
 
 export default {
