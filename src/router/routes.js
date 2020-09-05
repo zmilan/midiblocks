@@ -17,6 +17,11 @@ const routes = [
         name: 'Library',
         path: '/library',
         component: () => import('pages/LibraryHome.vue')
+      },
+      {
+        name: 'Code',
+        path: '/code',
+        component: () => import('pages/CodeHome.vue')
       }
     ]
   },
