@@ -25,7 +25,7 @@ q-layout(view='lHh Lpr lFf')
         q-btn(type='a' color='primary' href='/wp-admin') Login
 
   //- Page
-  q-page-container.bg-grey-1
+  q-page-container
     router-view
 </template>
 

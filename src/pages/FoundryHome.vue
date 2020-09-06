@@ -140,9 +140,8 @@ export default {
         },
         grid: {
           spacing: 25,
-          length: 10,
-          opacity: 0,
-          colour: '#efefef',
+          length: 25,
+          colour: '#9effff',
           snap: true
         }
       }
