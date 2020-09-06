@@ -131,19 +131,7 @@ export default {
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {
         isFactory: true,
-        media: 'media/',
-        collapse: false,
-        zoom: {
-          controls: true,
-          pinch: true,
-          wheel: true
-        },
-        grid: {
-          spacing: 25,
-          length: 25,
-          colour: '#9effff',
-          snap: true
-        }
+        collapse: false
       }
     }
   },
