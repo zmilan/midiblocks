@@ -304,10 +304,17 @@ export default {
         this.previewWorkspace.dispose();
       }
       var rtl = newDir == 'rtl';
+
+      const options = Object.assign({}, this.options)
+      options.zoom.controls = false
+      options.trashcan = false
+      options.toolbox = null
+      
       this.previewWorkspace = Blockly.inject('preview',
           {rtl: rtl,
-          media: '../../media/',
-          scrollbars: true});
+          media: 'media/',
+          scrollbars: true,
+          ...options});
       this.previewWorkspace.clear();
 
       // Fetch the code and determine its format (JSON or JavaScript).

@@ -4,7 +4,6 @@
 
 <script>
 import MonacoEditor from 'vue-monaco'
-import TMPSTRING from '!!raw-loader!!../assets/js/syntax-highlight-test.js'
 
 export default {
   name: 'PageCode',
@@ -13,7 +12,7 @@ export default {
   
   data () {
     return {
-      code: TMPSTRING,
+      code: '',
       options: {
         theme: 'shadesofpurple',
         automaticLayout: true,
@@ -31,19 +30,19 @@ export default {
           inherit: true,
           rules: [
             { token: '', foreground: '9EFFFF', background: '9EFFFF' },
-            { token: 'invalid', foreground: 'f44747' },
+            // { token: 'invalid', foreground: 'ff0000' },
             { token: 'emphasis', fontStyle: 'italic' },
             { token: 'strong', fontStyle: 'bold' },
 
-            { token: 'variable', foreground: '74B0DF' },
-            { token: 'variable.predefined', foreground: '4864AA' },
-            { token: 'variable.parameter', foreground: '9CDCFE' },
-            { token: 'constant', foreground: '569CD6' },
+            { token: 'variable', foreground: 'ff0000' },
+            // { token: 'variable.predefined', foreground: 'ff0000' },
+            { token: 'variable.parameter', foreground: '9EFFFF' },
+            // { token: 'constant', foreground: 'ff0000' },
             { token: 'comment', foreground: 'B362FF' },
-            { token: 'number', foreground: 'B5CEA8' },
-            { token: 'number.hex', foreground: '5BB498' },
-            { token: 'regexp', foreground: '0000ff' },
-            { token: 'annotation', foreground: 'ff0000' },
+            { token: 'number', foreground: 'FF628C' },
+            { token: 'number.hex', foreground: 'FF628C' },
+            { token: 'regexp', foreground: 'FB94FF' },
+            // { token: 'annotation', foreground: 'ff0000' },
             { token: 'type', foreground: '9EFFFF' },
 
             { token: 'delimiter', foreground: 'ffffff' },
@@ -55,13 +54,17 @@ export default {
 
             { token: 'keyword', foreground: 'FF9D00' }
           ],
+
+          // @see https://code.visualstudio.com/api/references/theme-color
           colors: {
-            "editor.background": "#28284E",
-            "editor.foreground": "#ffffff",
-            "editor.selectionBackground": "#7448af",
-            "editor.lineHighlightBackground": "#1f1f41",
-            "editorCursor.foreground": "#fad000",
-            "editorWhitespace.foreground": "red"
+            'editorIndentGuide.background': '#A599E90F',
+            'editorIndentGuide.activeBackground': '#A599E942',
+            'editor.background': '#2d2b55',
+            'editor.foreground': '#ffffff',
+            'editor.selectionBackground': '#7448af',
+            'editor.lineHighlightBackground': '#1f1f41',
+            'editorCursor.foreground': '#fad000',
+            'editorWhitespace.foreground': 'red'
           }
       })
       monaco.editor.setTheme('shadesofpurple')
