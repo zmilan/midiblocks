@@ -1,111 +1,97 @@
 <template lang="pug">
 q-page(style='height: 1px')
+  q-splitter#foundry-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse :key='+isHoriz')
+    template(v-slot:after)
+      CodeEditor(:code='code')
+    template(v-slot:before)
+      Workspace.fill(ref='workspace' :blocks='[]' :options='options')
+        category(name='Input')
+          block(type='input_value')
+            value(name='TYPE')
+              shadow(type='type_null')
+          block(type='input_statement')
+            value(name='TYPE')
+              shadow(type='type_null')
+          block(type='input_dummy')
+        category(name='Field')
+          block(type='field_static')
+          block(type='field_input')
+          block(type='field_number')
+          block(type='field_angle')
+          block(type='field_dropdown')
+          block(type='field_checkbox')
+          block(type='field_colour')
+          block(type='field_variable')
+          block(type='field_image')
+        category(name='Type')
+          block(type='type_group')
+          block(type='type_null')
+          block(type='type_boolean')
+          block(type='type_number')
+          block(type='type_string')
+          block(type='type_list')
+          block(type='type_other')
+        category#colourCategory(name='Colour')
+          block(type='colour_hue')
+            mutation(colour='20')
+            field(name='HUE') 20
+          block(type='colour_hue')
+            mutation(colour='65')
+            field(name='HUE') 65
+          block(type='colour_hue')
+            mutation(colour='120')
+            field(name='HUE') 120
+          block(type='colour_hue')
+            mutation(colour='160')
+            field(name='HUE') 160
+          block(type='colour_hue')
+            mutation(colour='210')
+            field(name='HUE') 210
+          block(type='colour_hue')
+            mutation(colour='230')
+            field(name='HUE') 230
+          block(type='colour_hue')
+            mutation(colour='260')
+            field(name='HUE') 260
+          block(type='colour_hue')
+            mutation(colour='290')
+            field(name='HUE') 290
+          block(type='colour_hue')
+            mutation(colour='330')
+            field(name='HUE') 330
+
   //- @TODO remove these depdendencys @see ./assets/js/factory.js
   .hidden
     select#direction
       option(value='ltr') LTR
       option(value='rtl') RTL
-    button#linkButton(title='Save and link to blocks.')
-    button#helpButton(title='View documentation in new window.')
+    button#linkButton
+    button#helpButton
       span Help
-
-  table
-    tr
-      td(width='50%' style='padding: 2px;')
-        Workspace.fill(ref='workspace' :blocks='[]' :options='options')
-          category(name='Input')
-            block(type='input_value')
-              value(name='TYPE')
-                shadow(type='type_null')
-            block(type='input_statement')
-              value(name='TYPE')
-                shadow(type='type_null')
-            block(type='input_dummy')
-          category(name='Field')
-            block(type='field_static')
-            block(type='field_input')
-            block(type='field_number')
-            block(type='field_angle')
-            block(type='field_dropdown')
-            block(type='field_checkbox')
-            block(type='field_colour')
-            block(type='field_variable')
-            block(type='field_image')
-          category(name='Type')
-            block(type='type_group')
-            block(type='type_null')
-            block(type='type_boolean')
-            block(type='type_number')
-            block(type='type_string')
-            block(type='type_list')
-            block(type='type_other')
-          category#colourCategory(name='Colour')
-            block(type='colour_hue')
-              mutation(colour='20')
-              field(name='HUE') 20
-            block(type='colour_hue')
-              mutation(colour='65')
-              field(name='HUE') 65
-            block(type='colour_hue')
-              mutation(colour='120')
-              field(name='HUE') 120
-            block(type='colour_hue')
-              mutation(colour='160')
-              field(name='HUE') 160
-            block(type='colour_hue')
-              mutation(colour='210')
-              field(name='HUE') 210
-            block(type='colour_hue')
-              mutation(colour='230')
-              field(name='HUE') 230
-            block(type='colour_hue')
-              mutation(colour='260')
-              field(name='HUE') 260
-            block(type='colour_hue')
-              mutation(colour='290')
-              field(name='HUE') 290
-            block(type='colour_hue')
-              mutation(colour='330')
-              field(name='HUE') 330
-        #blocklyMask
-      td(width='50%')
-        table
-          tr
-            td(height='30%')
-              #preview.full-height
-          tr
-            td(height='5%')
-              h3
-                | Language code:
-                select#format
-                  option(value='JSON') JSON
-                  option(value='JavaScript') JavaScript
-                  option(value='Manual') Manual edit&mldr;
-          tr
-            td(height='30%')
-              pre#languagePre.prettyprint.lang-js(style='width: 100%; height: 200px').
-                
-              textarea#languageTA(style='width: 100%; height: 200px')
-          tr
-            td(height='5%')
-              h3
-                | Generator stub:
-                select#language
-                  option(value='JavaScript') JavaScript
-                  option(value='Python') Python
-                  option(value='PHP') PHP
-                  option(value='Lua') Lua
-                  option(value='Dart') Dart
-          tr
-            td(height='30%')
-              pre#generatorPre.prettyprint.lang-js(style='width: 100%; height: 200px').
+    #preview.full-height
+    select#format
+      option(value='JSON') JSON
+      option(value='JavaScript') JavaScript
+      option(value='Manual') Manual edit&mldr;
+    pre#languagePre.prettyprint.lang-js
+    textarea#languageTA
+    select#language
+      option(value='JavaScript') JavaScript
+      option(value='Python') Python
+      option(value='PHP') PHP
+      option(value='Lua') Lua
+      option(value='Dart') Dart
+    pre#generatorPre
 </template>
 
 <script>
 import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
+import CodeEditor from '../components/CodeEditor'
 import {mapState} from 'vuex'
 import Blockly from 'blockly'
+import store from 'store'
+import {throttle} from 'lodash'
 
 // Default for untitled fields
 const UNNAMED = 'unnamed'
@@ -116,10 +102,38 @@ let oldDir = null
 export default {
   name: 'PageCodeHome',
 
-  components: {Workspace},
+  components: {Workspace, CodeEditor},
+
+  watch: {
+    /**
+     * Resize main splitter
+     */
+    splitter: throttle(function () {
+      store.set('splitter', this.splitter)
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      })
+    }, 50, {leading: true, trailing: true}),
+
+    /**
+     * Relayout
+     */
+    isHoriz: throttle(function () {
+      store.set('isHoriz', this.isHoriz)
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      })
+    }, 50, {leading: true, trailing: true})
+  },
 
   data () {
     return {
+      code: '',
+      
+      // is the splitter in horizontal or vertical mode
+      isHoriz: store.get('isHoriz'),
+      splitter: store.get('splitter') || window.innerWidth / 3,
+
       // Contains our block preview
       previewWorkspace: null,
       
@@ -309,17 +323,14 @@ export default {
     updatePreview () {
       // Toggle between LTR/RTL if needed (also used in first display).
       var newDir = document.getElementById('direction').value;
-      if (oldDir != newDir) {
-        if (this.previewWorkspace) {
-          this.previewWorkspace.dispose();
-        }
-        var rtl = newDir == 'rtl';
-        this.previewWorkspace = Blockly.inject('preview',
-            {rtl: rtl,
-            media: '../../media/',
-            scrollbars: true});
-        oldDir = newDir;
+      if (this.previewWorkspace) {
+        this.previewWorkspace.dispose();
       }
+      var rtl = newDir == 'rtl';
+      this.previewWorkspace = Blockly.inject('preview',
+          {rtl: rtl,
+          media: '../../media/',
+          scrollbars: true});
       this.previewWorkspace.clear();
 
       // Fetch the code and determine its format (JSON or JavaScript).
@@ -643,29 +654,5 @@ export default {
   table {
     height: 100%;
     width: 100%;
-  }
-  td {
-    vertical-align: top;
-    padding: 0;
-  }
-  #blocklyMask {
-    background-color: #000;
-    cursor: not-allowed;
-    display: none;
-    position: fixed;
-    opacity: 0.2;
-    z-index: 9;
-  }
-  pre,
-  #languageTA {
-    border: #ddd 1px solid;
-    margin-top: 0;
-    position: absolute;
-    overflow: scroll;
-  }
-  #languageTA {
-    display: none;
-    font-family: monospace;
-    font-size: 10pt;
   }
 </style>
