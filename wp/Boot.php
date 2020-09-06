@@ -4,7 +4,8 @@ class App_Boot {
     $this->data = [
       'mainNavPanel' => [
         'links' => $this->getMainNavPanelLinks()
-      ]
+      ],
+      'user' => $this->getUser()
     ];
   }
 
@@ -30,5 +31,14 @@ class App_Boot {
         'icon' => implode(' ', $item->classes)
       ];
     }, $items);
+  }
+
+  /**
+   * Fetches user info
+   */
+  function getUser () {
+    return [
+      'isLoggedIn' => is_user_logged_in()
+    ];
   }
 }

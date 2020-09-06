@@ -3,14 +3,15 @@ q-page.full-height
   section.content
     h1 Library
 
-    div.center-children(v-if='isChecking')
+    div.center-children(v-if='post.isChecking')
       q-spinner(color='primary' size='5em')
-    template(v-else-if='blocks.length')
+    div(v-else v-html='post.content')
+    template(if='blocks.length')
       .row.q-col-gutter-md
         .col-12.col-sm-6.col-lg-4.col-xl-3(v-for='block in blocks' :key='block.title')
           q-card
             q-card-section
-              Workspace.blockly.inline(:options='options' style="right: 0" :blocks='[block]')
+              Workspace.inline(:options='options' style="right: 0" :blocks='[block]')
                 category(name='Readonly' colour='#fff')
                   block(v-for='block in blocks' :type='block.type' :key='block.type')
             q-separator
@@ -21,6 +22,7 @@ q-page.full-height
 
 <script>
 import Workspace from '../components/Workspace'
+import {mapState} from 'vuex'
 
 export default {
   name: 'LibraryHome',
@@ -29,10 +31,13 @@ export default {
     Workspace
   },
 
+  computed: {
+    ...mapState(['post'])
+  },
+
   data () {
     return {
       blocks: [],
-      isChecking: true,
       options: {
         media: 'media/',
         grid: null,
@@ -51,9 +56,6 @@ export default {
       })
       .catch(err => {
         this.$root.$emit('error', err)
-      })
-      .finally(() => {
-        this.isChecking = false
       })
   }
 }

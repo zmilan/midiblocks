@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  Workspace.blockly(ref='blockly' :options='options' :blocks='[]')
+  Workspace(:options='options' :blocks='[]')
     category(name='MIDI Events' colour='#9fa55b')
       block(type='midi_on_event')
     category(name='MIDI Arguments' colour='#a5935b')
@@ -357,19 +357,6 @@ export default {
   },
 
   methods: {
-    /**
-     * Flip the layout from Vertical <-> Horizontal
-     */
-    toggleHoriz () {
-      if (this.isHoriz) {
-        this.splitter = window.innerWidth / 3
-      } else {
-        this.splitter = minHeight
-      }
-
-      this.isHoriz = !this.isHoriz
-    },
-    
     /**
      * Binds individiual inputs
      */

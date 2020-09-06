@@ -22,3 +22,18 @@ section.content
   margin-left: auto
   margin-right: auto
   padding: $panel-padding
+
+.flex-drawer .q-drawer__content
+  display: flex
+  flex-direction: column
+
+// Splitter
+#foundry-splitter > .q-splitter__after
+  display: flex
+  flex-direction: column
+
+  > hr
+    min-height: 1px
+
+  > div:last-child
+    flex: 1

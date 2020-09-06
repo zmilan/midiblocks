@@ -17,6 +17,11 @@ const routes = [
         name: 'Library',
         path: '/library',
         component: () => import('pages/LibraryHome.vue')
+      },
+      {
+        name: 'Foundry',
+        path: '/foundry',
+        component: () => import('pages/FoundryHome.vue')
       }
     ]
   },

@@ -23,6 +23,20 @@ export default function (/* { ssrContext } */) {
         domain: process.env.DEV ? 'http://midiblocks.local' : 'https://midiblocks.com',
         base: 'wp-json/midiblocks'
       },
+
+      /**
+       * User info
+       */
+      user: {
+        isLoggedIn: false
+      },
+
+      /**
+       * Post data
+       */
+      post: {
+        isChecking: true
+      },
       
       /**
        * Represents the current workspace
@@ -73,7 +87,18 @@ export default function (/* { ssrContext } */) {
 
     actions: {
       apiGet ({getters}, payload) {
-        return axios.get(getters.endpoint(payload))
+        let path
+        let params = {}
+        
+        if (typeof payload === 'string') {
+          path = payload
+        } else {
+          path = payload.path
+          delete payload.path
+          params = payload
+        }
+        
+        return axios.get(getters.endpoint(path), params)
       }
     }
   })

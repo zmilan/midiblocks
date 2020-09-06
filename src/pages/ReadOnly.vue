@@ -3,7 +3,7 @@
   div.full-height.center-children(v-if='isChecking')
     q-spinner(color='primary' size='5em')
   .full-height(v-else-if='blocks.length')
-    Workspace.blockly(ref='workspace' :options='options' style="right: 0" :blocks='blocks')
+    Workspace(ref='workspace' :options='options' style="right: 0" :blocks='blocks')
       category(name='Readonly' colour='#fff')
         block(v-for='block in blocks' :type='block.type' :key='block.type')
   div.full-height.center-children(v-else)

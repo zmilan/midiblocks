@@ -1,5 +1,5 @@
 <template lang="pug">
-div(style='min-height: inherit')
+.blockly(style='min-height: inherit')
   .blockly-wrap(ref='blockly')
   xml(ref='toolbox' style='display: none')
     slot
@@ -8,7 +8,7 @@ div(style='min-height: inherit')
 <script>
 import Blockly from 'blockly'
 import {mapState} from 'vuex'
-import STRING_WebmidiInterpreter from '!!raw-loader!!../lib/webmidi-interpreter.js'
+import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interpreter.js'
 import webmidi from 'webmidi'
 
 export default {
@@ -57,6 +57,10 @@ export default {
      * @see https://developers.google.com/blockly/guides/configure/web/events
      */
     onChange (ev) {
+      // Turns the workspace into code
+      // @todo remove this requirement
+      if (this.options.isFactory) return
+      
       switch (ev.type) {
         case Blockly.Events.BLOCK_CREATE:
         case Blockly.Events.BLOCK_DELETE:
