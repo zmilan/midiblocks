@@ -79,7 +79,6 @@ module.exports = function (ctx) {
           exclude: /node_modules/
         })
 
-
         const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
         cfg.plugins.push(new MonacoEditorPlugin({
           // https://github.com/Microsoft/monaco-editor-webpack-plugin#options

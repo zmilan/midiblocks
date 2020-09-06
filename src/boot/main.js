@@ -2,6 +2,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import MarkdownIt from 'markdown-it'
 import pkg from '../../package.json'
+import {colors} from 'quasar'
 
 // Prototypes
 Vue.prototype.$axios = axios
@@ -10,3 +11,6 @@ Vue.prototype.$markdown = new MarkdownIt()
 
 // Ignored elements for Blockly
 Vue.config.ignoredElements = ['field','block','category','xml','mutation','value','sep']
+
+// Theme
+colors.setBrand('menu-item-not-selected', '#a599e9')

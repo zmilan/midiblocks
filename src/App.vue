@@ -9,7 +9,7 @@
         q-avatar.text-negative(icon='fas fa-exclamation-triangle' color='white')
         span.q-ml-sm.text-white {{errors.generic}}
       q-card-actions(align='right')
-        q-btn.bg-white(@click='goHome') Go to home page
+        q-btn.text-black(@click='goHome' color='white') Go to home page
 </template>
 
 <script>
