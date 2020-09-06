@@ -11,6 +11,9 @@ import {mapState} from 'vuex'
 import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interpreter.js'
 import webmidi from 'webmidi'
 
+/**
+ * @emits onChange
+ */
 export default {
   name: 'Blockly',
   props: ['options', 'blocks'],
