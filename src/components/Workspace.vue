@@ -51,7 +51,7 @@ export default {
         controls: true,
         pinch: true,
         wheel: true,
-        startScale: 0.75
+        startScale: 0.8
       },
       grid: {
         spacing: 25,
