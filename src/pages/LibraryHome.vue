@@ -40,7 +40,12 @@ export default {
       blocks: [],
       options: {
         trashcan: false,
-        zoom: false
+        zoom: {
+          controls: false,
+          pinch: true,
+          wheel: true,
+          startScale: 0.75
+        }
       }
     }
   },

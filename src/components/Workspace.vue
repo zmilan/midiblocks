@@ -43,13 +43,15 @@ export default {
   mounted () {
     let options = this.$props.options || {}
     options = defaults(this.$props.options, {
+      renderer: 'zelos',
       sounds: false,
       toolbox: this.$refs.toolbox,
       media: 'media/',
       zoom: {
         controls: true,
         pinch: true,
-        wheel: true
+        wheel: true,
+        startScale: 0.75
       },
       grid: {
         spacing: 25,
