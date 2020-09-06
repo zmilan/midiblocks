@@ -1,7 +1,7 @@
 <template lang="pug">
 q-item(clickable tag='a' :to='link' exact)
   q-item-section(v-if='link' avatar)
-    q-icon(:name='icon' color='menu-item-not-selected')
+    q-icon(:name='icon')
   q-item-section
     q-item-label {{ title }}
     q-item-label(caption)

@@ -34,3 +34,27 @@ section.content
 // Page
 main.q-page
   background: #2d2b55
+
+// Sidebar
+.q-item__section--avatar,
+.q-item__label,
+.q-item .q-item__label--caption
+  color: $icon-inactive
+
+.q-dark.q-drawer
+  background: $item-inactive-bg
+  
+.q-router-link--exact-active
+  &.q-item
+    background: $item-active-bg
+  
+  .q-item__section--avatar,
+  .q-item__label,
+  .q-item .q-item__label--caption
+    color: $icon-active
+
+body.desktop .q-focusable:focus > .q-focus-helper,
+body.desktop .q-manual-focusable--focused > .q-focus-helper,
+body.desktop .q-hoverable:hover > .q-focus-helper
+  &:after, &:before
+    background: $icon-inactive !important

@@ -1,7 +1,7 @@
 <template lang="pug">
 q-layout(view='lHh Lpr lFf')
   //- Header
-  q-header.main-header-left-pixel-gap-fix(elevated)
+  q-header.main-header-left-pixel-gap-fix
     q-toolbar
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
       q-toolbar-title
@@ -12,7 +12,7 @@ q-layout(view='lHh Lpr lFf')
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered)
-    q-toolbar.bg-primary.text-white.shadow-5
+    q-toolbar.bg-primary.text-white
       //- q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
     q-list.q-pa-sm
       template(v-if='boot.mainNavPanel')
@@ -22,7 +22,7 @@ q-layout(view='lHh Lpr lFf')
     q-space
     q-item
       q-item-section
-        q-btn(type='a' color='primary' href='/wp-admin') Login
+        q-btn(type='a' color='secondary' href='/wp-admin') Login
 
   //- Page
   q-page-container
