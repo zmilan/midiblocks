@@ -39,12 +39,13 @@ export default {
     return {
       blocks: [],
       options: {
-        media: 'media/',
-        grid: null,
-        sounds: false,
-        toolbox: null,
         trashcan: false,
-        zoom: false
+        zoom: {
+          controls: false,
+          pinch: true,
+          wheel: true,
+          startScale: 0.75
+        }
       }
     }
   },

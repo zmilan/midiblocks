@@ -334,22 +334,7 @@ export default {
 
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
-      options: {
-        media: 'media/',
-        // renderer: 'zelos',
-        zoom: {
-          controls: true,
-          pinch: true,
-          wheel: true
-        },
-        grid: {
-          spacing: 25,
-          length: 10,
-          opacity: 0,
-          colour: '#efefef',
-          snap: true
-        }
-      },
+      options: {},
 
       // Spliter width in pixels
       splitter: store.get('splitter') || window.innerWidth / 3

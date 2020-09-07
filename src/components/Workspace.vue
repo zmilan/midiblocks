@@ -10,7 +10,11 @@ import Blockly from 'blockly'
 import {mapState} from 'vuex'
 import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interpreter.js'
 import webmidi from 'webmidi'
+import {defaults} from 'lodash'
 
+/**
+ * @emits onChange
+ */
 export default {
   name: 'Blockly',
   props: ['options', 'blocks'],
@@ -37,11 +41,25 @@ export default {
    * Initialize Blockly and setup event listeners
    */
   mounted () {
-    // Map slot to toolbox if not provided
     let options = this.$props.options || {}
-    if (!options.toolbox) {
-      options.toolbox = this.$refs.toolbox
-    }
+    options = defaults(this.$props.options, {
+      renderer: 'zelos',
+      sounds: false,
+      toolbox: this.$refs.toolbox,
+      media: 'media/',
+      zoom: {
+        controls: true,
+        pinch: true,
+        wheel: true,
+        startScale: 0.8
+      },
+      grid: {
+        spacing: 25,
+        length: 25,
+        colour: '#9effff',
+        snap: true
+      }
+    })
 
     // Create workspace and add bindings
     this.blockly = Blockly.inject(this.$refs.blockly, options)

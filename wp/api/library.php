@@ -19,6 +19,7 @@ add_action('rest_api_init', function () {
         setup_postdata($post);
 
         $json['blocks'][] = [
+          'type' => $post->post_name,
           'title' => $post->post_title,
           'short_description' => get_post_meta($post->ID, 'short_description'),
           'block_definition' => get_post_meta($post->ID, 'block_definition')

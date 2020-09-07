@@ -1,13 +1,12 @@
 body.transparent,
 .blockly.inline
-  svg.blocklySvg
-    background: none
-  .blocklyMainBackground
-    stroke: none
   .blocklyMainWorkspaceScrollbar,
   .blocklyToolboxDiv
     display: none
 
+svg.blocklySvg
+  background: $bg-main
+  
 .blockly-wrap
   height: 100%
 
@@ -24,38 +23,41 @@ body.transparent,
 
   &.fill
     position: relative
-  
+
+.blocklyMainBackground
+  opacity: 0.1
+
 .blocklyToolboxDiv
-  background: $grey-2
+  background: $dark
   padding: $panel-padding / 2
   border-right-width: 2px
   box-shadow: $shadow-2
 
 .blocklyTreeRoot,
-  background: $grey-1
+  background: #28284e
   box-shadow: $shadow-2
 
   .blocklyTreeRow
     border-left: none !important
   
 .blocklyFlyoutBackground
-  fill: $grey-1
-  stroke: $separator-color
+  fill: #28284e
+  stroke: $dark
   stroke-width: 2px
 
 .blocklyTreeSeparator
   border-left: none !important
-  border-bottom-color: $grey-4
+  border-bottom-color: $dark
 
-// // Scrollbars
-// .blocklyMainWorkspaceScrollbar
-//   background: $scrollbar-background
+// Trees
+.blocklyTreeIcon
+  background: none !important
 
-// .blocklyScrollbarHandle
-//   fill: $scrollbar-draggable !important
-
-//   &:hover
-//     fill: $scrollbar-draggable-hover !important
+// Scrollbars
+.blocklyScrollbarHandle
+  fill: $scrollbar-draggable !important
+  &:hover
+    fill: $scrollbar-draggable-hover !important
   
 // Category colors
 .blocklyTreeLabel:before

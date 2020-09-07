@@ -26,7 +26,8 @@ module.exports = function (ctx) {
     css: [
       'app.sass',
       'blockly.sass',
-      'theme.sass'
+      'theme.sass',
+      'monaco.sass'
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -79,7 +80,6 @@ module.exports = function (ctx) {
           exclude: /node_modules/
         })
 
-
         const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
         cfg.plugins.push(new MonacoEditorPlugin({
           // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
@@ -103,7 +103,9 @@ module.exports = function (ctx) {
     framework: {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'en-us', // Quasar language pack
-      config: {},
+      config: {
+        dark: true
+      },
 
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives

@@ -1,3 +1,8 @@
+.transparent
+  svg.blocklySvg,
+  main.q-page
+    background: transparent
+
 // Fixes
 // Fixes a 1px gap between main app toolbar and where it joins with the sidebars toolbar
 .main-header-left-pixel-gap-fix:before
@@ -29,11 +34,32 @@ section.content
 
 // Splitter
 #foundry-splitter > .q-splitter__after
-  display: flex
-  flex-direction: column
+  overflow-y: hidden
 
-  > hr
-    min-height: 1px
+// Page
+main.q-page
+  background: #2d2b55
 
-  > div:last-child
-    flex: 1
+// Sidebar
+.q-item__section--avatar,
+.q-item__label,
+.q-item .q-item__label--caption
+  color: $icon-inactive
+
+.q-dark.q-drawer
+  background: $item-inactive-bg
+  
+.q-router-link--exact-active
+  &.q-item
+    background: $item-active-bg
+  
+  .q-item__section--avatar,
+  .q-item__label,
+  .q-item .q-item__label--caption
+    color: $icon-active
+
+body.desktop .q-focusable:focus > .q-focus-helper,
+body.desktop .q-manual-focusable--focused > .q-focus-helper,
+body.desktop .q-hoverable:hover > .q-focus-helper
+  &:after, &:before
+    background: $icon-inactive !important

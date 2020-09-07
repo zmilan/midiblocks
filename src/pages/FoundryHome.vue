@@ -1,8 +1,10 @@
 <template lang="pug">
 q-page(style='height: 1px')
-  q-splitter#foundry-splitter.full-height.q-pt-appbar(v-model='splitter' :horizontal='isHoriz' unit='px' reverse :key='+isHoriz')
+  q-splitter#foundry-splitter.full-height.q-pt-appbar(v-model='splitter' unit='px' reverse)
     template(v-slot:after)
-      CodeEditor(:code='code')
+      .flex.column
+        #preview
+        CodeEditor(:code='code' style='flex: 2')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :blocks='[]' :options='options')
         category(name='Input')
@@ -68,7 +70,6 @@ q-page(style='height: 1px')
     button#linkButton
     button#helpButton
       span Help
-    #preview.full-height
     select#format
       option(value='JSON') JSON
       option(value='JavaScript') JavaScript
@@ -113,16 +114,6 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true}),
-
-    /**
-     * Relayout
-     */
-    isHoriz: throttle(function () {
-      store.set('isHoriz', this.isHoriz)
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-      })
     }, 50, {leading: true, trailing: true})
   },
 
@@ -131,7 +122,6 @@ export default {
       code: '',
       
       // is the splitter in horizontal or vertical mode
-      isHoriz: store.get('isHoriz'),
       splitter: store.get('splitter') || window.innerWidth / 3,
 
       // Contains our block preview
@@ -141,20 +131,7 @@ export default {
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {
         isFactory: true,
-        media: 'media/',
-        collapse: false,
-        zoom: {
-          controls: true,
-          pinch: true,
-          wheel: true
-        },
-        grid: {
-          spacing: 25,
-          length: 10,
-          opacity: 0,
-          colour: '#efefef',
-          snap: true
-        }
+        collapse: false
       }
     }
   },
@@ -327,10 +304,17 @@ export default {
         this.previewWorkspace.dispose();
       }
       var rtl = newDir == 'rtl';
+
+      const options = Object.assign({}, this.options)
+      options.zoom.controls = false
+      options.trashcan = false
+      options.toolbox = null
+      
       this.previewWorkspace = Blockly.inject('preview',
           {rtl: rtl,
-          media: '../../media/',
-          scrollbars: true});
+          media: 'media/',
+          scrollbars: true,
+          ...options});
       this.previewWorkspace.clear();
 
       // Fetch the code and determine its format (JSON or JavaScript).

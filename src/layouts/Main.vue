@@ -1,19 +1,18 @@
 <template lang="pug">
 q-layout(view='lHh Lpr lFf')
   //- Header
-  q-header.main-header-left-pixel-gap-fix(elevated)
+  q-header.main-header-left-pixel-gap-fix
     q-toolbar
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
       q-toolbar-title
         router-link.text-decoration-none.text-white(:to='{name: "Home"}')
-          img.q-mr-sm(src='~assets/favicon.png' height=32 style='vertical-align: middle')
-          | Midiblocks
-        small.q-ml-sm(style='font-size: .65em') {{version}}
+          img.q-mr-sm(src='~assets/logo-title.png' height=32 style='vertical-align: middle')
+        small.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -3px)') {{version}}
       //- div Quasar v{{ $q.version }}
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered)
-    q-toolbar.bg-primary.text-white.shadow-5
+    q-toolbar.bg-primary.text-white
       //- q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
     q-list.q-pa-sm
       template(v-if='boot.mainNavPanel')
@@ -23,10 +22,10 @@ q-layout(view='lHh Lpr lFf')
     q-space
     q-item
       q-item-section
-        q-btn(type='a' color='primary' href='/wp-admin') Login
+        q-btn(type='a' color='secondary' href='/wp-admin') Login
 
   //- Page
-  q-page-container.bg-grey-1
+  q-page-container
     router-view
 </template>
 
