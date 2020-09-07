@@ -75,25 +75,12 @@ export default {
      * @see https://developers.google.com/blockly/guides/configure/web/events
      */
     onChange (ev) {
-      // Turns the workspace into code
-      // @todo remove this requirement
-      if (this.options.isFactory) return
-      
-      switch (ev.type) {
-        case Blockly.Events.BLOCK_CREATE:
-        case Blockly.Events.BLOCK_DELETE:
-        case Blockly.Events.BLOCK_CHANGE:
-        case Blockly.Events.BLOCK_MOVE:
-        case Blockly.Events.VAR_CREATE:
-        case Blockly.Events.VAR_DELETE:
-        case Blockly.Events.VAR_RENAME:
-          this.$store.commit('set', ['workspace.code', Blockly.JavaScript.workspaceToCode(this.blockly)])
-        break;
-      }
+      this.$emit('change', ev)
     },
 
     /**
      * Sets up the interpreter
+     * @todo Move this into a module
      */
     setupInterpreter (acorn, globalObject) {
       /**

@@ -4,9 +4,9 @@ q-page(style='height: 1px')
     template(v-slot:after)
       .flex.column
         #preview
-        CodeEditor(style='flex: 2' @onCodeChange='onCodeChange' :value='code')
+        CodeEditor(style='flex: 2' @onCodeChange='autosave' :value='code')
     template(v-slot:before)
-      Workspace.fill(ref='workspace' :blocks='[]' :options='options')
+      Workspace.fill(ref='workspace' :blocks='[]' :options='options' @change='workspaceEventHandler')
         category(name='Input')
           block(type='input_value')
             value(name='TYPE')
@@ -121,6 +121,11 @@ export default {
     const currentFoundry = store.get('currentFoundry', {})
     
     return {
+      workspace: {
+        blockly: null,
+        hasLoaded: false
+      },
+      
       code: currentFoundry.code,
       
       // is the splitter in horizontal or vertical mode
@@ -139,26 +144,63 @@ export default {
   },
 
   mounted () {
-    this.workspace = this.$refs.workspace.blockly
+    this.workspace.blockly = this.$refs.workspace.blockly
 
-    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" deletable="false" movable="false"></block></xml>'), this.$refs.workspace.blockly)
-    this.workspace.addChangeListener(Blockly.Events.disableOrphans)
-    this.workspace.addChangeListener(this.updateLanguage)
+    // Load workspace
+    const currentFoundry = store.get('currentFoundry', {})
+    if (currentFoundry.workspace) {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom(currentFoundry.workspace),
+        this.workspace.blockly
+      )
+    } else {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" deletable="false" movable="false"></block></xml>'),
+        this.$refs.workspace.blockly
+      )
+    }
+
+    this.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
   methods: {
     /**
      * Autosave code to localstorage
      */
-    onCodeChange (code) {
-      this.code = code
-      store.set('currentFoundry', {code})
+    autosave () {
+      store.set('currentFoundry', {
+        code: this.code,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace.blockly))
+      })
     },
-    
+
+    /**
+     * Handles Workspace events
+     */
+    workspaceEventHandler (ev) {
+      switch (ev.type) {
+        case Blockly.Events.FINISHED_LOADING:
+          this.workspace.hasLoaded = true
+        break
+          
+        case Blockly.Events.BLOCK_CREATE:
+        case Blockly.Events.BLOCK_DELETE:
+        case Blockly.Events.BLOCK_CHANGE:
+        case Blockly.Events.BLOCK_MOVE:
+        case Blockly.Events.VAR_CREATE:
+        case Blockly.Events.VAR_DELETE:
+        case Blockly.Events.VAR_RENAME:
+          this.onWorkspaceChange()
+          this.workspace.hasLoaded && this.autosave()
+        break;
+      }
+    },
+
     /**
      * Update the language code based on constructs made in Blockly.
+     * - also checks if we should save
      */
-    updateLanguage () {
+    onWorkspaceChange (ev) {
       const rootBlock = this.getRootBlock()
 
       if (!rootBlock) {
@@ -180,7 +222,7 @@ export default {
      * @return {Blockly.Block}
      */
     getRootBlock() {
-      const blocks = this.workspace.getTopBlocks(false)
+      const blocks = this.workspace.blockly.getTopBlocks(false)
 
       for (var i = 0, block; block = blocks[i]; i++) {
         if (block.type == 'factory_base') {
