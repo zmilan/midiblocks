@@ -54,8 +54,8 @@ export default {
         startScale: 0.8
       },
       grid: {
-        spacing: 25,
-        length: 25,
+        spacing: 50,
+        length: 50,
         colour: '#9effff',
         snap: true
       }

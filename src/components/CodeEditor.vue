@@ -5,14 +5,26 @@
 <script>
 import MonacoEditor from 'vue-monaco'
 
+/**
+ * A Monaco (VSCode) editor
+ * @emits onCodeChange [{STR} code]
+ */
 export default {
   name: 'PageCode',
 
   components: {MonacoEditor},
+  props: ['value'],
+
+  watch: {
+    code (code) {
+      this.$emit('onCodeChange', code)
+    }
+  },
   
   data () {
     return {
-      code: '',
+      code: this.$props.value,
+      
       options: {
         theme: 'shadesofpurple',
         automaticLayout: true,

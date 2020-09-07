@@ -4,7 +4,7 @@ q-page(style='height: 1px')
     template(v-slot:after)
       .flex.column
         #preview
-        CodeEditor(:code='code' style='flex: 2')
+        CodeEditor(style='flex: 2' @onCodeChange='onCodeChange' :value='code')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :blocks='[]' :options='options')
         category(name='Input')
@@ -33,7 +33,7 @@ q-page(style='height: 1px')
           block(type='type_string')
           block(type='type_list')
           block(type='type_other')
-        category#colourCategory(name='Colour')
+        category(name='Colour')
           block(type='colour_hue')
             mutation(colour='20')
             field(name='HUE') 20
@@ -86,7 +86,7 @@ q-page(style='height: 1px')
 </template>
 
 <script>
-import '../assets/blocks/factory'
+import '../assets/blocks/foundry'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import {mapState} from 'vuex'
@@ -118,8 +118,10 @@ export default {
   },
 
   data () {
+    const currentFoundry = store.get('currentFoundry', {})
+    
     return {
-      code: '',
+      code: currentFoundry.code,
       
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
@@ -145,6 +147,14 @@ export default {
   },
 
   methods: {
+    /**
+     * Autosave code to localstorage
+     */
+    onCodeChange (code) {
+      this.code = code
+      store.set('currentFoundry', {code})
+    },
+    
     /**
      * Update the language code based on constructs made in Blockly.
      */
