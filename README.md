@@ -7,7 +7,7 @@
 
 <br>
 
-![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
+![](https://midiblocks.com/wp-content/uploads/2020/09/Annotation-2020-09-07-182204-scaled.jpg)
 
 ---
 
