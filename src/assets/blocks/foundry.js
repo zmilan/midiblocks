@@ -14,7 +14,7 @@ import Blockly from 'blockly'
 Blockly.Blocks['factory_base'] = {
   // Base of new block.
   init: function() {
-    this.setColour(120);
+    this.setColour('#2ca300');
     this.appendDummyInput()
         .appendField('name')
         .appendField(new Blockly.FieldTextInput('block_type'), 'NAME');
@@ -163,7 +163,7 @@ Blockly.Blocks['input_value'] = {
       "args2": TYPE_ARGS,
       "previousStatement": "Input",
       "nextStatement": "Input",
-      "colour": 210,
+      "colour": '5D37F0',
       "tooltip": "A value socket for horizontal connections.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=71"
     });
@@ -194,7 +194,7 @@ Blockly.Blocks['input_statement'] = {
       "args2": TYPE_ARGS,
       "previousStatement": "Input",
       "nextStatement": "Input",
-      "colour": 210,
+      "colour": '5D37F0',
       "tooltip": "A statement socket for enclosed vertical stacks.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=246"
     });
@@ -213,7 +213,7 @@ Blockly.Blocks['input_dummy'] = {
       "args1": FIELD_ARGS,
       "previousStatement": "Input",
       "nextStatement": "Input",
-      "colour": 210,
+      "colour": '5D37F0',
       "tooltip": "For adding fields on a separate row with no " +
                  "connections. Alignment options (left, right, centre) " +
                  "apply only to multi-line fields.",
@@ -225,7 +225,7 @@ Blockly.Blocks['input_dummy'] = {
 Blockly.Blocks['field_static'] = {
   // Text value.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('text')
         .appendField(new Blockly.FieldTextInput(''), 'TEXT');
@@ -239,7 +239,7 @@ Blockly.Blocks['field_static'] = {
 Blockly.Blocks['field_input'] = {
   // Text input.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('text input')
         .appendField(new Blockly.FieldTextInput('default'), 'TEXT')
@@ -258,7 +258,7 @@ Blockly.Blocks['field_input'] = {
 Blockly.Blocks['field_number'] = {
   // Numeric input.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('numeric input')
         .appendField(new Blockly.FieldNumber(0), 'VALUE')
@@ -284,7 +284,7 @@ Blockly.Blocks['field_number'] = {
 Blockly.Blocks['field_angle'] = {
   // Angle input.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('angle input')
         .appendField(new Blockly.FieldAngle('90'), 'ANGLE')
@@ -311,7 +311,7 @@ Blockly.Blocks['field_dropdown'] = {
     this.setPreviousStatement(true, 'Field');
     this.setNextStatement(true, 'Field');
     this.setMutator(new Blockly.Mutator(['field_dropdown_option']));
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.setTooltip('Dropdown menu with a list of options.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=386');
   },
@@ -398,7 +398,7 @@ Blockly.Blocks['field_dropdown'] = {
 Blockly.Blocks['field_dropdown_container'] = {
   // Container.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('add options');
     this.appendStatementInput('STACK');
@@ -412,7 +412,7 @@ Blockly.Blocks['field_dropdown_container'] = {
 Blockly.Blocks['field_dropdown_option'] = {
   // Add option.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('option');
     this.setPreviousStatement(true);
@@ -426,7 +426,7 @@ Blockly.Blocks['field_dropdown_option'] = {
 Blockly.Blocks['field_checkbox'] = {
   // Checkbox.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('checkbox')
         .appendField(new Blockly.FieldCheckbox('TRUE'), 'CHECKED')
@@ -445,10 +445,10 @@ Blockly.Blocks['field_checkbox'] = {
 Blockly.Blocks['field_colour'] = {
   // Colour input.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('colour')
-        .appendField(new Blockly.FieldColour('#ff0000'), 'COLOUR')
+        // .appendField(new Blockly.FieldColour('#00ff00'), 'COLOUR')
         .appendField(',')
         .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
     this.setPreviousStatement(true, 'Field');
@@ -464,7 +464,7 @@ Blockly.Blocks['field_colour'] = {
 Blockly.Blocks['field_variable'] = {
   // Dropdown for variables.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     this.appendDummyInput()
         .appendField('variable')
         .appendField(new Blockly.FieldTextInput('item'), 'TEXT')
@@ -483,7 +483,7 @@ Blockly.Blocks['field_variable'] = {
 Blockly.Blocks['field_image'] = {
   // Image.
   init: function() {
-    this.setColour(160);
+    this.setColour('2EC4B6');
     var src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
     this.appendDummyInput()
         .appendField('image')
@@ -511,7 +511,7 @@ Blockly.Blocks['type_group'] = {
     this.updateShape_();
     this.setOutput(true, 'Type');
     this.setMutator(new Blockly.Mutator(['type_group_item']));
-    this.setColour(230);
+    this.setColour('ff628c');
     this.setTooltip('Allows more than one type to be accepted.');
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677');
   },
@@ -613,7 +613,7 @@ Blockly.Blocks['type_group_container'] = {
         {"type": "input_dummy"},
         {"type": "input_statement", "name": "STACK"}
       ],
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Add, or remove allowed type.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677"
     });
@@ -627,7 +627,7 @@ Blockly.Blocks['type_group_item'] = {
       "message0": "type",
       "previousStatement": null,
       "nextStatement": null,
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Add a new allowed type.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=677"
     });
@@ -641,7 +641,7 @@ Blockly.Blocks['type_null'] = {
     this.jsonInit({
       "message0": "any",
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Any type is allowed.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602"
     });
@@ -655,7 +655,7 @@ Blockly.Blocks['type_boolean'] = {
     this.jsonInit({
       "message0": "Boolean",
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Booleans (true/false) are allowed.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602"
     });
@@ -669,7 +669,7 @@ Blockly.Blocks['type_number'] = {
     this.jsonInit({
       "message0": "Number",
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Numbers (int/float) are allowed.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602"
     });
@@ -683,7 +683,7 @@ Blockly.Blocks['type_string'] = {
     this.jsonInit({
       "message0": "String",
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Strings (text) are allowed.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602"
     });
@@ -697,7 +697,7 @@ Blockly.Blocks['type_list'] = {
     this.jsonInit({
       "message0": "Array",
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Arrays (lists) are allowed.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=602"
     });
@@ -711,7 +711,7 @@ Blockly.Blocks['type_other'] = {
       "message0": "other %1",
       "args0": [{"type": "field_input", "name": "TYPE", "text": ""}],
       "output": "Type",
-      "colour": 230,
+      "colour": 'ff628c',
       "tooltip": "Custom type to allow.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=702"
     });

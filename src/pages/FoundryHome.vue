@@ -4,9 +4,9 @@ q-page(style='height: 1px')
     template(v-slot:after)
       .flex.column
         #preview
-        CodeEditor(:code='code' style='flex: 2')
+        CodeEditor(style='flex: 2' @onCodeChange='onCodeChange' :value='code')
     template(v-slot:before)
-      Workspace.fill(ref='workspace' :blocks='[]' :options='options')
+      Workspace.fill(ref='workspace' :blocks='[]' :options='options' @change='workspaceEventHandler')
         category(name='Input')
           block(type='input_value')
             value(name='TYPE')
@@ -33,7 +33,7 @@ q-page(style='height: 1px')
           block(type='type_string')
           block(type='type_list')
           block(type='type_other')
-        category#colourCategory(name='Colour')
+        category(name='Colour')
           block(type='colour_hue')
             mutation(colour='20')
             field(name='HUE') 20
@@ -86,13 +86,13 @@ q-page(style='height: 1px')
 </template>
 
 <script>
-import '../assets/blocks/factory'
+import '../assets/blocks/foundry'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import {mapState} from 'vuex'
 import Blockly from 'blockly'
 import store from 'store'
-import {throttle} from 'lodash'
+import {set, throttle} from 'lodash'
 
 // Default for untitled fields
 const UNNAMED = 'unnamed'
@@ -118,8 +118,15 @@ export default {
   },
 
   data () {
+    const currentFoundry = store.get('currentFoundry', {})
+    
     return {
-      code: '',
+      workspace: {
+        blockly: null,
+        hasLoaded: false
+      },
+      
+      code: currentFoundry.code,
       
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
@@ -137,18 +144,72 @@ export default {
   },
 
   mounted () {
-    this.workspace = this.$refs.workspace.blockly
+    set(window, 'app.$foundry', this)
+    
+    this.workspace.blockly = this.$refs.workspace.blockly
 
-    Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" deletable="false" movable="false"></block></xml>'), this.$refs.workspace.blockly)
-    this.workspace.addChangeListener(Blockly.Events.disableOrphans)
-    this.workspace.addChangeListener(this.updateLanguage)
+    // Load workspace
+    const currentFoundry = store.get('currentFoundry', {})
+    if (currentFoundry.workspace) {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom(currentFoundry.workspace),
+        this.workspace.blockly
+      )
+    } else {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" deletable="false" movable="false"></block></xml>'),
+        this.$refs.workspace.blockly
+      )
+    }
+
+    this.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
   methods: {
     /**
+     * Autosave code to localstorage
+     */
+    autosave () {
+      store.set('currentFoundry', {
+        code: this.code,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace.blockly))
+      })
+    },
+
+    /**
+     * Handles code editor changes
+     */
+    onCodeChange (code) {
+      this.code = code
+      this.autosave()
+    },
+
+    /**
+     * Handles Workspace events
+     */
+    workspaceEventHandler (ev) {
+      switch (ev.type) {
+        case Blockly.Events.FINISHED_LOADING:
+          this.workspace.hasLoaded = true
+        break
+          
+        case Blockly.Events.BLOCK_CREATE:
+        case Blockly.Events.BLOCK_DELETE:
+        case Blockly.Events.BLOCK_CHANGE:
+        case Blockly.Events.BLOCK_MOVE:
+        case Blockly.Events.VAR_CREATE:
+        case Blockly.Events.VAR_DELETE:
+        case Blockly.Events.VAR_RENAME:
+          this.onWorkspaceChange()
+          this.workspace.hasLoaded && this.autosave()
+        break;
+      }
+    },
+
+    /**
      * Update the language code based on constructs made in Blockly.
      */
-    updateLanguage () {
+    onWorkspaceChange () {
       const rootBlock = this.getRootBlock()
 
       if (!rootBlock) {
@@ -170,7 +231,7 @@ export default {
      * @return {Blockly.Block}
      */
     getRootBlock() {
-      const blocks = this.workspace.getTopBlocks(false)
+      const blocks = this.workspace.blockly.getTopBlocks(false)
 
       for (var i = 0, block; block = blocks[i]; i++) {
         if (block.type == 'factory_base') {
@@ -310,11 +371,7 @@ export default {
       options.trashcan = false
       options.toolbox = null
       
-      this.previewWorkspace = Blockly.inject('preview',
-          {rtl: rtl,
-          media: 'media/',
-          scrollbars: true,
-          ...options});
+      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options});
       this.previewWorkspace.clear();
 
       // Fetch the code and determine its format (JSON or JavaScript).

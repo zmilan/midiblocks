@@ -3,6 +3,7 @@ import axios from 'axios'
 import MarkdownIt from 'markdown-it'
 import pkg from '../../package.json'
 import {colors} from 'quasar'
+import 'geteventlisteners'
 
 // Prototypes
 Vue.prototype.$axios = axios
