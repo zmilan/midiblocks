@@ -4,7 +4,7 @@ q-page(style='height: 1px')
     template(v-slot:after)
       .flex.column
         #preview
-        CodeEditor(style='flex: 2' @onCodeChange='autosave' :value='code')
+        CodeEditor(style='flex: 2' @onCodeChange='onCodeChange' :value='code')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :blocks='[]' :options='options' @change='workspaceEventHandler')
         category(name='Input')
@@ -174,6 +174,14 @@ export default {
         code: this.code,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace.blockly))
       })
+    },
+
+    /**
+     * Handles code editor changes
+     */
+    onCodeChange (code) {
+      this.code = code
+      this.autosave()
     },
 
     /**
