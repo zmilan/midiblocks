@@ -92,7 +92,7 @@ import CodeEditor from '../components/CodeEditor'
 import {mapState} from 'vuex'
 import Blockly from 'blockly'
 import store from 'store'
-import {throttle} from 'lodash'
+import {set, throttle} from 'lodash'
 
 // Default for untitled fields
 const UNNAMED = 'unnamed'
@@ -144,6 +144,8 @@ export default {
   },
 
   mounted () {
+    set(window, 'app.$foundry', this)
+    
     this.workspace.blockly = this.$refs.workspace.blockly
 
     // Load workspace
@@ -198,9 +200,8 @@ export default {
 
     /**
      * Update the language code based on constructs made in Blockly.
-     * - also checks if we should save
      */
-    onWorkspaceChange (ev) {
+    onWorkspaceChange () {
       const rootBlock = this.getRootBlock()
 
       if (!rootBlock) {
@@ -362,11 +363,7 @@ export default {
       options.trashcan = false
       options.toolbox = null
       
-      this.previewWorkspace = Blockly.inject('preview',
-          {rtl: rtl,
-          media: 'media/',
-          scrollbars: true,
-          ...options});
+      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options});
       this.previewWorkspace.clear();
 
       // Fetch the code and determine its format (JSON or JavaScript).
