@@ -1,13 +1,13 @@
 <div align="center">
   <h1><a href="https://midiblocks.com">midiblocks</a> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></h1>
-  <h2>A smart, drag-and-drop, programmable MIDI mapper</h2>
+  <h2>A smart, drag-and-drop, programmable MIDI platform</h2>
   <br>
-  <h3>🚧 coming soon! 🚧</h3>
+  <h3>🚧 This repo is still in development and not 100% ready 🚧</h3>
 </div>
 
 <br>
 
-![](https://midiblocks.com/wp-content/uploads/2020/09/Annotation-2020-09-07-182204-scaled.jpg)
+![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
 
 ---
 
@@ -43,24 +43,19 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 # Setup
 
-## WordPress
-- Install a vanilla [WordPress](https://wordpress.org/) site (I use [Local by Flywheel](https://localwp.com/) to do this quickly)
-- Install the theme once the Quasar setup below is complete
-- [Finalize the WordPress](#WordPress-Finalization) install
-
-## Quasar
 - Install [Git](https://git-scm.com/downloads)
 - Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
 - Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`
 - Install [Quasar CLI](https://quasar.dev/quasar-cli/installation) globally with: `npm install -g @quasar/cli`
-- Clone this repository into your `/wp-content/themes/` folder with: `git clone https://github.com/midiblocks/midiblocks-wordpress`
-- Install dependencies by running `yarn` from the projects root
-- Build the project with: `yarn build`
-- Start the app with: `yarn start`
+- Clone this repository into with: `git clone https://github.com/midiblocks/midiblocks`
+- `cd` into the project and run `yarn` to install dependencies
+- If you'd like, copy `.default.quasar.env.json` into a new file called `.quasar.env.json` (with a leading .) and change values to match your environment
+- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
+- If you're using our [WordPress server-theme](https://github.com/midiblocks/wordpress) locally, set the build directory in `.quasar.env.json` to match your sites `/wp-content/themes/my-theme/` and run `yarn build` to build these files into there
 
 ### Command line scripts
 ```bash
-# Start the app in development mode (hot-code reloading, error reporting, etc.)
+# Start the app in development mode (hot module reloading, error reporting, etc.)
 yarn start
 
 # Build the app for production
@@ -82,19 +77,6 @@ yarn run build
 # Override the api baseurl (useful for testing between enviroments)
 ?apiDomain=https://example.com
 ```
-
-
-
----
-
-
-# WordPress Finalization
-
-<!-- @TODO Use defaults for when no menu is setup yet -->
-The following will also need to be completed on your WordPress site
-- Create a menu and add it to the `Main Nav Panel` [menu location](https://midiblocks.local/wp-admin/nav-menus.php)
-  - Add [Font Awesome](https://fontawesome.com/icons?d=gallery) classes (`fas fa-home`) and descriptions. You may need to click <kbd>Screen Options</kbd> and enable them to see these options
-  - Add at least the following custom links: `/`, `/studio`
 
 
 

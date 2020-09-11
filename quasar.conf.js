@@ -6,8 +6,13 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
+const fs = require('fs-extra')
 
 module.exports = function (ctx) {
+  // Environment Variables
+  let envKey = ctx.isDev ? 'development' : 'production'
+  let env = JSON.parse(fs.readFileSync('.quasar.env.json'))[envKey]
+
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
@@ -51,6 +56,7 @@ module.exports = function (ctx) {
 
       // @todo Move this to .env
       publicPath: ctx.dev ? null : 'wp-content/themes/midiblocks/dist/spa',
+      distDir: env.BUILD_DIR,
       
       // transpile: false,
 
@@ -205,7 +211,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'midiblocks-wordpress'
+        appId: 'midiblocks'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

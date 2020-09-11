@@ -1,9 +1,12 @@
+# Security
+.quasar.env.json
+
+# Commong
 .DS_Store
 .thumbs.db
 node_modules
 
 # Build
-dist
 .vscode/sftp.json
 
 # Quasar core related directories
