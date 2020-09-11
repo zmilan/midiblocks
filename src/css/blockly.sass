@@ -1,0 +1,142 @@
+// Transparent background
+body.transparent,
+.blockly.inline
+  .blocklyMainWorkspaceScrollbar,
+  .blocklyToolboxDiv
+    display: none
+
+// Color overrides
+.zelos-renderer.classic-theme
+  .blocklyPath[fill="#5ba55b"]
+    fill: $block-green !important
+
+    ~ g
+      text
+        fill: anti-bg-color($block-green) !important
+
+// Workspace layout
+svg.blocklySvg
+  background: $bg-main
+  
+.blockly-wrap
+  height: 100%
+
+.blockly
+  position: absolute
+  top: 0
+  right: 0
+  width: 100%
+  height: 100%
+
+  &.inline
+    position: relative
+    height: 200px
+
+  &.fill
+    position: relative
+
+.blocklyMainBackground
+  opacity: 0.1
+
+// Toolbox
+.blocklyToolboxDiv
+  background: $dark
+  padding: $panel-padding / 2
+  border-right-width: 2px
+  box-shadow: $shadow-2
+
+.blocklyTreeRoot,
+  background: #28284e
+  box-shadow: $shadow-2
+
+  .blocklyTreeRow
+    border-left: none !important
+  
+.blocklyFlyoutBackground
+  fill: #28284e
+  stroke: $dark
+  stroke-width: 2px
+
+.blocklyMenuItemSelected .blocklyMenuItemCheckbox
+  background: none
+
+  &:before
+    content: '\f0da'
+    font-family: 'Font Awesome 5 Free'
+    font-weight: 600
+    position: absolute
+    transform: translate(7px, 3px)
+
+// Trees
+.blocklyTreeSeparator
+  border-left: none !important
+  border-bottom-color: $dark
+
+.blocklyTreeIcon
+  background: none !important
+
+// Scrollbars
+.blocklyScrollbarHandle
+  fill: $scrollbar-draggable !important
+  transition: fill 0.35s ease
+  &:hover
+    fill: $scrollbar-draggable-hover !important
+  &:active
+    fill: $secondary !important
+
+
+
+// Category colors
+.blocklyTreeLabel:before
+  font-family: 'Font Awesome 5 Free'
+  font-weight: 600
+  margin-right: 10px
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(1)
+    color: $blockly-midi-events
+    .blocklyTreeLabel:before
+      content: '\f519'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(2)
+    color: $blockly-midi-arguments
+    .blocklyTreeLabel:before
+      content: '\f085'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(3)
+    color: $blockly-send-midi
+    .blocklyTreeLabel:before
+      font-family: 'Font Awesome 5 Brands'
+      content: '\f287'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(5)
+    color: $blockly-logic
+    .blocklyTreeLabel:before
+      content: '\f0b0'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(6)
+    color: $blockly-loops
+    .blocklyTreeLabel:before
+      content: '\f534'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(7)
+    color: $blockly-math
+    .blocklyTreeLabel:before
+      content: '\f1ec'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(9)
+    color: $blockly-variables
+    .blocklyTreeLabel:before
+      content: '\f187'
+
+.blocklyTreeRoot > div > div:last-child
+  > div:nth-child(10)
+    color: $blockly-functions
+    .blocklyTreeLabel:before
+      content: '\f1e6'

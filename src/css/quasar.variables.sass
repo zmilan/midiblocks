@@ -1,0 +1,74 @@
+// Quasar Sass (& SCSS) Variables
+// @see https://coolors.co/1e1e3f-fad000-ff628c-3ad900-9effff-8ef9f3-ffffff-cbf3f0-2ec4b6-756d54
+
+// Blocks
+$block-red: #ff628c
+$block-orange: #FF9D00
+$block-yellow: #fad000
+$block-green: #2ca300
+$block-blue: #5D37F0
+$block-tea: #2EC4B6
+
+// Theme
+$bg-main: #2d2b55
+$icon-active: #fff
+$icon-inactive: #A599E9
+$item-active-bg: #222244
+$item-inactive-bg: #28284e
+
+$scrollbar-draggable: #6a63a1
+$scrollbar-draggable-hover: #4d21fc  
+
+// Terminal
+$ansi-black: #000000
+$ansi-red: #EC3A37F5
+$ansi-green: #3AD900
+$ansi-yellow: #FAD000
+$ansi-blue: #6943FF
+$ansi-magenta: #FF2C70
+$ansi-cyan: #80FCFF
+$ansi-white: #FFFFFF
+$ansi-bright-black: #5C5C61
+$ansi-bright-red: #EC3A37F5
+$ansi-bright-green: #3AD900
+$ansi-bright-yellow: #FAD000
+$ansi-bright-blue: #6943FF
+$ansi-bright-magenta: #FB94FF
+$ansi-bright-cyan: #80FCFF
+$ansi-bright-white: #FFFFFF
+
+// Quasar overrides
+$panel-padding: 20px
+
+$primary   : #1e1e3f
+$secondary : $block-yellow
+$accent    : $block-yellow
+$dark      : #222244
+$positive  : #3ad900
+$negative  : $block-red
+$info      : #9effff
+$warning   : #fad000
+
+$h1: (size: 3rem, line-height: 3rem, letter-spacing: -.01562em, weight: 600)
+$h2: (size: 2rem, line-height: 2rem, letter-spacing: -.01562em, weight: 600)
+$h3: (size: 1.5rem, line-height: 1.5rem, letter-spacing: -.01562em, weight: 600)
+
+$separator-color-dark: darken($dark, 5%) !important
+$separator-color: darken($dark, 5%) !important
+  
+// Blockly
+$blockly-midi-events: #9fa55b
+$blockly-midi-arguments: #a5935b
+$blockly-send-midi: #5ba5a5
+$blockly-logic: #5b80a5
+$blockly-loops: #5ba55b
+$blockly-math: #5b67a5
+$blockly-variables: #a55b80
+$blockly-functions: #995ba5
+
+// Functinos
+@function anti-bg-color($color)
+  @if (lightness( $color ) > 40)
+    @return $dark
+  @else
+    @return #ffffff

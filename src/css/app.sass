@@ -1,0 +1,44 @@
+// Core
+html, body, #q-app
+  height: 100%
+
+h2
+  font-size: 1.5em
+  margin-top: 0
+  font-weight: 500
+  line-height: 2em
+
+a
+  color: $secondary
+
+// Helpers
+.no-select
+  user-select: none
+
+.text-decoration-none
+  text-decoration: none !important
+
+.center-children
+  display: flex
+  justify-content: center
+  align-items: center
+
+.flex
+  display: flex
+
+  &.column
+    height: 100%
+    flex-direction: column
+
+  > *
+    flex: 1
+  
+// Device lists
+.device-led.off
+  transition: background .5s ease
+
+.device-led.on
+  transition: none
+
+.bg-blockly-send-midi
+  background: $blockly-send-midi

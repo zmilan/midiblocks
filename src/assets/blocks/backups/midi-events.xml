@@ -1,0 +1,71 @@
+<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" id="$BE-uUl85UT*TLs]PkIG" deletable="false" movable="false" x="10" y="10">
+    <mutation connections="NONE"></mutation>
+    <field name="NAME">midi_on_event</field>
+    <field name="INLINE">EXT</field>
+    <field name="CONNECTIONS">NONE</field>
+    <statement name="INPUTS">
+      <block type="input_value" id="Y2z9Szpd$T3tRFqlOFa5">
+        <field name="INPUTNAME">args</field>
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="x;;E#uiQ^d3zbYSb%S^N">
+            <field name="TEXT">On MIDI</field>
+            <next>
+              <block type="field_dropdown" id="H8S*qR^q]Y9N=?KKXM[.">
+                <mutation options="[&quot;text&quot;,&quot;text&quot;,&quot;text&quot;]"></mutation>
+                <field name="FIELDNAME">event</field>
+                <field name="USER0">Note On</field>
+                <field name="CPU0">noteon</field>
+                <field name="USER1">Note Off</field>
+                <field name="CPU1">noteoff</field>
+                <field name="USER2">Control Change</field>
+                <field name="CPU2">controlchange</field>
+                <next>
+                  <block type="field_static" id="C*^;u/:ty4w,3TTE1[aE">
+                    <field name="TEXT">from device</field>
+                    <next>
+                      <block type="field_input" id="0O5U7C^_hh@U$^WhzXxb">
+                        <field name="TEXT">any</field>
+                        <field name="FIELDNAME">device</field>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </statement>
+        <value name="TYPE">
+          <shadow type="type_null" id="Ygn1vecIt@v{WhQUY@cB"></shadow>
+          <block type="type_other" id="FYFz:CTFr.4^C?TPq.DK">
+            <field name="TYPE">midi_arg</field>
+          </block>
+        </value>
+        <next>
+          <block type="input_statement" id="$x1%4CR4~P;B4H!yOiw|">
+            <field name="INPUTNAME">statements</field>
+            <field name="ALIGN">LEFT</field>
+            <value name="TYPE">
+              <shadow type="type_null" id="t:WKD*kuRWrQl-TYI{tg"></shadow>
+            </value>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id="])_Nmk9ly.vu$_~l0lA]" deletable="false" movable="false">
+        <field name="TEXT">Runs the midiblock when the selected MIDI event is triggered from the specified device. Attach MIDI Args to the right to fine-tune the event</field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="Lc4sT?sPlIb|_=4XL(TJ" deletable="false" movable="false">
+        <field name="TEXT">https://midiblocks.com/block/midi_on_event</field>
+      </block>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="Z3/Qx=dvBay6B6lfo;fx">
+        <mutation colour="#a5a55b"></mutation>
+        <field name="HUE">60</field>
+      </block>
+    </value>
+  </block></xml>

@@ -1,0 +1,65 @@
+.transparent
+  svg.blocklySvg,
+  main.q-page
+    background: transparent
+
+// Fixes
+// Fixes a 1px gap between main app toolbar and where it joins with the sidebars toolbar
+.main-header-left-pixel-gap-fix:before
+  content: ''
+  position: absolute
+  left: -1px
+  width: 1px
+  height: 100%
+  background: $primary
+
+.q-item.q-router-link--exact-active
+  background: $primary
+  color: #fff
+
+  .fas,
+  .q-item__label--caption
+    color: #fff !important
+
+section.content
+  width: 1200px
+  max-width: 100%
+  margin-left: auto
+  margin-right: auto
+  padding: $panel-padding
+
+.flex-drawer .q-drawer__content
+  display: flex
+  flex-direction: column
+
+// Splitter
+#foundry-splitter > .q-splitter__after
+  overflow-y: hidden
+
+// Page
+main.q-page
+  background: #2d2b55
+
+// Sidebar
+.q-item__section--avatar,
+.q-item__label,
+.q-item .q-item__label--caption
+  color: $icon-inactive
+
+.q-dark.q-drawer
+  background: $item-inactive-bg
+  
+.q-router-link--exact-active
+  &.q-item
+    background: $item-active-bg
+  
+  .q-item__section--avatar,
+  .q-item__label,
+  .q-item .q-item__label--caption
+    color: $icon-active
+
+body.desktop .q-focusable:focus > .q-focus-helper,
+body.desktop .q-manual-focusable--focused > .q-focus-helper,
+body.desktop .q-hoverable:hover > .q-focus-helper
+  &:after, &:before
+    background: $icon-inactive !important
