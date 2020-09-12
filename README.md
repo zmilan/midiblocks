@@ -1,6 +1,7 @@
 <div align="center">
-  <h1><a href="https://midiblocks.com">midiblocks</a> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></h1>
-  <h2>A smart, drag-and-drop, programmable MIDI platform</h2>
+  <h1><a href="https://midiblocks.com"><img height=40 src="https://midiblocks.com/wp-content/uploads/2020/09/midiblocks-colorized-light.png"></a></h1>
+  <p><a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></p>
+  <h2>A visual MIDI mapping and scripting platform</h2>
   <br>
   <h3>🚧 This repo is still in development and not 100% ready 🚧</h3>
 </div>
@@ -9,8 +10,58 @@
 
 ![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
 
----
 
+
+> ## Contents
+> - [About](#about)
+>   - [Features](#features)
+>   - [Milestones](#milestones)
+>   - [Motivation](#motivation)
+> - [Setup](#setup)
+>   - [Installing](#installing)
+>   - [Browser support](#browser-support)
+>   - [Limitations](#limitations)
+> - [Dev](#dev)
+>   - [Command line scripts](#command-line-scripts)
+>   - [Dev Notes](#dev-notes)
+> - [API](#api)
+>   - [Querystrings](#querystrings)
+> - [License](#license)
+
+
+
+# About
+
+<!-- > This project includes a [Blockly-based visual block editor](https://developers.google.com/blockly), a [Monaco-based JavaScript editor](https://microsoft.github.io/monaco-editor/), a core set of starter blocks, and an API to communicate with a Midiblocks server (coming soon) **and can be used offline.** -->
+
+<!-- Midiblocks has several goals:
+- Expose browser based creativity libraries such as [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/handsfreejs/handsfree), and many others to MIDI devices (and beyond) under a single visual language that can be used by anyone
+
+Powered by [Google's Blockly](https://developers.google.com/blockly) and [Monaco editor](https://microsoft.github.io/monaco-editor/), Midiblocks programs are created by snapping blocks together. -->
+
+## Features
+
+## Milestones
+
+## Motivation
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+# Setup
+## Installing
+- Install [Git](https://git-scm.com/downloads)
+- Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
+- Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`
+- Install [Quasar CLI](https://quasar.dev/quasar-cli/installation) globally with: `npm install -g @quasar/cli`
+- Clone this repository into with: `git clone https://github.com/midiblocks/midiblocks`
+- `cd` into the project and run `yarn` to install dependencies
+- If you'd like, copy `.default.quasar.env.json` into a new file called `.quasar.env.json` (with a leading .) and change values to match your environment
+- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
+- If you're using our [WordPress server-theme](https://github.com/midiblocks/wordpress) locally, set the build directory in `.quasar.env.json` to match your sites `/wp-content/themes/my-theme/` and run `yarn build` to build these files into there
 
 
 ## Browser Support
@@ -27,33 +78,20 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 
 
----
-
-
-
 ## Limitations
 
 - **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be providing ES6 support soon!
 
 
 
----
+-------------------------------------------------------------------------------
 
 
 
-# Setup
+# Dev
 
-- Install [Git](https://git-scm.com/downloads)
-- Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
-- Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`
-- Install [Quasar CLI](https://quasar.dev/quasar-cli/installation) globally with: `npm install -g @quasar/cli`
-- Clone this repository into with: `git clone https://github.com/midiblocks/midiblocks`
-- `cd` into the project and run `yarn` to install dependencies
-- If you'd like, copy `.default.quasar.env.json` into a new file called `.quasar.env.json` (with a leading .) and change values to match your environment
-- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
-- If you're using our [WordPress server-theme](https://github.com/midiblocks/wordpress) locally, set the build directory in `.quasar.env.json` to match your sites `/wp-content/themes/my-theme/` and run `yarn build` to build these files into there
 
-### Command line scripts
+## Command line scripts
 ```bash
 # Start the app in development mode (hot module reloading, error reporting, etc.)
 yarn start
@@ -67,12 +105,16 @@ yarn run build
 
 
 
-
----
-
+-------------------------------------------------------------------------------
 
 
-## API
+
+# API
+
+## Querystrings
+
+Add the following to your URL to apply the commented effect:
+
 ```bash
 # Override the api baseurl (useful for testing between enviroments)
 ?apiDomain=https://example.com
@@ -80,8 +122,7 @@ yarn run build
 
 
 
-
----
+-------------------------------------------------------------------------------
 
 
 
