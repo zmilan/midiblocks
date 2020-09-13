@@ -5,6 +5,20 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+/**
+ * Storage environment
+ */
+let storageMode
+process.argv.forEach(arg => {
+  switch (arg) {
+    case '--use-remote-storage':
+      storageMode = Vue.prototype.$storageMode = 'remote'
+      break
+    default:
+      storageMode = Vue.prototype.$storageMode = 'local'
+  }
+})
+
 /*
  * If not building with SSR mode, you can
  * directly export the Store instantiation;
@@ -97,7 +111,7 @@ export default function (/* { ssrContext } */) {
           delete payload.path
           params = payload
         }
-        
+
         return axios.get(getters.endpoint(path), params)
       }
     }

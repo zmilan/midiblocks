@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import {set} from 'lodash'
+
 export default {
   name: 'App',
 
@@ -58,6 +60,7 @@ export default {
   mounted () {
     this.$root.$on('prepareRoute', this.prepareRoute)
     this.$root.$on('error', this.onError)
+    set(window, 'app.version', this.$v)
   },
 
   destroyed () {

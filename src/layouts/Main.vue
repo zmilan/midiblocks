@@ -73,9 +73,6 @@ export default {
    */
   mounted () {
     this.$nextTick(() => {
-      // Setup global `app`
-      set(window, 'app.version', this.$v)
-
       // Load boot data
       this.boot = get(window, 'app.boot', {})
       if (!this.boot.mainNavPanel) {

@@ -8,7 +8,8 @@
 
 <br>
 
-![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
+<!-- ![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg) -->
+![](https://i.imgur.com/0a0U1HK.png)
 
 ## TL:DR;
 ```bash
@@ -22,41 +23,82 @@ yarn start
 
 
 # Contents
-> - [About](#about)
->   - [Motivation](#motivation)
->   - [Features](#features)
->   - [Milestones](#milestones)
-> - [Setup](#setup)
->   - [Prereqs](#prereqs)
->   - [Installing](#installing)
->   - [Browser support](#browser-support)
->   - [Limitations](#limitations)
-> - [Dev](#dev)
->   - [Command line scripts](#command-line-scripts)
->   - [Dev Notes](#dev-notes)
-> - [API](#api)
->   - [Querystrings](#querystrings)
-> - [License](#license)
+<table>
+  <tr>
+    <td style="vertical-align: top">
+      <ul>
+        <li>
+          <a href="#about">About</a>
+          <ul>
+            <li><a href="#motivation">Motivation</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#milestones">Milestones</a></li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td style="vertical-align: top">
+      <ul>
+        <li>
+          <a href="#setup">Setup</a>
+          <ul>
+            <li><a href="#prereqs">Prereqs</a></li>
+            <li><a href="#installing">Installing</a></li>
+            <li><a href="#browser-support">Browser support</a></li>
+            <li><a href="#limitations">Limitations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td style="vertical-align: top">
+      <ul>
+        <li>
+          <a href="#dev">Dev</a>
+          <ul>
+            <li><a href="#command-line-scripts">Command line scripts</a></li>
+            <li><a href="#dev-notes">Dev Notes</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#api">API</a>
+          <ul>
+            <li><a href="#querystrings">Querystrings</a></li>
+          </ul>
+        </li>
+      </ul>
+    </td>
+    <td style="vertical-align: top">
+      <ul>
+        <li>
+          <a href="#license">License</a>
+        </li>
+      </ul>
+    </td>
+  </tr>
+</table>
 
 
 
 # About
 
-**Midiblocks is an attempt to simplify MIDI mapping and MIDI scripting to such a degree that it is usable by anyone, even those without coding experience.**
+**Midiblocks is an attempt to simplify MIDI mapping and MIDI scripting to such a degree that it is doable by anyone, even those without coding experience.**
 
-Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks that together plays an Em chord on an MPK Mini when E4 is played on an APC:
+Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like: [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks:
 
+<!-- @todo Create GIF -->
 ![](https://i.imgur.com/0a0U1HK.png)
 
-You can also create custom blocks using JavaScript that others can use with our [monaco based](https://microsoft.github.io/monaco-editor/) IDE (more info coming soon):
+You can also create custom blocks using JavaScript that others can use with our [monaco based](https://microsoft.github.io/monaco-editor/) IDE (more info coming soon). Currently code runs in a sandboxed environment using [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter), though there are some [limitations](#limitations) which we'll be addressing over time.
 
 ![](https://i.imgur.com/iR58fER.jpg)
 
-Ultimately, the goal is to expose browser based creativity and machine learning libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/handsfreejs/handsfree), and many others to MIDI devices (and beyond) under a single visual language that can be used by anyone on anything.
+A core set of blocks will be provided for offline use (the default setup), but connecting to a remote midiblocks server will also be possible as well. In fact we're working on a [WordPress plugin](https://github.com/MIDIBlocks/midiblocks-wordpress-server) that turns your WordPress site into a self-documented, versioned Midiblocks server!
 
 > 🚧 More info coming soon
 
 ## Motivation
+
+Ultimately, the goal is to expose browser based creativity and machine learning libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/handsfreejs/handsfree), and many others to MIDI devices (and beyond) under a single visual language that can be used by anyone on anything.
 
 > 🚧 More info coming soon
 
@@ -104,7 +146,8 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ## Limitations
 
-- **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be providing ES6 support soon!
+- **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be adding Babel soon so that you can use the latest JavaScript has to offer!
+- Sandboxed code runs roughly 200x slower, but we'll provide workarounds as we work to lower this
 
 
 

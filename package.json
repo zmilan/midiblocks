@@ -6,7 +6,9 @@
   "author": "Oz Ramos <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "quasar dev",
+    "start": "npm run dev:local",
+    "dev:local": "quasar dev --use-local-library",
+    "dev:remote": "quasar dev --use-remote-library",
     "build": "quasar build",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
