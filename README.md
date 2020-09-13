@@ -165,16 +165,28 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ## Command line scripts
 ```bash
+# DEVELOPMENT 
+# -----------
 # Start the app in development mode with localStorage
-npm run dev:local
-# or the shorthand
 npm start
+# (alias)
+npm run dev
+# (alias)
+npm run dev:local
 
 # Start the app in development mode with remote storage
 npm run dev:remote
 
-# Build the app for production
+
+# PRODUCTION
+# ----------
+# Build the app for production with localStorage
 npm run build
+# (alias)
+npm run build:local
+
+# Build the app for production with remote storage
+npm run build:remote
 ```
 
 ## Dev Notes
