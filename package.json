@@ -10,21 +10,19 @@
     "dev": "npm run dev:local",
     "dev:local": "quasar dev --use-local-storage",
     "dev:remote": "quasar dev --use-remote-storage",
-
     "build": "quasar build --use-local-storage",
     "build:local": "quasar build --use-local-storage",
     "build:remote": "quasar build --use-remote-storage",
-
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
-    "JS-Interpreter": "https://github.com/NeilFraser/JS-Interpreter",
     "axios": "^0.18.1",
     "blockly": "^3.20200625.2",
     "core-js": "^3.6.5",
     "geteventlisteners": "^1.1.0",
+    "js-interpreter": "^2.2.0",
     "markdown-it": "^11.0.0",
     "monaco-editor-webpack-plugin": "^1.9.0",
     "mousetrap": "^1.6.5",
@@ -59,7 +57,6 @@
   ],
   "engines": {
     "node": ">= 10.18.1",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
+    "npm": ">= 6.13.4"
   }
 }

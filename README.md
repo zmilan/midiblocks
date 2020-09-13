@@ -126,13 +126,12 @@ Ultimately, the goal is to expose browser based creativity and machine learning 
 ## Prereqs
 - [Git](https://git-scm.com/downloads)
 - [NodeJS LTS (eg 10.x.x or 12.x.x)](https://nodejs.org/en/)
-- [Yarn Package Manager](https://yarnpkg.com/), install by running the following from the command line after installing NodeJS: `npm install -g yarn`
 
 ## Installing
 - Open terminal and clone this repository with: `git clone https://github.com/midiblocks/midiblocks`
 - Change into directory with: `cd midiblocks`
-- Run `yarn` from the project root to install dependencies
-- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
+- Run `npm install` from the project root to install dependencies (> 250Mb)
+- Run `npm start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
 
 
 ## Browser Support
