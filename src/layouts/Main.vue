@@ -6,8 +6,9 @@ q-layout(view='lHh Lpr lFf')
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
       q-toolbar-title
         router-link.text-decoration-none.text-white(:to='{name: "Home"}')
-          img.q-mr-sm(src='~assets/logo-title.png' height=32 style='vertical-align: middle')
-        small.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -3px)') {{version}}
+          img.gt-sm.q-mr-sm(src='~assets/logo-title.png' height=32 style='vertical-align: middle')
+          img.lt-md.q-mr-sm(src='~assets/logo-title-favicon.png' height=32 style='vertical-align: middle')
+        small.gt-xs.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -3px)') {{version}}
       q-space
       q-toggle.no-select(color='negative' dark v-model='isMIDIActive') MIDI is {{isMIDIActive ? 'enabled' : 'disabled'}}
 
