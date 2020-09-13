@@ -11,7 +11,12 @@ const fs = require('fs-extra')
 module.exports = function (ctx) {
   // Environment Variables
   let envKey = ctx.isDev ? 'development' : 'production'
-  let env = JSON.parse(fs.readFileSync('.quasar.env.json'))[envKey]
+  let env
+  if (fs.existsSync('.quasar.env.json')) {
+    env = JSON.parse(fs.readFileSync('.quasar.env.json'))[envKey]
+  } else {
+    env = JSON.parse(fs.readFileSync('.default.quasar.env.json'))[envKey]
+  }
 
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
