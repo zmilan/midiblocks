@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {set, trimEnd} from 'lodash'
+import {get, set, trimEnd} from 'lodash'
 import axios from 'axios'
+import localStorageAPI from '../assets/js/localstorage-api'
 
 Vue.use(Vuex)
 
@@ -86,6 +87,11 @@ export default function (/* { ssrContext } */) {
     },
 
     actions: {
+      /**
+       * GET data from storage, either from an API or localstorage
+       * @param {*} param0 
+       * @param {*} payload 
+       */
       apiGet ({getters}, payload) {
         let path
         let params = {}
@@ -97,8 +103,17 @@ export default function (/* { ssrContext } */) {
           delete payload.path
           params = payload
         }
-        
-        return axios.get(getters.endpoint(path), params)
+
+        if (Vue.prototype.$q.config.storageMode === 'remote') {
+          return axios.get(getters.endpoint(path), params)
+        } else {
+          return new Promise((resolve) => {
+            path = path.replace(/\//g, '.')
+            resolve({
+              data: get(localStorageAPI.get, path)(params)
+            })
+          })
+        }
       }
     }
   })
