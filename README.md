@@ -25,7 +25,7 @@ yarn start
 # Contents
 <table>
   <tr>
-    <td style="vertical-align: top">
+    <td>
       <ul>
         <li>
           <a href="#about">About</a>
@@ -34,10 +34,11 @@ yarn start
             <li><a href="#features">Features</a></li>
             <li><a href="#milestones">Milestones</a></li>
           </ul>
+          <br>
         </li>
       </ul>
     </td>
-    <td style="vertical-align: top">
+    <td>
       <ul>
         <li>
           <a href="#setup">Setup</a>
@@ -50,7 +51,7 @@ yarn start
         </li>
       </ul>
     </td>
-    <td style="vertical-align: top">
+    <td>
       <ul>
         <li>
           <a href="#dev">Dev</a>
@@ -67,12 +68,16 @@ yarn start
         </li>
       </ul>
     </td>
-    <td style="vertical-align: top">
+    <td>
       <ul>
         <li>
           <a href="#license">License</a>
         </li>
       </ul>
+      <br>
+      <br>
+      <br>
+      <br>
     </td>
   </tr>
 </table>
