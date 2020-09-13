@@ -8,6 +8,20 @@
 /* eslint-env node */
 const fs = require('fs-extra')
 
+/**
+ * Storage environment
+ */
+let storageMode
+process.argv.forEach(arg => {
+  switch (arg) {
+    case '--use-remote-storage':
+      storageMode = 'remote'
+      break
+    default:
+      storageMode = 'local'
+  }
+})
+
 module.exports = function (ctx) {
   // Environment Variables
   let envKey = ctx.isDev ? 'development' : 'production'
@@ -116,7 +130,8 @@ module.exports = function (ctx) {
       iconSet: 'material-icons', // Quasar icon set
       lang: 'en-us', // Quasar language pack
       config: {
-        dark: true
+        dark: true,
+        storageMode
       },
 
       // Possible values for "importStrategy":

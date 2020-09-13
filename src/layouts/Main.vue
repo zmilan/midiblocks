@@ -77,9 +77,9 @@ export default {
       this.boot = get(window, 'app.boot', {})
       if (!this.boot.mainNavPanel) {
         this.$store.dispatch('apiGet', 'boot')
-          .then(resp => {
-            this.boot = resp.data
-            set(window, 'app.boot', resp.data)
+          .then(({data}) => {
+            this.boot = data
+            set(window, 'app.boot', data)
           })
           .catch(err => {
             this.$root.$emit('error', err)

@@ -15,8 +15,8 @@
 ```bash
 git clone https://github.com/midiblocks/midiblocks
 cd midiblocks
-yarn install
-yarn start
+npm install
+npm start
 # Open browser tab to: http://localhost:8080/
 ```
 
@@ -165,11 +165,16 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ## Command line scripts
 ```bash
-# Start the app in development mode (hot module reloading, error reporting, etc.)
-yarn start
+# Start the app in development mode with localStorage
+npm run dev:local
+# or the shorthand
+npm start
+
+# Start the app in development mode with remote storage
+npm run dev:remote
 
 # Build the app for production
-yarn run build
+npm run build
 ```
 
 ## Dev Notes
