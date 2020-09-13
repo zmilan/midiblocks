@@ -1,7 +1,8 @@
 <div align="center">
-  <h1><a href="https://midiblocks.com">midiblocks</a> <a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></h1>
-  <h2>A smart, drag-and-drop, programmable MIDI platform</h2>
+  <h1><a href="https://midiblocks.com"><img height=80 src="https://midiblocks.com/wp-content/uploads/2020/09/midiblocks-colorized-light.png"></a></h1>
+  <h2>A visual MIDI mapping and scripting platform</h2>
   <br>
+  <p><a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></p>
   <h3>🚧 This repo is still in development and not 100% ready 🚧</h3>
 </div>
 
@@ -9,8 +10,82 @@
 
 ![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg)
 
----
+## TL:DR;
+```bash
+git clone https://github.com/midiblocks/midiblocks
+cd midiblocks
+yarn install
+yarn start
+# Open browser tab to: http://localhost:8080/
+```
 
+
+
+# Contents
+> - [About](#about)
+>   - [Motivation](#motivation)
+>   - [Features](#features)
+>   - [Milestones](#milestones)
+> - [Setup](#setup)
+>   - [Prereqs](#prereqs)
+>   - [Installing](#installing)
+>   - [Browser support](#browser-support)
+>   - [Limitations](#limitations)
+> - [Dev](#dev)
+>   - [Command line scripts](#command-line-scripts)
+>   - [Dev Notes](#dev-notes)
+> - [API](#api)
+>   - [Querystrings](#querystrings)
+> - [License](#license)
+
+
+
+# About
+
+**Midiblocks is an attempt to simplify MIDI mapping and MIDI scripting to such a degree that it is usable by anyone, even those without coding experience.**
+
+Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks that together plays an Em chord on an MPK Mini when E4 is played on an APC:
+
+![](https://i.imgur.com/0a0U1HK.png)
+
+You can also create custom blocks using JavaScript that others can use with our [monaco based](https://microsoft.github.io/monaco-editor/) IDE (more info coming soon):
+
+![](https://i.imgur.com/iR58fER.jpg)
+
+Ultimately, the goal is to expose browser based creativity and machine learning libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/handsfreejs/handsfree), and many others to MIDI devices (and beyond) under a single visual language that can be used by anyone on anything.
+
+> 🚧 More info coming soon
+
+## Motivation
+
+> 🚧 More info coming soon
+
+## Features
+
+> 🚧 More info coming soon
+
+## Milestones
+- Create a MIDI mapper and scripter that can be used by anyone, even those without prior coding experience
+- A "GitHub/NPM for MIDI" that lets you quickly create, import, fork, and share MIDI mappings and scripts
+- Create integrations with creativity libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), and [handsfree.js](https://github.com/handsfreejs/handsfree)
+
+
+
+-------------------------------------------------------------------------------
+
+
+
+# Setup
+## Prereqs
+- [Git](https://git-scm.com/downloads)
+- [NodeJS LTS (eg 10.x.x or 12.x.x)](https://nodejs.org/en/)
+- [Yarn Package Manager](https://yarnpkg.com/), install by running the following from the command line after installing NodeJS: `npm install -g yarn`
+
+## Installing
+- Open terminal and clone this repository with: `git clone https://github.com/midiblocks/midiblocks`
+- Change into directory with: `cd midiblocks`
+- Run `yarn` from the project root to install dependencies
+- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
 
 
 ## Browser Support
@@ -27,33 +102,20 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 
 
----
-
-
-
 ## Limitations
 
 - **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be providing ES6 support soon!
 
 
 
----
+-------------------------------------------------------------------------------
 
 
 
-# Setup
+# Dev
 
-- Install [Git](https://git-scm.com/downloads)
-- Install [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
-- Open command line and install [Yarn Package Manager](https://yarnpkg.com/) with: `npm install -g yarn`
-- Install [Quasar CLI](https://quasar.dev/quasar-cli/installation) globally with: `npm install -g @quasar/cli`
-- Clone this repository into with: `git clone https://github.com/midiblocks/midiblocks`
-- `cd` into the project and run `yarn` to install dependencies
-- If you'd like, copy `.default.quasar.env.json` into a new file called `.quasar.env.json` (with a leading .) and change values to match your environment
-- Run `yarn start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
-- If you're using our [WordPress server-theme](https://github.com/midiblocks/wordpress) locally, set the build directory in `.quasar.env.json` to match your sites `/wp-content/themes/my-theme/` and run `yarn build` to build these files into there
 
-### Command line scripts
+## Command line scripts
 ```bash
 # Start the app in development mode (hot module reloading, error reporting, etc.)
 yarn start
@@ -67,12 +129,16 @@ yarn run build
 
 
 
-
----
-
+-------------------------------------------------------------------------------
 
 
-## API
+
+# API
+
+## Querystrings
+
+Add the following to your URL to apply the commented effect:
+
 ```bash
 # Override the api baseurl (useful for testing between enviroments)
 ?apiDomain=https://example.com
@@ -80,8 +146,7 @@ yarn run build
 
 
 
-
----
+-------------------------------------------------------------------------------
 
 
 
