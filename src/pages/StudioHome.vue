@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  Workspace(:options='options' :blocks='[]')
+  Workspace(ref='workspace' :options='options' :blocks='[]' @change='workspaceEventHandler')
     category(name='MIDI Events' colour='#9fa55b')
       block(type='midi_on_event')
     category(name='MIDI Arguments' colour='#a5935b')
@@ -238,7 +238,6 @@ q-page.full-height
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import {throttle} from 'lodash'
 import Workspace from '../components/Workspace'
 import store from 'store'
@@ -247,15 +246,11 @@ import '../assets/blocks/midi-args'
 import '../assets/blocks/midi-send'
 import '../assets/blocks/prompt'
 import webmidi from 'webmidi'
-
-const minHeight = 200
+import Interpreter from 'js-interpreter'
+import Blockly from 'blockly'
 
 export default {
   name: 'MainLayout',
-
-  computed: {
-    ...mapState(['workspace'])
-  },
 
   components: {
     Workspace
@@ -288,9 +283,11 @@ export default {
         outputs
       }])
 
-      // Setup listeners
-      this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
     })
+
+    // Setup listeners
+    this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
+    this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
   watch: {
@@ -302,30 +299,19 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true}),
-
-    /**
-     * Relayout
-     */
-    isHoriz: throttle(function () {
-      store.set('isHoriz', this.isHoriz)
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-      })
     }, 50, {leading: true, trailing: true})
   },
   
   data () {
     return {
+      hasLoaded: false,
+      
       errors: {
         webmidi: {
           enable: false
         }
       },
       
-      // Whether we are horizontal (code above console) or not (code aside console)
-      isHoriz: store.get('isHoriz'),
-
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {},
@@ -336,6 +322,29 @@ export default {
   },
 
   methods: {
+    /**
+     * Handles Workspace events
+     */
+    workspaceEventHandler (ev) {
+      switch (ev.type) {
+        case Blockly.Events.FINISHED_LOADING:
+          this.hasLoaded = true
+        break
+          
+        case Blockly.Events.BLOCK_CREATE:
+        case Blockly.Events.BLOCK_DELETE:
+        case Blockly.Events.BLOCK_CHANGE:
+        case Blockly.Events.BLOCK_MOVE:
+        case Blockly.Events.VAR_CREATE:
+        case Blockly.Events.VAR_DELETE:
+        case Blockly.Events.VAR_RENAME:
+          this.$refs.workspace.run()
+          // @todo autosave
+          // this.hasLoaded && this.autosave()
+        break;
+      }
+    },
+
     /**
      * Binds individiual inputs
      */
@@ -363,7 +372,7 @@ export default {
      */
     triggerEvent (eventName, ev) {
       // Run the code
-      if (this.workspace.code) {
+      if (this.code) {
         let data = Object.assign({}, ev)
         data.target = Object.assign({}, data.target)
         delete data.target._midiInput
@@ -371,8 +380,8 @@ export default {
         delete data.target.lastMessage
         data = JSON.stringify(data)
         
-        this.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
-        this.workspace.interpreter.run()
+        Interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
+        Interpreter.run()
       }
 
       // Update device message

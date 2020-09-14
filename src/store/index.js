@@ -40,16 +40,6 @@ export default function (/* { ssrContext } */) {
       },
       
       /**
-       * Represents the current workspace
-       */
-      workspace: {
-        code: '',
-        // @see https://neil.fraser.name/software/JS-Interpreter/docs.html
-        interpreter: null,
-        isRunning: true
-      },
-
-      /**
        * Represents devices, categorized into inputs and outputs
        */
       devices: {
