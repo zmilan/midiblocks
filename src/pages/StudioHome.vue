@@ -285,6 +285,20 @@ export default {
 
     })
 
+    // Load workspace
+    const currentStudio = store.get('currentStudio', {})
+    if (currentStudio.workspace) {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom(currentStudio.workspace),
+        this.$refs.workspace.blockly
+      )
+    } else {
+      Blockly.Xml.domToWorkspace(
+        Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"></xml>'),
+        this.$refs.workspace.blockly
+      )
+    }
+
     // Setup listeners
     this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
@@ -339,10 +353,18 @@ export default {
         case Blockly.Events.VAR_DELETE:
         case Blockly.Events.VAR_RENAME:
           this.$refs.workspace.run()
-          // @todo autosave
-          // this.hasLoaded && this.autosave()
+          this.hasLoaded && this.autosave()
         break;
       }
+    },
+
+    /**
+     * Save states
+     */
+    autosave () {
+      store.set('currentStudio', {
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      })
     },
 
     /**

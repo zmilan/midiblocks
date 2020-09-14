@@ -94,12 +94,6 @@ import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
 
-// Default for untitled fields
-const UNNAMED = 'unnamed'
-// Existing direction ('ltr' vs 'rtl') of preview.
-// @todo remove
-let oldDir = null
-
 export default {
   name: 'PageCodeHome',
 
@@ -401,7 +395,7 @@ export default {
 
         if (format == 'JSON') {
           var json = JSON.parse(code);
-          Blockly.Blocks[json.type || UNNAMED] = {
+          Blockly.Blocks[json.type || 'unnamed'] = {
             init: function() {
               this.jsonInit(json);
             }
