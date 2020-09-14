@@ -78,7 +78,7 @@ Blockly.Blocks['factory_base'] = {
   },
   connectOutputShadow_: function(outputType) {
     // Helper method to create & connect shadow block.
-    var type = this.$refs.workspace.newBlock('type_null');
+    var type = this.workspace.newBlock('type_null');
     type.setShadow(true);
     type.outputConnection.connect(this.getInput(outputType).connection);
     type.initSvg();
@@ -387,7 +387,7 @@ Blockly.Blocks['field_dropdown'] = {
     }
   },
   onchange: function() {
-    if (this.$refs.workspace && this.optionCount_ < 1) {
+    if (this.workspace && this.optionCount_ < 1) {
       this.setWarningText('Drop down menu must\nhave at least one option.');
     } else {
       fieldNameCheck(this);
