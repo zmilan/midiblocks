@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page(style='height: 1px')
-  q-splitter#foundry-splitter.full-height.q-pt-appbar(v-model='splitter' unit='px' reverse)
+  q-splitter#factory-splitter.full-height.q-pt-appbar(v-model='splitter' unit='px' reverse)
     template(v-slot:after)
       .flex.column
         #preview
@@ -86,7 +86,7 @@ q-page(style='height: 1px')
 </template>
 
 <script>
-import '../assets/blocks/foundry'
+import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import {mapState} from 'vuex'
@@ -118,12 +118,12 @@ export default {
   },
 
   data () {
-    const currentFoundry = store.get('currentFoundry', {})
+    const currentFactory = store.get('currentFactory', {})
     
     return {
       hasLoaded: false,
       
-      code: currentFoundry.code,
+      code: currentFactory.code || '',
       
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
@@ -141,13 +141,13 @@ export default {
   },
 
   mounted () {
-    set(window, 'app.$foundry', this)
+    set(window, 'app.$factory', this)
     
     // Load workspace
-    const currentFoundry = store.get('currentFoundry', {})
-    if (currentFoundry.workspace) {
+    const currentFactory = store.get('currentFactory', {})
+    if (currentFactory.workspace) {
       Blockly.Xml.domToWorkspace(
-        Blockly.Xml.textToDom(currentFoundry.workspace),
+        Blockly.Xml.textToDom(currentFactory.workspace),
         this.$refs.workspace.blockly
       )
     } else {
@@ -165,7 +165,7 @@ export default {
      * Autosave code to localstorage
      */
     autosave () {
-      store.set('currentFoundry', {
+      store.set('currentFactory', {
         code: this.code,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
