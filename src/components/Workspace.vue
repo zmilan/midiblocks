@@ -1,13 +1,26 @@
 <template lang="pug">
 .flex.min-height-inherit
   .min-height-inherit.position-relative(style='flex: 0 0 200px')
+    //- Quasar Toolbox
     q-list.q-pa-sm
       q-item(clickable)
   .min-height-inherit.position-relative
     .blockly(style='min-height: inherit')
+      //- Blockly
       .blockly-wrap(ref='blockly')
+      //- Toolbox
       xml(ref='toolbox' style='display: none')
-        slot
+        template(v-for='category in toolbox')
+          component(:is='category.tag' :name='category.name' :colour='category.colour' :custom='category.custom')
+            template(v-for='block in category.children')
+              component(:is='block.tag' :type='block.type' :colour='block.colour')
+                template(v-for='blockProp in block.children')
+                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :divisor_input='blockProp.divisor_input' :name='blockProp.name') {{blockProp.value}}
+                    template(v-for='blockShadow in blockProp.children')
+                      component(:is='blockShadow.tag' :type='blockShadow.type')
+                        template(v-for='blockShadowProp in blockShadow.children')
+                          component(:is='blockShadowProp.tag' :name='blockShadowProp.name') {{blockShadowProp.value}}
+        //- slot
 </template>
 
 <script>
@@ -23,7 +36,7 @@ import Interpreter from 'js-interpreter'
  */
 export default {
   name: 'Blockly',
-  props: ['options', 'blocks'],
+  props: ['options', 'toolbox', 'blocks'],
 
   computed: {
     ...mapState(['devices'])
