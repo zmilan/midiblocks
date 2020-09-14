@@ -3,7 +3,11 @@
   .min-height-inherit.position-relative(style='flex: 0 0 200px')
     //- Quasar Toolbox
     q-list.q-pa-sm
-      q-item(clickable)
+      template(v-for='category in toolbox')
+        q-separator(v-if='category.tag === "sep"')
+        q-item(v-else clickable)
+          q-item-section
+            q-item-label {{category.name}}
   .min-height-inherit.position-relative
     .blockly(style='min-height: inherit')
       //- Blockly
