@@ -1,8 +1,13 @@
 <template lang="pug">
-.blockly(style='min-height: inherit')
-  .blockly-wrap(ref='blockly')
-  xml(ref='toolbox' style='display: none')
-    slot
+.flex.min-height-inherit
+  .min-height-inherit.position-relative(style='flex: 0 0 200px')
+    q-list.q-pa-sm
+      q-item(clickable)
+  .min-height-inherit.position-relative
+    .blockly(style='min-height: inherit')
+      .blockly-wrap(ref='blockly')
+      xml(ref='toolbox' style='display: none')
+        slot
 </template>
 
 <script>
