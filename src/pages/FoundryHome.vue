@@ -121,10 +121,7 @@ export default {
     const currentFoundry = store.get('currentFoundry', {})
     
     return {
-      workspace: {
-        blockly: null,
-        hasLoaded: false
-      },
+      hasLoaded: false,
       
       code: currentFoundry.code,
       
@@ -146,14 +143,12 @@ export default {
   mounted () {
     set(window, 'app.$foundry', this)
     
-    this.workspace.blockly = this.$refs.workspace.blockly
-
     // Load workspace
     const currentFoundry = store.get('currentFoundry', {})
     if (currentFoundry.workspace) {
       Blockly.Xml.domToWorkspace(
         Blockly.Xml.textToDom(currentFoundry.workspace),
-        this.workspace.blockly
+        this.$refs.workspace.blockly
       )
     } else {
       Blockly.Xml.domToWorkspace(
@@ -162,7 +157,7 @@ export default {
       )
     }
 
-    this.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+    this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
   methods: {
@@ -172,7 +167,7 @@ export default {
     autosave () {
       store.set('currentFoundry', {
         code: this.code,
-        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.workspace.blockly))
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
     },
 
@@ -190,7 +185,7 @@ export default {
     workspaceEventHandler (ev) {
       switch (ev.type) {
         case Blockly.Events.FINISHED_LOADING:
-          this.workspace.hasLoaded = true
+          this.hasLoaded = true
         break
           
         case Blockly.Events.BLOCK_CREATE:
@@ -201,7 +196,7 @@ export default {
         case Blockly.Events.VAR_DELETE:
         case Blockly.Events.VAR_RENAME:
           this.onWorkspaceChange()
-          this.workspace.hasLoaded && this.autosave()
+          this.hasLoaded && this.autosave()
         break;
       }
     },
@@ -231,7 +226,7 @@ export default {
      * @return {Blockly.Block}
      */
     getRootBlock() {
-      const blocks = this.workspace.blockly.getTopBlocks(false)
+      const blocks = this.$refs.workspace.blockly.getTopBlocks(false)
 
       for (var i = 0, block; block = blocks[i]; i++) {
         if (block.type == 'factory_base') {

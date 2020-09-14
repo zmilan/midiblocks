@@ -256,11 +256,6 @@ export default {
     Workspace
   },
 
-  data () {
-    return {
-    }
-  },
-
   /**
    * Initialize WebMidi
    */
@@ -288,9 +283,11 @@ export default {
         outputs
       }])
 
-      // Setup listeners
-      this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
     })
+
+    // Setup listeners
+    this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
+    this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
   watch: {
@@ -302,25 +299,12 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true}),
-
-    /**
-     * Relayout
-     */
-    isHoriz: throttle(function () {
-      store.set('isHoriz', this.isHoriz)
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-      })
     }, 50, {leading: true, trailing: true})
   },
   
   data () {
     return {
-      workspace: {
-        blockly: null,
-        hasLoaded: false
-      },
+      hasLoaded: false,
       
       errors: {
         webmidi: {
@@ -328,9 +312,6 @@ export default {
         }
       },
       
-      // Whether we are horizontal (code above console) or not (code aside console)
-      isHoriz: store.get('isHoriz'),
-
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {},
@@ -347,7 +328,7 @@ export default {
     workspaceEventHandler (ev) {
       switch (ev.type) {
         case Blockly.Events.FINISHED_LOADING:
-          this.workspace.hasLoaded = true
+          this.hasLoaded = true
         break
           
         case Blockly.Events.BLOCK_CREATE:
@@ -358,7 +339,8 @@ export default {
         case Blockly.Events.VAR_DELETE:
         case Blockly.Events.VAR_RENAME:
           this.$refs.workspace.run()
-          // this.workspace.hasLoaded && this.autosave()
+          // @todo autosave
+          // this.hasLoaded && this.autosave()
         break;
       }
     },
