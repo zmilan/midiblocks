@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  Workspace(:options='options' :blocks='[]')
+  Workspace(ref='workspace' :options='options' :blocks='[]' @change='workspaceEventHandler')
     category(name='MIDI Events' colour='#9fa55b')
       block(type='midi_on_event')
     category(name='MIDI Arguments' colour='#a5935b')
@@ -238,7 +238,6 @@ q-page.full-height
 </template>
 
 <script>
-import {mapState} from 'vuex'
 import {throttle} from 'lodash'
 import Workspace from '../components/Workspace'
 import store from 'store'
@@ -247,18 +246,19 @@ import '../assets/blocks/midi-args'
 import '../assets/blocks/midi-send'
 import '../assets/blocks/prompt'
 import webmidi from 'webmidi'
-
-const minHeight = 200
+import Interpreter from 'js-interpreter'
+import Blockly from 'blockly'
 
 export default {
   name: 'MainLayout',
 
-  computed: {
-    ...mapState(['workspace'])
-  },
-
   components: {
     Workspace
+  },
+
+  data () {
+    return {
+    }
   },
 
   /**
@@ -317,6 +317,11 @@ export default {
   
   data () {
     return {
+      workspace: {
+        blockly: null,
+        hasLoaded: false
+      },
+      
       errors: {
         webmidi: {
           enable: false
@@ -336,6 +341,28 @@ export default {
   },
 
   methods: {
+    /**
+     * Handles Workspace events
+     */
+    workspaceEventHandler (ev) {
+      switch (ev.type) {
+        case Blockly.Events.FINISHED_LOADING:
+          this.workspace.hasLoaded = true
+        break
+          
+        case Blockly.Events.BLOCK_CREATE:
+        case Blockly.Events.BLOCK_DELETE:
+        case Blockly.Events.BLOCK_CHANGE:
+        case Blockly.Events.BLOCK_MOVE:
+        case Blockly.Events.VAR_CREATE:
+        case Blockly.Events.VAR_DELETE:
+        case Blockly.Events.VAR_RENAME:
+          this.$refs.workspace.run()
+          // this.workspace.hasLoaded && this.autosave()
+        break;
+      }
+    },
+
     /**
      * Binds individiual inputs
      */
@@ -363,7 +390,7 @@ export default {
      */
     triggerEvent (eventName, ev) {
       // Run the code
-      if (this.workspace.code) {
+      if (this.code) {
         let data = Object.assign({}, ev)
         data.target = Object.assign({}, data.target)
         delete data.target._midiInput
@@ -371,8 +398,8 @@ export default {
         delete data.target.lastMessage
         data = JSON.stringify(data)
         
-        this.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
-        this.workspace.interpreter.run()
+        Interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
+        Interpreter.run()
       }
 
       // Update device message

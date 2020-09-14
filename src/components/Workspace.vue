@@ -11,6 +11,7 @@ import {mapState} from 'vuex'
 import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interpreter.js'
 import webmidi from 'webmidi'
 import {defaults} from 'lodash'
+import Interpreter from 'js-interpreter'
 
 /**
  * @emits onChange
@@ -19,15 +20,8 @@ export default {
   name: 'Blockly',
   props: ['options', 'blocks'],
 
-  watch: {
-    'workspace.code' (newVal) {
-      this.$store.commit('set', ['workspace.interpreter', new window.Interpreter(STRING_WebmidiInterpreter + '\n' + this.workspace.code, this.setupInterpreter)])
-      this.workspace.interpreter.run()
-    }
-  },
-
   computed: {
-    ...mapState(['workspace', 'devices'])
+    ...mapState(['devices'])
   },
 
   data () {
@@ -76,6 +70,15 @@ export default {
      */
     onChange (ev) {
       this.$emit('change', ev)
+    },
+
+    /**
+     * Execute code
+     */
+    run () {
+      const code = Blockly.JavaScript.workspaceToCode(this.blockly)
+      this.interpreter = new Interpreter(STRING_WebmidiInterpreter + '\n' + code, this.setupInterpreter)
+      this.interpreter.run()
     },
 
     /**
