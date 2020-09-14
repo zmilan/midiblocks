@@ -183,6 +183,7 @@ export default {
      * Handles Workspace events
      */
     workspaceEventHandler (ev) {
+      // @todo Move this logic into Workspace component
       switch (ev.type) {
         case Blockly.Events.FINISHED_LOADING:
           this.hasLoaded = true
