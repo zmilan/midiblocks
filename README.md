@@ -8,8 +8,7 @@
 
 <br>
 
-<!-- ![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot-scaled.jpg) -->
-![](https://i.imgur.com/0a0U1HK.png)
+![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot.jpg)
 
 ## TL:DR;
 ```bash
@@ -91,7 +90,7 @@ npm start
 Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like: [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks:
 
 <!-- @todo Create GIF -->
-![](https://i.imgur.com/0a0U1HK.png)
+![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot.jpg)
 
 You can also create custom blocks using JavaScript that others can use with our [monaco based](https://microsoft.github.io/monaco-editor/) IDE (more info coming soon). Currently code runs in a sandboxed environment using [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter), though there are some [limitations](#limitations) which we'll be addressing over time.
 
