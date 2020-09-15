@@ -5,7 +5,7 @@
     q-list.q-pa-sm
       template(v-for='category in toolbox')
         q-separator(v-if='category.tag === "sep"')
-        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)')
+        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
           q-item-section(avatar)
             q-icon(:style='"color:" + category.colour' :name='category.icon')
           q-item-section.gt-sm
@@ -112,7 +112,7 @@ export default {
         this.blockly.getFlyout().show(nodes)
       }
 
-      this.isFlyoutOpen = true
+      this.isFlyoutOpen = category.name
     },
 
     /**
@@ -192,6 +192,10 @@ export default {
 
 .workspace-toolbox
   background: $dark
+
+  .q-item--active .q-focus-helper
+    background: currentColor
+    opacity: .25
 
   @media (max-width: 1023px)
     .q-item__section--avatar
