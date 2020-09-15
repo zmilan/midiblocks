@@ -10,7 +10,7 @@
             q-icon(:style='"color:" + category.colour' :name='category.icon')
           q-item-section
             q-item-label(:style='"color:" + category.colour') {{category.name}}
-  .min-height-inherit.position-relative
+  .min-height-inherit.position-relative(@click='closeToolboxFLyout')
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly
       .blockly-wrap(ref='blockly')
@@ -50,7 +50,8 @@ export default {
   data () {
     return {
       blockly: null,
-      interpreter: null
+      interpreter: null,
+      isFlyoutOpen: false
     }
   },
 
@@ -101,13 +102,32 @@ export default {
     showToolboxFlyout (category) {
       let nodes = []
 
-      if (category.custom) {
-        this.blockly.getFlyout().show(category.custom)        
+      // Show flyout
+      if (!this.isFlyoutOpen) {
+        this.isFlyoutOpen = true
+
+        if (category.custom) {
+          this.blockly.getFlyout().show(category.custom)        
+        } else {
+          category.children.forEach(block => {
+            nodes.push(document.querySelector(`block[type="${block.type}"]`))
+          })
+          this.blockly.getFlyout().show(nodes)
+        }
+      // Hide flyout
       } else {
-        category.children.forEach(block => {
-          nodes.push(document.querySelector(`block[type="${block.type}"]`))
-        })
-        this.blockly.getFlyout().show(nodes)
+        this.blockly.getFlyout().hide()
+        this.isFlyoutOpen = false
+      }
+    },
+
+    /**
+     * Closes the toolbox
+     */
+    closeToolboxFLyout () {
+      if (this.isFlyoutOpen) {
+        this.blockly.getFlyout().hide()
+        this.isFlyoutOpen = false
       }
     },
 
