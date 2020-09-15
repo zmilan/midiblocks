@@ -8,7 +8,7 @@ q-page.full-height
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 
-  //- @TODO remove these depdendencys @see ./assets/js/factory.js
+  //- @TODO remove these depdendencys
   .hidden
     select#direction
       option(value='ltr') LTR
