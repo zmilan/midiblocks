@@ -19,9 +19,9 @@ const routes = [
         component: () => import('pages/LibraryHome.vue')
       },
       {
-        name: 'Foundry',
-        path: '/foundry',
-        component: () => import('pages/FoundryHome.vue')
+        name: 'Factory',
+        path: '/factory',
+        component: () => import('pages/FactoryHome.vue')
       }
     ]
   },

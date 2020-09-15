@@ -1,6 +1,6 @@
 // Transparent background
 body.transparent,
-.blockly.inline
+.blockly.blockly-inline
   .blocklyMainWorkspaceScrollbar,
   .blocklyToolboxDiv
     display: none
@@ -28,7 +28,7 @@ svg.blocklySvg
   width: 100%
   height: 100%
 
-  &.inline
+  &.blockly-inline
     position: relative
     height: 200px
 
@@ -40,12 +40,9 @@ svg.blocklySvg
 
 // Toolbox
 .blocklyToolboxDiv
-  background: $dark
-  padding: $panel-padding / 2
-  border-right-width: 2px
-  box-shadow: $shadow-2
+  display: none !important
 
-.blocklyTreeRoot,
+.blocklyTreeRoot
   background: #28284e
   box-shadow: $shadow-2
 
@@ -83,60 +80,3 @@ svg.blocklySvg
     fill: $scrollbar-draggable-hover !important
   &:active
     fill: $secondary !important
-
-
-
-// Category colors
-.blocklyTreeLabel:before
-  font-family: 'Font Awesome 5 Free'
-  font-weight: 600
-  margin-right: 10px
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(1)
-    color: $blockly-midi-events
-    .blocklyTreeLabel:before
-      content: '\f519'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(2)
-    color: $blockly-midi-arguments
-    .blocklyTreeLabel:before
-      content: '\f085'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(3)
-    color: $blockly-send-midi
-    .blocklyTreeLabel:before
-      font-family: 'Font Awesome 5 Brands'
-      content: '\f287'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(5)
-    color: $blockly-logic
-    .blocklyTreeLabel:before
-      content: '\f0b0'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(6)
-    color: $blockly-loops
-    .blocklyTreeLabel:before
-      content: '\f534'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(7)
-    color: $blockly-math
-    .blocklyTreeLabel:before
-      content: '\f1ec'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(9)
-    color: $blockly-variables
-    .blocklyTreeLabel:before
-      content: '\f187'
-
-.blocklyTreeRoot > div > div:last-child
-  > div:nth-child(10)
-    color: $blockly-functions
-    .blocklyTreeLabel:before
-      content: '\f1e6'

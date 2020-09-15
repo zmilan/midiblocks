@@ -23,9 +23,9 @@ export default {
               icon: 'fas fa-puzzle-piece fa-flip-both'
             },
             {
-              title: 'Foundry',
+              title: 'Factory',
               description: 'Create custom blocks with JavaScript',
-              link: '/foundry',
+              link: '/factory',
               icon: 'fas fa-laptop-code'
             },
             {

@@ -8,12 +8,10 @@ q-page.full-height
     div(v-else v-html='post.content')
     template(if='blocks.length')
       .row.q-col-gutter-md
-        .col-12.col-sm-6.col-lg-4.col-xl-3(v-for='block in blocks' :key='block.title')
+        .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.title')
           q-card
             q-card-section
-              Workspace.inline(:options='options' style="right: 0" :blocks='[block]')
-                category(name='Readonly' colour='#fff')
-                  block(v-for='block in blocks' :type='block.type' :key='block.type')
+              Workspace(:options='options' style="right: 0" :blocks='[block]' :inline='true' :toolbox='toolbox')
             q-separator
             q-card-section
               h3 {{block.title}}
@@ -32,12 +30,32 @@ export default {
   },
 
   computed: {
-    ...mapState(['post'])
+    ...mapState(['post']),
+
+    toolbox () {
+      let toolbox = []
+
+      this.blocks.forEach(block => {
+        toolbox.push({
+          tag: 'category',
+          name: 'Readonly',
+          children: [
+            {
+              tag: 'block',
+              type: block.type
+            }
+          ]
+        })
+      })
+      
+      return toolbox
+    }
   },
 
   data () {
     return {
       blocks: [],
+
       options: {
         trashcan: false,
         zoom: {

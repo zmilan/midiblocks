@@ -1,8 +1,31 @@
 <template lang="pug">
-.blockly(style='min-height: inherit')
-  .blockly-wrap(ref='blockly')
-  xml(ref='toolbox' style='display: none')
-    slot
+.flex.min-height-inherit
+  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 200px')
+    //- Quasar Toolbox
+    q-list.q-pa-sm
+      template(v-for='category in toolbox')
+        q-separator(v-if='category.tag === "sep"')
+        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)')
+          q-item-section(avatar)
+            q-icon(:style='"color:" + category.colour' :name='category.icon')
+          q-item-section
+            q-item-label(:style='"color:" + category.colour') {{category.name}}
+  .min-height-inherit.position-relative
+    .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
+      //- Blockly
+      .blockly-wrap(ref='blockly')
+      //- Toolbox
+      xml(ref='toolbox' style='display: none')
+        template(v-for='category in toolbox')
+          component(:is='category.tag' :name='category.name' :colour='category.colour' :custom='category.custom')
+            template(v-for='block in category.children')
+              component(:is='block.tag' :type='block.type' :colour='block.colour')
+                template(v-for='blockProp in block.children')
+                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :divisor_input='blockProp.divisor_input' :name='blockProp.name') {{blockProp.value}}
+                    template(v-for='blockShadow in blockProp.children')
+                      component(:is='blockShadow.tag' :type='blockShadow.type')
+                        template(v-for='blockShadowProp in blockShadow.children')
+                          component(:is='blockShadowProp.tag' :name='blockShadowProp.name') {{blockShadowProp.value}}
 </template>
 
 <script>
@@ -18,7 +41,7 @@ import Interpreter from 'js-interpreter'
  */
 export default {
   name: 'Blockly',
-  props: ['options', 'blocks'],
+  props: ['options', 'toolbox', 'blocks', 'inline'],
 
   computed: {
     ...mapState(['devices'])
@@ -70,6 +93,22 @@ export default {
      */
     onChange (ev) {
       this.$emit('change', ev)
+    },
+
+    /**
+     * Open the flyout based on the clicked item
+     */
+    showToolboxFlyout (category) {
+      let nodes = []
+
+      if (category.custom) {
+        this.blockly.getFlyout().show(category.custom)        
+      } else {
+        category.children.forEach(block => {
+          nodes.push(document.querySelector(`block[type="${block.type}"]`))
+        })
+        this.blockly.getFlyout().show(nodes)
+      }
     },
 
     /**
@@ -133,3 +172,10 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+@import '../css/quasar.variables.sass'
+
+.workspace-toolbox
+  background: $dark
+</style>
