@@ -1,6 +1,6 @@
 <template lang="pug">
 .flex.min-height-inherit
-  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 200px')
+  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 auto')
     //- Quasar Toolbox
     q-list.q-pa-sm
       template(v-for='category in toolbox')
@@ -8,7 +8,7 @@
         q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)')
           q-item-section(avatar)
             q-icon(:style='"color:" + category.colour' :name='category.icon')
-          q-item-section
+          q-item-section.gt-sm
             q-item-label(:style='"color:" + category.colour') {{category.name}}
   .min-height-inherit.position-relative(@click='closeToolboxFLyout')
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
@@ -192,4 +192,9 @@ export default {
 
 .workspace-toolbox
   background: $dark
+
+  @media (max-width: 1023px)
+    .q-item__section--avatar
+      padding-right: 0
+      min-width: 0
 </style>
