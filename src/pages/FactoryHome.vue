@@ -630,9 +630,19 @@ export default {
 }
 </script>
 
-<style scoped>
-  table {
-    height: 100%;
-    width: 100%;
-  }
+<style lang="sass" scoped>
+table
+  height: 100%
+  width: 100%
+</style>
+<style lang="sass">
+#preview
+  display: flex
+  flex-direction: column
+
+  .injectionDiv
+    flex: 1 !important
+
+    .blocklySvg
+      height: 100%
 </style>
