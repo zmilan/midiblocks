@@ -2,6 +2,7 @@ export default [
   {
     tag: 'category',
     name: 'MIDI Events',
+    icon: 'fas fa-broadcast-tower',
     colour: '#9fa55b',
     children: [
       {
@@ -13,6 +14,7 @@ export default [
   {
     tag: 'category',
     name: 'MIDI Arguments',
+    icon: 'fas fa-cogs',
     colour: '#a5935b',
     children: [
       {
@@ -24,6 +26,7 @@ export default [
   {
     tag: 'category',
     name: 'Send MIDI',
+    icon: 'fab fa-usb',
     colour: '#5ba5a5',
     children: [
       {
@@ -40,6 +43,7 @@ export default [
     tag: 'category',
     name: 'Logic',
     colour: '#5b80a5',
+    icon: 'fas fa-filter',
     children: [
       {
         tag: 'block',
@@ -96,6 +100,7 @@ export default [
     tag: 'category',
     name: 'Loops',
     colour: '#5ba55b',
+    icon: 'fas fa-infinity',
     children: [
       {
         tag: 'block',
@@ -223,6 +228,7 @@ export default [
     tag: 'category',
     name: 'Math',
     colour: '#5b67a5',
+    icon: 'fas fa-calculator',
     children: [
       {
         tag: 'block',
@@ -1293,6 +1299,7 @@ export default [
   {
     tag: 'category',
     name: 'Variables',
+    icon: 'fas fa-box',
     colour: '#a55b80',
     custom: 'VARIABLE',
     children: []
@@ -1301,6 +1308,7 @@ export default [
     tag: 'category',
     name: 'Functions',
     colour: '#995ba5',
+    icon: 'fas fa-plug',
     custom: 'PROCEDURE',
     children: []
   }

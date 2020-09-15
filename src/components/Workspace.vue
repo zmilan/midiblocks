@@ -5,9 +5,11 @@
     q-list.q-pa-sm
       template(v-for='category in toolbox')
         q-separator(v-if='category.tag === "sep"')
-        q-item(v-else clickable)
+        q-item(v-else clickable :style='"color:" + category.colour')
+          q-item-section(avatar)
+            q-icon(:style='"color:" + category.colour' :name='category.icon')
           q-item-section
-            q-item-label {{category.name}}
+            q-item-label(:style='"color:" + category.colour') {{category.name}}
   .min-height-inherit.position-relative
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly
