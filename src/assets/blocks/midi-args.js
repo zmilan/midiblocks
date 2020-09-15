@@ -38,7 +38,7 @@ Blockly.Blocks['midi_arg_compare_note'] = {
         .appendField(new Blockly.FieldDropdown([["is","is"], ["is not","is not"]]), "condition")
         .appendField(new Blockly.FieldTextInput("any"), "note");
     this.setOutput(true, "midi_arg");
-    this.setColour(45);
+    this.setColour('#FF9D00');
  this.setTooltip("Compares the MIDI note");
  this.setHelpUrl("https://midiblocks.com/block/midi_arg_compare_note");
   }

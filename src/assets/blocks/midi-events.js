@@ -57,7 +57,7 @@ Blockly.Blocks['midi_on_event'] = {
     this.appendStatementInput("statements")
         .setCheck(null);
     this.setInputsInline(false);
-    this.setColour(60);
+    this.setColour('#fad000');
  this.setTooltip("Runs the midiblock when the selected MIDI event is triggered from the specified device. Attach MIDI Args to the right to fine-tune the event");
  this.setHelpUrl("https://midiblocks.com/block/midi_on_event");
   }
