@@ -1,6 +1,6 @@
 <template lang="pug">
 .flex.min-height-inherit
-  .min-height-inherit.position-relative(v-if='!inline' style='flex: 0 0 200px')
+  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 200px')
     //- Quasar Toolbox
     q-list.q-pa-sm
       template(v-for='category in toolbox')
@@ -172,3 +172,10 @@ export default {
   }
 }
 </script>
+
+<style lang="sass">
+@import '../css/quasar.variables.sass'
+
+.workspace-toolbox
+  background: $dark
+</style>
