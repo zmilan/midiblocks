@@ -21,9 +21,9 @@
             template(v-for='block in category.children')
               component(:is='block.tag' :type='block.type' :colour='block.colour')
                 template(v-for='blockProp in block.children')
-                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :divisor_input='blockProp.divisor_input' :name='blockProp.name') {{blockProp.value}}
+                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :at='blockProp.at' :items='blockProp.items' :statement='blockProp.statement' :mode='blockProp.mode' :at1='blockProp.at1' :at2='blockProp.at2' :divisor_input='blockProp.divisor_input' :name='blockProp.name' :colour='blockProp.colour') {{blockProp.value}}
                     template(v-for='blockShadow in blockProp.children')
-                      component(:is='blockShadow.tag' :type='blockShadow.type')
+                      component(:is='blockShadow.tag' :type='blockShadow.type' :name='blockShadow.name') {{blockShadow.value}}
                         template(v-for='blockShadowProp in blockShadow.children')
                           component(:is='blockShadowProp.tag' :name='blockShadowProp.name') {{blockShadowProp.value}}
 </template>
@@ -103,22 +103,16 @@ export default {
       let nodes = []
 
       // Show flyout
-      if (!this.isFlyoutOpen) {
-        this.isFlyoutOpen = true
-
-        if (category.custom) {
-          this.blockly.getFlyout().show(category.custom)        
-        } else {
-          category.children.forEach(block => {
-            nodes.push(document.querySelector(`block[type="${block.type}"]`))
-          })
-          this.blockly.getFlyout().show(nodes)
-        }
-      // Hide flyout
+      if (category.custom) {
+        this.blockly.getFlyout().show(category.custom)        
       } else {
-        this.blockly.getFlyout().hide()
-        this.isFlyoutOpen = false
+        category.children.forEach(block => {
+          nodes.push(document.querySelector(`block[type="${block.type}"]`))
+        })
+        this.blockly.getFlyout().show(nodes)
       }
+
+      this.isFlyoutOpen = true
     },
 
     /**
