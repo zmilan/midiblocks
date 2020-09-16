@@ -24,7 +24,7 @@ q-layout(view='lHh Lpr lFf')
     q-space
     q-item
       q-item-section
-        q-btn(type='a' color='secondary' href='/wp-admin') Login
+        q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
 
   //- Page
   q-page-container
