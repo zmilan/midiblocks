@@ -2,6 +2,8 @@ export default [
   {
     tag: 'category',
     name: 'Input',
+    colour: '#5d37f0',
+    icon: 'fas fa-puzzle-piece fa-flip-both',
     children: [
       {
         tag: 'block',
@@ -44,6 +46,8 @@ export default [
   {
     tag: 'category',
     name: 'Field',
+    icon: 'fas fa-hand-pointer',
+    colour: '#2EC4B6',
     children: [
       {
         tag: 'block',
@@ -86,6 +90,8 @@ export default [
   {
     tag: 'category',
     name: 'Type',
+    colour: '#ff628c',
+    icon: 'fas fa-shapes',
     children: [
       {
         tag: 'block',
@@ -120,6 +126,8 @@ export default [
   {
     tag: 'category',
     name: 'Colour',
+    colour: '#fad000',
+    icon: 'fas fa-palette',
     children: [
       {
         tag: 'block',

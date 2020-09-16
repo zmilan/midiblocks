@@ -1,16 +1,16 @@
 <template lang="pug">
 .flex.min-height-inherit
-  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 200px')
+  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 auto')
     //- Quasar Toolbox
     q-list.q-pa-sm
       template(v-for='category in toolbox')
         q-separator(v-if='category.tag === "sep"')
-        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)')
+        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
           q-item-section(avatar)
             q-icon(:style='"color:" + category.colour' :name='category.icon')
-          q-item-section
+          q-item-section.gt-sm
             q-item-label(:style='"color:" + category.colour') {{category.name}}
-  .min-height-inherit.position-relative
+  .min-height-inherit.position-relative(@click='closeToolboxFLyout')
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly
       .blockly-wrap(ref='blockly')
@@ -21,9 +21,9 @@
             template(v-for='block in category.children')
               component(:is='block.tag' :type='block.type' :colour='block.colour')
                 template(v-for='blockProp in block.children')
-                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :divisor_input='blockProp.divisor_input' :name='blockProp.name') {{blockProp.value}}
+                  component(:is='blockProp.tag' :id='blockProp.id' :op='blockProp.op' :at='blockProp.at' :items='blockProp.items' :statement='blockProp.statement' :mode='blockProp.mode' :at1='blockProp.at1' :at2='blockProp.at2' :divisor_input='blockProp.divisor_input' :name='blockProp.name' :colour='blockProp.colour') {{blockProp.value}}
                     template(v-for='blockShadow in blockProp.children')
-                      component(:is='blockShadow.tag' :type='blockShadow.type')
+                      component(:is='blockShadow.tag' :type='blockShadow.type' :name='blockShadow.name') {{blockShadow.value}}
                         template(v-for='blockShadowProp in blockShadow.children')
                           component(:is='blockShadowProp.tag' :name='blockShadowProp.name') {{blockShadowProp.value}}
 </template>
@@ -50,7 +50,8 @@ export default {
   data () {
     return {
       blockly: null,
-      interpreter: null
+      interpreter: null,
+      isFlyoutOpen: false
     }
   },
 
@@ -101,6 +102,7 @@ export default {
     showToolboxFlyout (category) {
       let nodes = []
 
+      // Show flyout
       if (category.custom) {
         this.blockly.getFlyout().show(category.custom)        
       } else {
@@ -108,6 +110,18 @@ export default {
           nodes.push(document.querySelector(`block[type="${block.type}"]`))
         })
         this.blockly.getFlyout().show(nodes)
+      }
+
+      this.isFlyoutOpen = category.name
+    },
+
+    /**
+     * Closes the toolbox
+     */
+    closeToolboxFLyout () {
+      if (this.isFlyoutOpen) {
+        this.blockly.getFlyout().hide()
+        this.isFlyoutOpen = false
       }
     },
 
@@ -178,4 +192,13 @@ export default {
 
 .workspace-toolbox
   background: $dark
+
+  .q-item--active .q-focus-helper
+    background: currentColor
+    opacity: .25
+
+  @media (max-width: 1023px)
+    .q-item__section--avatar
+      padding-right: 0
+      min-width: 0
 </style>
