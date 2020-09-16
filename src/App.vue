@@ -19,7 +19,7 @@
         h3 {{prompt.message}}
         q-input(ref='promptValue' v-model='prompt.value')
       q-card-actions(align='right')
-        q-btn(color='white' flat) Cancel
+        q-btn(color='white' flat @click='prompt.visible = false') Cancel
         q-space
         q-btn.text-black(color='secondary' @click='submitPrompt') Done
 </template>
