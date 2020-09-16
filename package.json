@@ -28,7 +28,6 @@
     "mousetrap": "^1.6.5",
     "quasar": "^1.0.0",
     "store": "^2.0.12",
-    "sweetalert2": "^9.17.2",
     "vue-monaco": "^1.2.1",
     "webmidi": "^2.5.1"
   },

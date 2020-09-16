@@ -118,8 +118,13 @@ export default {
     /**
      * Closes the toolbox
      */
-    closeToolboxFLyout () {
-      if (this.isFlyoutOpen) {
+    closeToolboxFLyout (ev) {
+      // "prevent default" on flyout click so that it doesn't hide but the event still bubbles up
+      let clickedInToolbox = ev.path.some($el => {
+        return $el.classList && $el.classList.contains('blocklyFlyoutBackground')
+      })
+
+      if (this.isFlyoutOpen && !clickedInToolbox) {
         this.blockly.getFlyout().hide()
         this.isFlyoutOpen = false
       }

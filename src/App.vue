@@ -10,10 +10,23 @@
         span.q-ml-sm.text-white {{errors.generic}}
       q-card-actions(align='right')
         q-btn.text-black(@click='goHome' color='white') Go to home page
+
+  //- Blockly Prompt
+  //- @todo move into component
+  q-dialog(v-model='prompt.visible')
+    q-card
+      q-card-section
+        h3 {{prompt.message}}
+        q-input(ref='promptValue' v-model='prompt.value')
+      q-card-actions(align='right')
+        q-btn(color='white' flat @click='prompt.visible = false') Cancel
+        q-space
+        q-btn.text-black(color='secondary' @click='submitPrompt') Done
 </template>
 
 <script>
 import {set} from 'lodash'
+import Blockly from 'blockly'
 
 export default {
   name: 'App',
@@ -51,8 +64,16 @@ export default {
   data () {
     return {
       // Will display different modals based on error messages
+      // @todo move this to store
       errors: {
         generic: ''
+      },
+
+      prompt: {
+        visible: false,
+        message: '',
+        value: null,
+        callback: null
       }
     }
   },
@@ -61,6 +82,9 @@ export default {
     this.$root.$on('prepareRoute', this.prepareRoute)
     this.$root.$on('error', this.onError)
     set(window, 'app.version', this.$v)
+    set(window, 'app.$', this)
+
+    Blockly.prompt = this.onBlocklyPrompt
   },
 
   destroyed () {
@@ -68,6 +92,28 @@ export default {
   },
 
   methods: {
+    onBlocklyPrompt (message, defaultValue, callback) {
+      this.prompt.visible = true
+      this.prompt.message = message
+      this.prompt.value = defaultValue
+      this.prompt.callback = callback
+
+      this.$nextTick(() => {
+        this.$refs.promptValue.focus()
+      })
+    },
+
+    /**
+     * @todo move into component
+     */
+    submitPrompt () {
+      if (this.prompt.callback) {
+        this.prompt.callback(this.prompt.value)
+        console.log('callback', this.prompt.value)
+      }
+      this.prompt.visible = false
+    },
+    
     onError (payload) {
       this.errors.generic = payload
     },
