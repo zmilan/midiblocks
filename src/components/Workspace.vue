@@ -35,6 +35,7 @@ import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interp
 import webmidi from 'webmidi'
 import {defaults} from 'lodash'
 import Interpreter from 'js-interpreter'
+import midiblocksTheme from '../assets/toolboxes/theme'
 
 /**
  * @emits onChange
@@ -76,7 +77,8 @@ export default {
         length: 50,
         colour: '#9effff',
         snap: true
-      }
+      },
+      theme: midiblocksTheme
     })
 
     // Create workspace and add bindings

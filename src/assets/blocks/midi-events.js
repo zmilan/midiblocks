@@ -39,20 +39,13 @@ ${statements_statements}
   return code
 }
 
-/**
- * 👇👇👇 DO NOT EDIT BLOCK DEFINITIONS BELOW MANUALLY 👇👇👇
- * - To make changes, import ./backups/midi-events.js into: https://blockly-demo.appspot.com/static/demos/blockfactory/index.html
- * - Make edits there, then click Block Exporter
- * - Select ONLY "Block Definitions" in JavaScript format
- * - Copy paste code below
- */
 Blockly.Blocks['midi_on_event'] = {
   init: function() {
     this.appendValueInput("args")
         .setCheck("midi_arg")
-        .appendField("On MIDI")
+        .appendField("🎹 MIDI")
         .appendField(new Blockly.FieldDropdown([["Note On","noteon"], ["Note Off","noteoff"], ["Control Change","controlchange"]]), "event")
-        .appendField("from device")
+        .appendField("from")
         .appendField(new Blockly.FieldTextInput("any"), "device");
     this.appendStatementInput("statements")
         .setCheck(null);
