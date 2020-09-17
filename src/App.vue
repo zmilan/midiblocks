@@ -3,6 +3,7 @@
   router-view
 
   //- Error: Generic
+  //- @todo move into component
   q-dialog(v-model='!!errors.generic' persistent)
     q-card.bg-negative
       q-card-section.row.items-center
@@ -11,25 +12,20 @@
       q-card-actions(align='right')
         q-btn.text-black(@click='goHome' color='white') Go to home page
 
-  //- Blockly Prompt
-  //- @todo move into component
-  q-dialog(v-model='prompt.visible')
-    q-card
-      q-card-section
-        h3 {{prompt.message}}
-        q-input(ref='promptValue' v-model='prompt.value')
-      q-card-actions(align='right')
-        q-btn(color='white' flat @click='prompt.visible = false') Cancel
-        q-space
-        q-btn.text-black(color='secondary' @click='submitPrompt') Done
+  Prompt
 </template>
 
 <script>
 import {set} from 'lodash'
 import Blockly from 'blockly'
+import Prompt from './components/Prompt'
 
 export default {
   name: 'App',
+
+  components: {
+    Prompt
+  },
 
   watch: {
     /**
@@ -67,13 +63,6 @@ export default {
       // @todo move this to store
       errors: {
         generic: ''
-      },
-
-      prompt: {
-        visible: false,
-        message: '',
-        value: null,
-        callback: null
       }
     }
   },
@@ -83,8 +72,6 @@ export default {
     this.$root.$on('error', this.onError)
     set(window, 'app.version', this.$v)
     set(window, 'app.$', this)
-
-    Blockly.prompt = this.onBlocklyPrompt
   },
 
   destroyed () {
@@ -92,28 +79,6 @@ export default {
   },
 
   methods: {
-    onBlocklyPrompt (message, defaultValue, callback) {
-      this.prompt.visible = true
-      this.prompt.message = message
-      this.prompt.value = defaultValue
-      this.prompt.callback = callback
-
-      this.$nextTick(() => {
-        this.$refs.promptValue.focus()
-      })
-    },
-
-    /**
-     * @todo move into component
-     */
-    submitPrompt () {
-      if (this.prompt.callback) {
-        this.prompt.callback(this.prompt.value)
-        console.log('callback', this.prompt.value)
-      }
-      this.prompt.visible = false
-    },
-    
     onError (payload) {
       this.errors.generic = payload
     },

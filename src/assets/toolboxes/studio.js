@@ -1,7 +1,7 @@
 export default [
   {
     tag: 'category',
-    name: 'MIDI Events',
+    name: 'On Event',
     icon: 'fas fa-broadcast-tower',
     colour: '#fad000',
     children: [
@@ -13,7 +13,7 @@ export default [
   },
   {
     tag: 'category',
-    name: 'MIDI Arguments',
+    name: 'Event Modifiers',
     icon: 'fas fa-cogs',
     colour: '#FF9D00',
     children: [
@@ -25,7 +25,7 @@ export default [
   },  
   {
     tag: 'category',
-    name: 'Send MIDI',
+    name: 'Send Event',
     icon: 'fab fa-usb',
     colour: '#2EC4B6',
     children: [

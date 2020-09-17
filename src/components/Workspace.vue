@@ -5,7 +5,7 @@
     q-list.q-pa-sm
       template(v-for='category in toolbox')
         q-separator(v-if='category.tag === "sep"')
-        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
+        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
           q-item-section(avatar)
             q-icon(:style='"color:" + category.colour' :name='category.icon')
           q-item-section.gt-sm
@@ -14,7 +14,7 @@
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly
       .blockly-wrap(ref='blockly')
-      //- Toolbox
+      //- Hidden Blockly Toolbox
       xml(ref='toolbox' style='display: none')
         template(v-for='category in toolbox')
           component(:is='category.tag' :name='category.name' :colour='category.colour' :custom='category.custom')
@@ -35,6 +35,7 @@ import STRING_WebmidiInterpreter from '!!raw-loader!!../assets/js/webmidi-interp
 import webmidi from 'webmidi'
 import {defaults} from 'lodash'
 import Interpreter from 'js-interpreter'
+import midiblocksTheme from '../assets/toolboxes/theme'
 
 /**
  * @emits onChange
@@ -51,7 +52,10 @@ export default {
     return {
       blockly: null,
       interpreter: null,
-      isFlyoutOpen: false
+      isFlyoutOpen: false,
+
+      // Useful for re-showing a category toolbox (eg, after creating a variable)
+      lastClickedCategory: null
     }
   },
 
@@ -76,15 +80,21 @@ export default {
         length: 50,
         colour: '#9effff',
         snap: true
-      }
+      },
+      theme: midiblocksTheme
     })
 
     // Create workspace and add bindings
     this.blockly = Blockly.inject(this.$refs.blockly, options)
     this.blockly.addChangeListener(this.onChange)
+    this.$root.$on('blockly.prompt.submit', this.onPromptSubmit)
 
     // Add blocks
     this.addBlocks()
+  },
+
+  beforeDestroy () {
+    this.$root.$off('blockly.prompt.submit', this.onPromptSubmit)
   },
 
   methods: {
@@ -99,7 +109,7 @@ export default {
     /**
      * Open the flyout based on the clicked item
      */
-    showToolboxFlyout (category) {
+    showToolboxFlyout (category, ev) {
       let nodes = []
 
       // Show flyout
@@ -113,6 +123,14 @@ export default {
       }
 
       this.isFlyoutOpen = category.name
+      this.lastClickedCategory = ev.target
+    },
+
+    /**
+     * Opens the last opened toolbox (good for showing a newly created variable)
+     */
+    onPromptSubmit (prompt) {
+      this.lastClickedCategory && this.lastClickedCategory.click()
     },
 
     /**
