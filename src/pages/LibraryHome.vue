@@ -39,6 +39,7 @@ export default {
         toolbox.push({
           tag: 'category',
           name: 'Readonly',
+          colour: '#fff',
           children: [
             {
               tag: 'block',
