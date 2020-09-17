@@ -14,7 +14,7 @@
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly
       .blockly-wrap(ref='blockly')
-      //- Toolbox
+      //- Hidden Blockly Toolbox
       xml(ref='toolbox' style='display: none')
         template(v-for='category in toolbox')
           component(:is='category.tag' :name='category.name' :colour='category.colour' :custom='category.custom')

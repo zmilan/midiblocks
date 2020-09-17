@@ -4,7 +4,7 @@ q-dialog(v-model='prompt.visible')
   q-card
     q-card-section
       h3 {{prompt.message}}
-      q-input(ref='promptValue' v-model='prompt.value')
+      q-input(ref='promptValue' v-model='prompt.value' v-on:keyup.enter='submitPrompt')
     q-card-actions(align='right')
       q-btn(color='white' flat @click='prompt.visible = false') Cancel
       q-space
