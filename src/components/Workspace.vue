@@ -1,6 +1,11 @@
 <template lang="pug">
 .flex.min-height-inherit
-  .min-height-inherit.position-relative.workspace-toolbox(v-if='!inline' style='flex: 0 0 auto')
+  .min-height-inherit.position-relative.workspace-toolbox(
+    :class='{blocklyToolboxDelete: !!blockBeingDragged}'
+    v-if='!inline' style='flex: 0 0 auto'
+    @mouseenter='isMouseInQuasarToolbox = true'
+    @mouseleave='isMouseInQuasarToolbox = false')
+
     //- Quasar Toolbox
     q-list.q-pa-sm
       template(v-for='category in toolbox')
@@ -53,9 +58,11 @@ export default {
       blockly: null,
       interpreter: null,
       isFlyoutOpen: false,
+      blockBeingDragged: false,
 
       // Useful for re-showing a category toolbox (eg, after creating a variable)
-      lastClickedCategory: null
+      lastClickedCategory: null,
+      isMouseInQuasarToolbox: false
     }
   },
 
@@ -101,9 +108,20 @@ export default {
     /**
      * Called when something happens from within Blockly
      * @see https://developers.google.com/blockly/guides/configure/web/events
+     * 
+     * - Deletes block if released inside quasar toolbox
      */
     onChange (ev) {
       this.$emit('change', ev)
+
+      if (ev.element === 'dragStart') {
+        this.blockBeingDragged = ev
+      } else if (ev.element === 'dragStop') {
+        if (this.isMouseInQuasarToolbox) {
+          this.blockly.getBlockById(ev.blockId).dispose()
+        }
+        this.blockBeingDragged = false
+      }
     },
 
     /**
