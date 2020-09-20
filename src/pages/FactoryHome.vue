@@ -7,24 +7,6 @@ q-page.full-height
         CodeEditor(@onCodeChange='onCodeChange' :value='code.user')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-
-  //- @TODO remove these depdendencys
-  .hidden
-    button#linkButton
-    button#helpButton
-      span Help
-    select#format
-      option(value='JSON') JSON
-      option(value='JavaScript') JavaScript
-      option(value='Manual') Manual edit&mldr;
-    textarea#languageTA
-    select#language
-      option(value='JavaScript') JavaScript
-      option(value='Python') Python
-      option(value='PHP') PHP
-      option(value='Lua') Lua
-      option(value='Dart') Dart
-    pre#generatorPre
 </template>
 
 <script>
@@ -51,7 +33,15 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true})
+    }, 50, {leading: true, trailing: true}),
+
+    // @fixme delete
+    code: {
+      deep: true,
+      handler (code) {
+        console.log(code)
+      }
+    }
   },
 
   data () {
@@ -64,7 +54,9 @@ export default {
         // The user added code
         user: currentFactory.code || '',
         // The code generated from the factory
-        factory: ''
+        blockJSON: '',
+        // Generated code
+        generator: ''
       },
       
       // is the splitter in horizontal or vertical mode
@@ -162,7 +154,7 @@ export default {
       }
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
-      this.code.factory = this.formatJson(blockType, rootBlock)
+      this.code.blockJSON = this.formatJson(blockType, rootBlock)
       this.updatePreview()
     },
 
@@ -188,6 +180,8 @@ export default {
      * @param {!Blockly.Block} rootBlock Factory_base block.
      * @return {string} Generated language code.
      * @private
+     * 
+     * @fixme Just build an object, not a string
      */
     formatJson (blockType, rootBlock) {
       var JS = {}
@@ -285,17 +279,6 @@ export default {
     },
 
     /**
-     * Inject code into a pre tag, with syntax highlighting.
-     * Safe from HTML/script injection.
-     * @param {string} code Lines of code.
-     * @param {string} id ID of <pre> element to inject into.
-     */
-    injectCode (code, id) {
-      var pre = document.getElementById(id);
-      pre.textContent = code;
-    },
-
-    /**
      * Update the preview display
      */
     updatePreview () {
@@ -311,7 +294,7 @@ export default {
       this.previewWorkspace.clear()
 
       // Exit if nothing to render (eg loading from a store)
-      if (!this.code.factory.trim()) {
+      if (!this.code.blockJSON.trim()) {
         return
       }
 
@@ -325,7 +308,7 @@ export default {
           Blockly.Blocks[prop] = backupBlocks[prop]
         }
 
-        const json = JSON.parse(this.code.factory)
+        const json = JSON.parse(this.code.blockJSON)
         Blockly.Blocks[json.type || 'unnamed'] = {
           init: function() {
             this.jsonInit(json)
@@ -368,7 +351,7 @@ export default {
         name = name.toLowerCase().replace(/\W/g, '_');
         return '  var ' + root + '_' + name;
       }
-      var language = document.getElementById('language').value;
+      var language = 'JavaScript'
       var code = [];
       code.push("Blockly." + language + "['" + block.type +
                 "'] = function(block) {");
@@ -438,7 +421,7 @@ export default {
       }
       code.push("};");
 
-      this.injectCode(code.join('\n'), 'generatorPre');
+      this.code.generator = code.join('\n')
     },
 
     /**
