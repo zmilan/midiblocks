@@ -140,6 +140,7 @@ export default {
 
     /**
      * Update the language code based on constructs made in Blockly.
+     * @fixme Refactor
      */
     onWorkspaceChange () {
       const rootBlock = this.getRootBlock()
@@ -161,6 +162,7 @@ export default {
     /**
      * Return the uneditable container block that everything else attaches to.
      * @return {Blockly.Block}
+     * @fixme Refactor
      */
     getRootBlock() {
       const blocks = this.$refs.workspace.blockly.getTopBlocks(false)
@@ -182,6 +184,7 @@ export default {
      * @private
      * 
      * @fixme Just build an object, not a string
+     * @fixme Refactor
      */
     formatJson (blockType, rootBlock) {
       var JS = {}
@@ -355,8 +358,7 @@ export default {
      * @param {!Blockly.Block} block Rendered block in preview workspace
      */
     updateGenerator (block) {
-      let code = []
-      code.push("Blockly.JavaScript['" + block.type + "'] = function(block) {")
+      let code = [`Blockly.JavaScript['${block.type}'] = function(block) {`]
 
       // Generate getters for any fields or inputs
       for (let i = 0, input; input = block.inputList[i]; i++) {
@@ -408,6 +410,7 @@ export default {
      * @param {!Blockly.Block} block Input block.
      * @return {!Array.<string|!Object>} Array of static text and field configs.
      * @private
+     * @fixme Refactor
      */
     getFieldsJson (block) {
       var fields = [];
@@ -509,6 +512,7 @@ export default {
      * @param {!Blockly.Block} block Block with input.
      * @param {string} name Name of the input.
      * @return {?string} String defining the types.
+     * @fixme Refactor
      */
     getOptTypesFrom (block, name) {
       var types = this.getTypesFrom(block, name);
@@ -529,6 +533,7 @@ export default {
      * @param {string} name Name of the input.
      * @return {!Array.<string>} List of types.
      * @private
+     * @fixme Refactor
      */
     getTypesFrom(block, name) {
       var typeBlock = block.getInputTargetBlock(name);
@@ -536,7 +541,7 @@ export default {
       if (!typeBlock || typeBlock.disabled) {
         types = [];
       } else if (typeBlock.type == 'type_other') {
-        types = [this.escapeString(typeBlock.getFieldValue('TYPE'))];
+        types = [JSON.stringify(typeBlock.getFieldValue('TYPE'))];
       } else if (typeBlock.type == 'type_group') {
         types = [];
         for (var i = 0; i < typeBlock.typeCount_; i++) {
@@ -551,18 +556,9 @@ export default {
           hash[types[n]] = true;
         }
       } else {
-        types = [this.escapeString(typeBlock.valueType)];
+        types = [JSON.stringify(typeBlock.valueType)];
       }
       return types;
-    },
-
-    /**
-     * Escape a string.
-     * @param {string} string String to escape.
-     * @return {string} Escaped string surrounded by quotes.
-     */
-    escapeString(string) {
-      return JSON.stringify(string);
     }
   }
 }
