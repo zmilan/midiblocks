@@ -139,20 +139,13 @@ export default {
     },
 
     /**
-     * Update the language code based on constructs made in Blockly.
-     * @fixme Refactor
+     * Slugifies root block name and generates block JSON
      */
     onWorkspaceChange () {
       const rootBlock = this.getRootBlock()
+      if (!rootBlock) return
 
-      if (!rootBlock) {
-        return
-      }
-
-      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase()
-      if (!blockType) {
-        blockType = ''
-      }
+      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase() || ''
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
       this.code.blockJSON = this.formatJson(blockType, rootBlock)
@@ -160,9 +153,8 @@ export default {
     },
 
     /**
-     * Return the uneditable container block that everything else attaches to.
+     * Return the uneditable container block that everything else attaches to
      * @return {Blockly.Block}
-     * @fixme Refactor
      */
     getRootBlock() {
       const blocks = this.$refs.workspace.blockly.getTopBlocks(false)
@@ -177,27 +169,29 @@ export default {
     },
 
     /**
-     * Update the language code as JSON.
-     * @param {string} blockType Name of block.
-     * @param {!Blockly.Block} rootBlock Factory_base block.
-     * @return {string} Generated language code.
+     * Update the language code as JSON
+     * @param {string} blockType Name of block
+     * @param {!Blockly.Block} rootBlock Factory_base block
+     * @return {string} Generated language code
      * @private
      * 
      * @fixme Just build an object, not a string
      * @fixme Refactor
      */
     formatJson (blockType, rootBlock) {
-      var JS = {}
-      // Type is not used by Blockly, but may be used by a loader.
-      JS.type = blockType
-      // Generate inputs.
-      var message = []
-      var args = []
-      var contentsBlock = rootBlock.getInputTargetBlock('INPUTS')
-      var lastInput = null
+      const JS = {
+        // Not used by Blockly, but may be used by a loader
+        type: blockType
+      }
+      let message = []
+      let args = []
+      let contentsBlock = rootBlock.getInputTargetBlock('INPUTS')
+      let lastInput = null
+
+      // Generate inputs
       while (contentsBlock) {
         if (!contentsBlock.disabled && !contentsBlock.getInheritedDisabled()) {
-          var fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
+          let fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
           for (var i = 0; i < fields.length; i++) {
             if (typeof fields[i] == 'string') {
               message.push(fields[i].replace(/%/g, '%%'))
@@ -406,90 +400,100 @@ export default {
     },
 
     /**
-     * Returns field strings and any config.
-     * @param {!Blockly.Block} block Input block.
-     * @return {!Array.<string|!Object>} Array of static text and field configs.
-     * @private
-     * @fixme Refactor
+     * Returns field strings and any config
+     * 
+     * @param {!Blockly.Block} block Input block
+     * @return {!Array.<string|!Object>} Array of static text and field configs
      */
     getFieldsJson (block) {
-      var fields = [];
+      let fields = []
+      
       while (block) {
         if (!block.disabled && !block.getInheritedDisabled()) {
           switch (block.type) {
             case 'field_static':
-              // Result: 'hello'
-              fields.push(block.getFieldValue('TEXT'));
-              break;
+              fields.push(block.getFieldValue('TEXT'))
+            break
+
             case 'field_input':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 text: block.getFieldValue('TEXT')
-              });
-              break;
+              })
+            break
+
             case 'field_number':
-              var obj = {
+              let obj = {
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 value: Number(block.getFieldValue('VALUE'))
-              };
-              var min = Number(block.getFieldValue('MIN'));
+              }
+
+              let min = Number(block.getFieldValue('MIN'))
               if (min > -Infinity) {
-                obj.min = min;
+                obj.min = min
               }
-              var max = Number(block.getFieldValue('MAX'));
+
+              let max = Number(block.getFieldValue('MAX'))
               if (max < Infinity) {
-                obj.max = max;
+                obj.max = max
               }
-              var precision = Number(block.getFieldValue('PRECISION'));
+
+              let precision = Number(block.getFieldValue('PRECISION'))
               if (precision) {
-                obj.precision = precision;
+                obj.precision = precision
               }
-              fields.push(obj);
-              break;
+              fields.push(obj)
+            break
+
             case 'field_angle':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 angle: Number(block.getFieldValue('ANGLE'))
-              });
-              break;
+              })
+            break
+
             case 'field_checkbox':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 checked: block.getFieldValue('CHECKED') == 'TRUE'
-              });
-              break;
+              })
+            break
+
             case 'field_colour':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 colour: block.getFieldValue('COLOUR')
-              });
-              break;
+              })
+            break
+
             case 'field_variable':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 variable: block.getFieldValue('TEXT') || null
-              });
-              break;
+              })
+            break
+
             case 'field_dropdown':
-              var options = [];
-              for (var i = 0; i < block.optionCount_; i++) {
-                options[i] = [block.getFieldValue('USER' + i),
-                    block.getFieldValue('CPU' + i)];
+              let options = []
+              for (let i = 0; i < block.optionCount_; i++) {
+                options[i] = [block.getFieldValue('USER' + i), block.getFieldValue('CPU' + i)]
               }
+
               if (options.length) {
                 fields.push({
                   type: block.type,
                   name: block.getFieldValue('FIELDNAME'),
                   options: options
-                });
+                })
               }
-              break;
+            break
+
             case 'field_image':
               fields.push({
                 type: block.type,
@@ -497,13 +501,15 @@ export default {
                 width: Number(block.getFieldValue('WIDTH')),
                 height: Number(block.getFieldValue('HEIGHT')),
                 alt: block.getFieldValue('ALT')
-              });
-              break;
+              })
+            break
           }
         }
-        block = block.nextConnection && block.nextConnection.targetBlock();
+
+        block = block.nextConnection && block.nextConnection.targetBlock()
       }
-      return fields;
+
+      return fields
     },
 
     /**
