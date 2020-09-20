@@ -160,7 +160,7 @@ export default {
       const blocks = this.$refs.workspace.blockly.getTopBlocks(false)
 
       for (var i = 0, block; block = blocks[i]; i++) {
-        if (block.type == 'factory_base') {
+        if (block.type === 'factory_base') {
           return block
         }
       }
@@ -193,7 +193,7 @@ export default {
         if (!contentsBlock.disabled && !contentsBlock.getInheritedDisabled()) {
           let fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
           for (var i = 0; i < fields.length; i++) {
-            if (typeof fields[i] == 'string') {
+            if (typeof fields[i] === 'string') {
               message.push(fields[i].replace(/%/g, '%%'))
             } else {
               args.push(fields[i])
@@ -222,7 +222,7 @@ export default {
             contentsBlock.nextConnection.targetBlock()
       }
       // Remove last input if dummy and not empty.
-      if (lastInput && lastInput.type == 'input_dummy') {
+      if (lastInput && lastInput.type === 'input_dummy') {
         var fields = lastInput.getInputTargetBlock('FIELDS')
         if (fields && this.getFieldsJson(fields).join('').trim() != '') {
           var align = lastInput.getFieldValue('ALIGN')
@@ -238,9 +238,9 @@ export default {
         JS.args0 = args
       }
       // Generate inline/external switch.
-      if (rootBlock.getFieldValue('INLINE') == 'EXT') {
+      if (rootBlock.getFieldValue('INLINE') === 'EXT') {
         JS.inputsInline = false
-      } else if (rootBlock.getFieldValue('INLINE') == 'INT') {
+      } else if (rootBlock.getFieldValue('INLINE') === 'INT') {
         JS.inputsInline = true
       }
       // Generate output, or next/previous connections.
@@ -315,7 +315,7 @@ export default {
         // Look for a block on Blockly.Blocks that does not match the backup
         let blockType = null
         for (let type in Blockly.Blocks) {
-          if (typeof Blockly.Blocks[type].init == 'function' && Blockly.Blocks[type] != backupBlocks[type]) {
+          if (typeof Blockly.Blocks[type].init === 'function' && Blockly.Blocks[type] != backupBlocks[type]) {
             blockType = type
             break
           }
@@ -368,7 +368,7 @@ export default {
           } else if (field instanceof Blockly.FieldColour) {
             code.push(`${this.makeVar('colour', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldCheckbox) {
-            code.push(`${this.makeVar('checkbox', field.name)} = block.getFieldValue('${field.name}') == 'TRUE'`)
+            code.push(`${this.makeVar('checkbox', field.name)} = block.getFieldValue('${field.name}') === 'TRUE'`)
           } else if (field instanceof Blockly.FieldDropdown) {
             code.push(`${this.makeVar('dropdown', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldNumber) {
@@ -380,9 +380,9 @@ export default {
 
         // Inject inputs and statements
         if (!input.name) continue
-        if (input.type == Blockly.INPUT_VALUE) {
+        if (input.type === Blockly.INPUT_VALUE) {
           code.push(`${this.makeVar('value', input.name)} = Blockly.JavaScript.valueToCode(block, '${input.name}', Blockly.JavaScript.ORDER_ATOMIC)`)
-        } else if (input.type == Blockly.NEXT_STATEMENT) {
+        } else if (input.type === Blockly.NEXT_STATEMENT) {
           code.push(`${this.makeVar('statements', input.name)} = Blockly.JavaScript.statementToCode(block, '${input.name}')`)
         }
       }
@@ -459,7 +459,7 @@ export default {
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
-                checked: block.getFieldValue('CHECKED') == 'TRUE'
+                checked: block.getFieldValue('CHECKED') === 'TRUE'
               })
             break
 
@@ -513,58 +513,62 @@ export default {
     },
 
     /**
-     * Fetch the type(s) defined in the given input.
-     * Format as a string for appending to the generated code.
-     * @param {!Blockly.Block} block Block with input.
-     * @param {string} name Name of the input.
-     * @return {?string} String defining the types.
-     * @fixme Refactor
+     * Fetch the type(s) defined in the given input
+     * Format as a string for appending to the generated code
+     * 
+     * @param {!Blockly.Block} block Block with input
+     * @param {string} name Name of the input
+     * @return {?string} String defining the types
      */
     getOptTypesFrom (block, name) {
-      var types = this.getTypesFrom(block, name);
-      if (types.length == 0) {
-        return undefined;
+      let types = this.getTypesFrom(block, name)
+
+      if (types.length === 0) {
+        return undefined
       } else if (types.indexOf('null') != -1) {
-        return 'null';
-      } else if (types.length == 1) {
-        return types[0];
+        return 'null'
+      } else if (types.length === 1) {
+        return types[0]
       } else {
-        return '[' + types.join(', ') + ']';
+        return '[' + types.join(', ') + ']'
       }
     },
 
     /**
-     * Fetch the type(s) defined in the given input.
-     * @param {!Blockly.Block} block Block with input.
-     * @param {string} name Name of the input.
-     * @return {!Array.<string>} List of types.
-     * @private
-     * @fixme Refactor
+     * Fetch the type(s) defined in the given input
+     * 
+     * @param {!Blockly.Block} block Block with input
+     * @param {string} name Name of the input
+     * @return {!Array.<string>} List of types
      */
     getTypesFrom(block, name) {
-      var typeBlock = block.getInputTargetBlock(name);
-      var types;
+      let typeBlock = block.getInputTargetBlock(name)
+      let types
+
       if (!typeBlock || typeBlock.disabled) {
-        types = [];
-      } else if (typeBlock.type == 'type_other') {
-        types = [JSON.stringify(typeBlock.getFieldValue('TYPE'))];
-      } else if (typeBlock.type == 'type_group') {
-        types = [];
-        for (var i = 0; i < typeBlock.typeCount_; i++) {
-          types = types.concat(this.getTypesFrom(typeBlock, 'TYPE' + i));
+        types = []
+      } else if (typeBlock.type === 'type_other') {
+        types = [JSON.stringify(typeBlock.getFieldValue('TYPE'))]
+      } else if (typeBlock.type === 'type_group') {
+        types = []
+
+        for (let i = 0; i < typeBlock.typeCount_; i++) {
+          types = types.concat(this.getTypesFrom(typeBlock, 'TYPE' + i))
         }
-        // Remove duplicates.
-        var hash = Object.create(null);
-        for (var n = types.length - 1; n >= 0; n--) {
+
+        // Remove duplicates
+        let hash = Object.create(null)
+        for (let n = types.length - 1; n >= 0; n--) {
           if (hash[types[n]]) {
-            types.splice(n, 1);
+            types.splice(n, 1)
           }
-          hash[types[n]] = true;
+          hash[types[n]] = true
         }
       } else {
-        types = [JSON.stringify(typeBlock.valueType)];
+        types = [JSON.stringify(typeBlock.valueType)]
       }
-      return types;
+
+      return types
     }
   }
 }
@@ -575,6 +579,7 @@ table
   height: 100%
   width: 100%
 </style>
+
 <style lang="sass">
 #preview
   display: flex
