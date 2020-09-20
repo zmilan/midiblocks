@@ -4,15 +4,12 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
-        CodeEditor(@onCodeChange='onCodeChange' :value='code')
+        CodeEditor(@onCodeChange='onCodeChange' :value='code.user')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 
   //- @TODO remove these depdendencys
   .hidden
-    select#direction
-      option(value='ltr') LTR
-      option(value='rtl') RTL
     button#linkButton
     button#helpButton
       span Help
@@ -20,7 +17,6 @@ q-page.full-height
       option(value='JSON') JSON
       option(value='JavaScript') JavaScript
       option(value='Manual') Manual edit&mldr;
-    pre#languagePre.prettyprint.lang-js
     textarea#languageTA
     select#language
       option(value='JavaScript') JavaScript
@@ -64,7 +60,12 @@ export default {
     return {
       hasLoaded: false,
       
-      code: currentFactory.code || '',
+      code: {
+        // The user added code
+        user: currentFactory.code || '',
+        // The code generated from the factory
+        factory: ''
+      },
       
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
@@ -109,7 +110,7 @@ export default {
      */
     autosave () {
       store.set('currentFactory', {
-        code: this.code,
+        code: this.code.user,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
     },
@@ -118,7 +119,7 @@ export default {
      * Handles code editor changes
      */
     onCodeChange (code) {
-      this.code = code
+      this.code.user = code
       this.autosave()
     },
 
@@ -161,7 +162,7 @@ export default {
       }
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
-      this.injectCode(this.formatJson(blockType, rootBlock), 'languagePre')
+      this.code.factory = this.formatJson(blockType, rootBlock)
       this.updatePreview()
     },
 
@@ -295,91 +296,66 @@ export default {
     },
 
     /**
-     * Update the preview display.
+     * Update the preview display
      */
     updatePreview () {
-      // Toggle between LTR/RTL if needed (also used in first display).
-      var newDir = document.getElementById('direction').value;
-      if (this.previewWorkspace) {
-        this.previewWorkspace.dispose();
-      }
-      var rtl = newDir == 'rtl';
+      // Create a new preview
+      this.previewWorkspace && this.previewWorkspace.dispose()
 
+      // Reuse Factory options
       const options = Object.assign({}, this.options)
       options.zoom.controls = false
       options.trashcan = false
       options.toolbox = null
-      
-      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options});
-      this.previewWorkspace.clear();
+      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options})
+      this.previewWorkspace.clear()
 
-      // Fetch the code and determine its format (JSON or JavaScript).
-      var format = document.getElementById('format').value;
-      if (format == 'Manual') {
-        var code = document.getElementById('languageTA').value;
-        // If the code is JSON, it will parse, otherwise treat as JS.
-        try {
-          JSON.parse(code);
-          format = 'JSON';
-        } catch (e) {
-          format = 'JavaScript';
-        }
-      } else {
-        var code = document.getElementById('languagePre').textContent;
-      }
-      if (!code.trim()) {
-        // Nothing to render.  Happens while cloud storage is loading.
-        return;
+      // Exit if nothing to render (eg loading from a store)
+      if (!this.code.factory.trim()) {
+        return
       }
 
       // Backup Blockly.Blocks object so that main workspace and preview don't
-      // collide if user creates a 'factory_base' block, for instance.
-      var backupBlocks = Blockly.Blocks;
+      // collide if user creates a 'factory_base' block, for instance
+      const backupBlocks = Blockly.Blocks
       try {
-        // Make a shallow copy.
-        Blockly.Blocks = {};
-        for (var prop in backupBlocks) {
-          Blockly.Blocks[prop] = backupBlocks[prop];
+        // Make a shallow copy
+        Blockly.Blocks = {}
+        for (let prop in backupBlocks) {
+          Blockly.Blocks[prop] = backupBlocks[prop]
         }
 
-        if (format == 'JSON') {
-          var json = JSON.parse(code);
-          Blockly.Blocks[json.type || 'unnamed'] = {
-            init: function() {
-              this.jsonInit(json);
-            }
-          };
-        } else if (format == 'JavaScript') {
-          eval(code);
-        } else {
-          throw 'Unknown format: ' + format;
+        const json = JSON.parse(this.code.factory)
+        Blockly.Blocks[json.type || 'unnamed'] = {
+          init: function() {
+            this.jsonInit(json)
+          }
         }
 
-        // Look for a block on Blockly.Blocks that does not match the backup.
-        var blockType = null;
-        for (var type in Blockly.Blocks) {
-          if (typeof Blockly.Blocks[type].init == 'function' &&
-              Blockly.Blocks[type] != backupBlocks[type]) {
-            blockType = type;
-            break;
+        // Look for a block on Blockly.Blocks that does not match the backup
+        let blockType = null
+        for (let type in Blockly.Blocks) {
+          if (typeof Blockly.Blocks[type].init == 'function' && Blockly.Blocks[type] != backupBlocks[type]) {
+            blockType = type
+            break
           }
         }
         if (!blockType) {
-          return;
+          return
         }
 
-        // Create the preview block.
-        var previewBlock = this.previewWorkspace.newBlock(blockType);
-        previewBlock.initSvg();
-        previewBlock.render();
-        previewBlock.setMovable(false);
-        previewBlock.setDeletable(false);
-        previewBlock.moveBy(15, 10);
-        this.previewWorkspace.clearUndo();
+        // Create the preview block
+        const previewBlock = this.previewWorkspace.newBlock(blockType)
+        previewBlock.initSvg()
+        previewBlock.render()
+        previewBlock.setMovable(false)
+        previewBlock.setDeletable(false)
+        previewBlock.moveBy(15, 10)
+        this.previewWorkspace.clearUndo()
 
-        this.updateGenerator(previewBlock);
+        this.updateGenerator(previewBlock)
       } finally {
-        Blockly.Blocks = backupBlocks;
+        Blockly.Blocks = backupBlocks
       }
     },
 
