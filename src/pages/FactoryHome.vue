@@ -176,12 +176,13 @@ export default {
      * @private
      * 
      * @fixme Just build an object, not a string
-     * @fixme Refactor
      */
     formatJson (blockType, rootBlock) {
       const JS = {
         // Not used by Blockly, but may be used by a loader
-        type: blockType
+        type: blockType,
+        tooltip: '',
+        helpUrl: 'https://midiblocks.com/help/block/' + blockType
       }
       let message = []
       let args = []
@@ -192,7 +193,7 @@ export default {
       while (contentsBlock) {
         if (!contentsBlock.disabled && !contentsBlock.getInheritedDisabled()) {
           let fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
-          for (var i = 0; i < fields.length; i++) {
+          for (let i = 0; i < fields.length; i++) {
             if (typeof fields[i] === 'string') {
               message.push(fields[i].replace(/%/g, '%%'))
             } else {
@@ -201,78 +202,84 @@ export default {
             }
           }
 
-          var input = {type: contentsBlock.type}
-          // Dummy inputs don't have names.  Other inputs do.
-          if (contentsBlock.type != 'input_dummy') {
+          // Dummy inputs don't have names
+          let input = {type: contentsBlock.type}
+          if (contentsBlock.type !== 'input_dummy') {
             input.name = contentsBlock.getFieldValue('INPUTNAME')
           }
-          var check = JSON.parse(this.getOptTypesFrom(contentsBlock, 'TYPE') || 'null')
+
+          // @fixme JSON.parse/stringify was used by original blockly factory code,
+          // but we should move away from this since our use case is different
+          let check = JSON.parse(this.getOptTypesFrom(contentsBlock, 'TYPE') || 'null')
           if (check) {
             input.check = check
           }
-          var align = contentsBlock.getFieldValue('ALIGN')
-          if (align != 'LEFT') {
+
+          let align = contentsBlock.getFieldValue('ALIGN')
+          if (align !== 'LEFT') {
             input.align = align
           }
+
           args.push(input)
           message.push('%' + args.length)
           lastInput = contentsBlock
         }
-        contentsBlock = contentsBlock.nextConnection &&
-            contentsBlock.nextConnection.targetBlock()
+
+        contentsBlock = contentsBlock.nextConnection && contentsBlock.nextConnection.targetBlock()
       }
+
       // Remove last input if dummy and not empty.
       if (lastInput && lastInput.type === 'input_dummy') {
-        var fields = lastInput.getInputTargetBlock('FIELDS')
-        if (fields && this.getFieldsJson(fields).join('').trim() != '') {
-          var align = lastInput.getFieldValue('ALIGN')
-          if (align != 'LEFT') {
+        let fields = lastInput.getInputTargetBlock('FIELDS')
+        if (fields && this.getFieldsJson(fields).join('').trim() !== '') {
+          let align = lastInput.getFieldValue('ALIGN')
+          if (align !== 'LEFT') {
             JS.lastDummyAlign0 = align
           }
           args.pop()
           message.pop()
         }
       }
+      
       JS.message0 = message.join(' ')
       if (args.length) {
         JS.args0 = args
       }
-      // Generate inline/external switch.
+      
+      // Generate inline/external switch
       if (rootBlock.getFieldValue('INLINE') === 'EXT') {
         JS.inputsInline = false
       } else if (rootBlock.getFieldValue('INLINE') === 'INT') {
         JS.inputsInline = true
       }
-      // Generate output, or next/previous connections.
+
+      // Generate output, or next/previous connections
+      // @fixme JSON.parse/stringify was used by original blockly factory code,
+      // but we should move away from this since our use case is different
       switch (rootBlock.getFieldValue('CONNECTIONS')) {
         case 'LEFT':
-          JS.output =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE') || 'null')
-          break
+          JS.output = JSON.parse(this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE') || 'null')
+        break
         case 'BOTH':
-          JS.previousStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
-          JS.nextStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
-          break
+          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
+          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+        break
         case 'TOP':
-          JS.previousStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
-          break
+          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
+        break
         case 'BOTTOM':
-          JS.nextStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
-          break
+          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+        break
       }
-      // Generate colour.
-      var colourBlock = rootBlock.getInputTargetBlock('COLOUR')
+
+      // Generate block metadata
+      let colourBlock = rootBlock.getInputTargetBlock('COLOUR')
       if (colourBlock && !colourBlock.disabled) {
-        var hue = parseInt(colourBlock.getFieldValue('HUE'), 10)
-        JS.colour = hue
+        JS.colour = parseInt(colourBlock.getFieldValue('HUE'), 10)
       }
-      JS.tooltip = ''
-      JS.helpUrl = 'http://www.example.com/'
-      return JSON.stringify(JS, null, '  ')
+
+      // @fixme let's just pass the object
+      return JSON.stringify(JS, null, 2)
     },
 
     /**
@@ -315,7 +322,7 @@ export default {
         // Look for a block on Blockly.Blocks that does not match the backup
         let blockType = null
         for (let type in Blockly.Blocks) {
-          if (typeof Blockly.Blocks[type].init === 'function' && Blockly.Blocks[type] != backupBlocks[type]) {
+          if (typeof Blockly.Blocks[type].init === 'function' && Blockly.Blocks[type] !== backupBlocks[type]) {
             blockType = type
             break
           }
@@ -525,7 +532,7 @@ export default {
 
       if (types.length === 0) {
         return undefined
-      } else if (types.indexOf('null') != -1) {
+      } else if (types.indexOf('null') !== -1) {
         return 'null'
       } else if (types.length === 1) {
         return types[0]
