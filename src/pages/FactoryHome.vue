@@ -343,83 +343,62 @@ export default {
     },
 
     /**
-     * Update the generator code.
-     * @param {!Blockly.Block} block Rendered block in preview workspace.
+     * Generates variable code
+     */
+    makeVar (root, name) {
+      name = name.toLowerCase().replace(/\W/g, '_')
+      return '  let ' + root + '_' + name
+    },
+
+    /**
+     * Update the generator code
+     * @param {!Blockly.Block} block Rendered block in preview workspace
      */
     updateGenerator (block) {
-      function makeVar(root, name) {
-        name = name.toLowerCase().replace(/\W/g, '_');
-        return '  var ' + root + '_' + name;
-      }
-      var language = 'JavaScript'
-      var code = [];
-      code.push("Blockly." + language + "['" + block.type +
-                "'] = function(block) {");
+      let code = []
+      code.push("Blockly.JavaScript['" + block.type + "'] = function(block) {")
 
-      // Generate getters for any fields or inputs.
-      for (var i = 0, input; input = block.inputList[i]; i++) {
-        for (var j = 0, field; field = input.fieldRow[j]; j++) {
-          var name = field.name;
-          if (!name) {
-            continue;
-          }
+      // Generate getters for any fields or inputs
+      for (let i = 0, input; input = block.inputList[i]; i++) {
+        for (let j = 0, field; field = input.fieldRow[j]; j++) {
+          // Inject field variables
+          if (!field.name) continue
           if (field instanceof Blockly.FieldVariable) {
-            // Subclass of Blockly.FieldDropdown, must test first.
-            code.push(makeVar('variable', name) +
-                      " = Blockly." + language +
-                      ".variableDB_.getName(block.getFieldValue('" + name +
-                      "'), Blockly.Variables.NAME_TYPE);");
+            // Subclass of Blockly.FieldDropdown, must test first
+            code.push(`${this.makeVar('variable', field.name)} = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('${field.name}'), Blockly.Variables.NAME_TYPE)`)
           } else if (field instanceof Blockly.FieldAngle) {
-            // Subclass of Blockly.FieldTextInput, must test first.
-            code.push(makeVar('angle', name) +
-                      " = block.getFieldValue('" + name + "');");
+            // Subclass of Blockly.FieldTextInput, must test first
+            code.push(`${this.makeVar('angle', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldColour) {
-            code.push(makeVar('colour', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('colour', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldCheckbox) {
-            code.push(makeVar('checkbox', name) +
-                      " = block.getFieldValue('" + name + "') == 'TRUE';");
+            code.push(`${this.makeVar('checkbox', field.name)} = block.getFieldValue('${field.name}') == 'TRUE'`)
           } else if (field instanceof Blockly.FieldDropdown) {
-            code.push(makeVar('dropdown', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('dropdown', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldNumber) {
-            code.push(makeVar('number', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('number', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldTextInput) {
-            code.push(makeVar('text', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('text', field.name)} = block.getFieldValue('${field.name}')`)
           }
         }
-        var name = input.name;
-        if (name) {
-          if (input.type == Blockly.INPUT_VALUE) {
-            code.push(makeVar('value', name) +
-                      " = Blockly." + language + ".valueToCode(block, '" + name +
-                      "', Blockly." + language + ".ORDER_ATOMIC);");
-          } else if (input.type == Blockly.NEXT_STATEMENT) {
-            code.push(makeVar('statements', name) +
-                      " = Blockly." + language + ".statementToCode(block, '" +
-                      name + "');");
-          }
+
+        // Inject inputs and statements
+        if (!input.name) continue
+        if (input.type == Blockly.INPUT_VALUE) {
+          code.push(`${this.makeVar('value', input.name)} = Blockly.JavaScript.valueToCode(block, '${input.name}', Blockly.JavaScript.ORDER_ATOMIC)`)
+        } else if (input.type == Blockly.NEXT_STATEMENT) {
+          code.push(`${this.makeVar('statements', input.name)} = Blockly.JavaScript.statementToCode(block, '${input.name}')`)
         }
       }
-      // Most languages end lines with a semicolon.  Python does not.
-      var lineEnd = {
-        'JavaScript': ';',
-        'Python': '',
-        'PHP': ';',
-        'Dart': ';'
-      };
-      code.push("  // TODO: Assemble " + language + " into code variable.");
+
+      // Inject user code
+      code.push('\n  // @injectUserCode\n')
       if (block.outputConnection) {
-        code.push("  var code = '...';");
-        code.push("  // TODO: Change ORDER_NONE to the correct strength.");
-        code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
+        code.push('  return [code, Blockly.JavaScript.ORDER_NONE]')
       } else {
-        code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
-        code.push("  return code;");
+        code.push('  return code')
       }
-      code.push("};");
+      code.push('}')
 
       this.code.generator = code.join('\n')
     },
