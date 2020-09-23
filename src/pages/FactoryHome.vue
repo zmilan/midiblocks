@@ -8,8 +8,8 @@ q-page.full-height
     template(v-slot:before)
       //- @todo Move this into component
       q-dialog(v-model='colorPicker.isVisible' @hide='cancelColor' @escape-key='cancelColor')
-        q-card.q-pa-none(style='max-width: 300px;')
-          q-card-section
+        q-card(style='max-width: 300px;')
+          q-card-section.q-px-none.q-pt-none
             q-color(v-model='colorPicker.color' default-view='palette' :palette='colorPicker.palette' @input='onColorPickerChange')
           q-card-actions(align='right')
             q-btn(flat label='Cancel' @click='cancelColor')
