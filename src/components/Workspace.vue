@@ -41,6 +41,7 @@ import webmidi from 'webmidi'
 import {defaults} from 'lodash'
 import Interpreter from 'js-interpreter'
 import midiblocksTheme from '../assets/toolboxes/theme'
+import * as Babel from '@babel/standalone'
 
 /**
  * @emits onChange
@@ -171,7 +172,11 @@ export default {
      */
     run () {
       const code = Blockly.JavaScript.workspaceToCode(this.blockly)
-      this.interpreter = new Interpreter(STRING_WebmidiInterpreter + '\n' + code, this.setupInterpreter)
+      this.interpreter = new Interpreter(
+        Babel.transform(STRING_WebmidiInterpreter + '\n' + code, {
+          presets: ['env'],
+          sourceType: 'script'
+        }).code, this.setupInterpreter)
       this.interpreter.run()
     },
 
