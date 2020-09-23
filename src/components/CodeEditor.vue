@@ -25,12 +25,25 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    prefix: {
+      type: String,
+      default: ''
     }
   },
 
   watch: {
     code (code) {
       this.$emit('onCodeChange', code)
+    },
+
+    /**
+     * Appends code at the beginning of the document
+     */
+    prefix (newPrefix, oldPrefix) {
+      if (oldPrefix) {
+        this.code = newPrefix + '\n' + this.code.replace(oldPrefix + '\n', '') 
+      }
     }
   },
   

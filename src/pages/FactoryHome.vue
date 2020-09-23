@@ -4,8 +4,7 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
-        CodeEditor(@onCodeChange='onVariablesChange' :value='code.generator' :options='{readOnly: true}')
-        CodeEditor(@onCodeChange='onCodeChange' :value='code.user')
+        CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 </template>
@@ -37,6 +36,10 @@ export default {
     }, 50, {leading: true, trailing: true})
   },
 
+  computed: {
+
+  },
+
   data () {
     const currentFactory = store.get('currentFactory', {})
     
@@ -44,12 +47,12 @@ export default {
       hasLoaded: false,
       
       code: {
-        // The user added code
-        user: currentFactory.code || '',
         // The code generated from the factory
         blockJSON: {},
+        // Variables, which go above the user typed code
+        prefix: '',
         // Generated code
-        generator: ''
+        generated: currentFactory.code || ''
       },
       
       // is the splitter in horizontal or vertical mode
@@ -95,7 +98,7 @@ export default {
      */
     autosave () {
       store.set('currentFactory', {
-        code: this.code.user,
+        code: this.code.generated,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
     },
@@ -104,14 +107,8 @@ export default {
      * Handles code editor changes
      */
     onCodeChange (code) {
-      this.code.user = code
+      this.code.generated = code
       this.autosave()
-      console.log('onCodeChange', code)
-    },
-
-    onVariablesChange (code) {
-      this.code.generator = code
-      console.log('onVariablesChange', code)
     },
 
     /**
@@ -393,7 +390,8 @@ export default {
       //   code.push('return code')
       // }
 
-      this.code.generator = code.join('\n')
+      // Inject variables
+      this.code.prefix = code.join('\n')
     },
 
     /**
