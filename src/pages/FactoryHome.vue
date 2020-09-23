@@ -4,31 +4,9 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
-        CodeEditor(@onCodeChange='onCodeChange' :value='code')
+        CodeEditor(@onCodeChange='onCodeChange' :value='code.user')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-
-  //- @TODO remove these depdendencys
-  .hidden
-    select#direction
-      option(value='ltr') LTR
-      option(value='rtl') RTL
-    button#linkButton
-    button#helpButton
-      span Help
-    select#format
-      option(value='JSON') JSON
-      option(value='JavaScript') JavaScript
-      option(value='Manual') Manual edit&mldr;
-    pre#languagePre.prettyprint.lang-js
-    textarea#languageTA
-    select#language
-      option(value='JavaScript') JavaScript
-      option(value='Python') Python
-      option(value='PHP') PHP
-      option(value='Lua') Lua
-      option(value='Dart') Dart
-    pre#generatorPre
 </template>
 
 <script>
@@ -55,7 +33,15 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true})
+    }, 50, {leading: true, trailing: true}),
+
+    // @fixme delete
+    code: {
+      deep: true,
+      handler (code) {
+        console.log(code)
+      }
+    }
   },
 
   data () {
@@ -64,7 +50,14 @@ export default {
     return {
       hasLoaded: false,
       
-      code: currentFactory.code || '',
+      code: {
+        // The user added code
+        user: currentFactory.code || '',
+        // The code generated from the factory
+        blockJSON: '',
+        // Generated code
+        generator: ''
+      },
       
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
@@ -109,7 +102,7 @@ export default {
      */
     autosave () {
       store.set('currentFactory', {
-        code: this.code,
+        code: this.code.user,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
     },
@@ -118,7 +111,7 @@ export default {
      * Handles code editor changes
      */
     onCodeChange (code) {
-      this.code = code
+      this.code.user = code
       this.autosave()
     },
 
@@ -146,34 +139,28 @@ export default {
     },
 
     /**
-     * Update the language code based on constructs made in Blockly.
+     * Slugifies root block name and generates block JSON
      */
     onWorkspaceChange () {
       const rootBlock = this.getRootBlock()
+      if (!rootBlock) return
 
-      if (!rootBlock) {
-        return
-      }
-
-      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase()
-      if (!blockType) {
-        blockType = ''
-      }
+      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase() || ''
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
-      this.injectCode(this.formatJson(blockType, rootBlock), 'languagePre')
+      this.code.blockJSON = this.formatJson(blockType, rootBlock)
       this.updatePreview()
     },
 
     /**
-     * Return the uneditable container block that everything else attaches to.
+     * Return the uneditable container block that everything else attaches to
      * @return {Blockly.Block}
      */
     getRootBlock() {
       const blocks = this.$refs.workspace.blockly.getTopBlocks(false)
 
       for (var i = 0, block; block = blocks[i]; i++) {
-        if (block.type == 'factory_base') {
+        if (block.type === 'factory_base') {
           return block
         }
       }
@@ -182,26 +169,32 @@ export default {
     },
 
     /**
-     * Update the language code as JSON.
-     * @param {string} blockType Name of block.
-     * @param {!Blockly.Block} rootBlock Factory_base block.
-     * @return {string} Generated language code.
+     * Update the language code as JSON
+     * @param {string} blockType Name of block
+     * @param {!Blockly.Block} rootBlock Factory_base block
+     * @return {string} Generated language code
      * @private
+     * 
+     * @fixme Just build an object, not a string
      */
     formatJson (blockType, rootBlock) {
-      var JS = {}
-      // Type is not used by Blockly, but may be used by a loader.
-      JS.type = blockType
-      // Generate inputs.
-      var message = []
-      var args = []
-      var contentsBlock = rootBlock.getInputTargetBlock('INPUTS')
-      var lastInput = null
+      const JS = {
+        // Not used by Blockly, but may be used by a loader
+        type: blockType,
+        tooltip: '',
+        helpUrl: 'https://midiblocks.com/help/block/' + blockType
+      }
+      let message = []
+      let args = []
+      let contentsBlock = rootBlock.getInputTargetBlock('INPUTS')
+      let lastInput = null
+
+      // Generate inputs
       while (contentsBlock) {
         if (!contentsBlock.disabled && !contentsBlock.getInheritedDisabled()) {
-          var fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
-          for (var i = 0; i < fields.length; i++) {
-            if (typeof fields[i] == 'string') {
+          let fields = this.getFieldsJson(contentsBlock.getInputTargetBlock('FIELDS'))
+          for (let i = 0; i < fields.length; i++) {
+            if (typeof fields[i] === 'string') {
               message.push(fields[i].replace(/%/g, '%%'))
             } else {
               args.push(fields[i])
@@ -209,346 +202,305 @@ export default {
             }
           }
 
-          var input = {type: contentsBlock.type}
-          // Dummy inputs don't have names.  Other inputs do.
-          if (contentsBlock.type != 'input_dummy') {
+          // Dummy inputs don't have names
+          let input = {type: contentsBlock.type}
+          if (contentsBlock.type !== 'input_dummy') {
             input.name = contentsBlock.getFieldValue('INPUTNAME')
           }
-          var check = JSON.parse(this.getOptTypesFrom(contentsBlock, 'TYPE') || 'null')
+
+          // @fixme JSON.parse/stringify was used by original blockly factory code,
+          // but we should move away from this since our use case is different
+          let check = JSON.parse(this.getOptTypesFrom(contentsBlock, 'TYPE') || 'null')
           if (check) {
             input.check = check
           }
-          var align = contentsBlock.getFieldValue('ALIGN')
-          if (align != 'LEFT') {
+
+          let align = contentsBlock.getFieldValue('ALIGN')
+          if (align !== 'LEFT') {
             input.align = align
           }
+
           args.push(input)
           message.push('%' + args.length)
           lastInput = contentsBlock
         }
-        contentsBlock = contentsBlock.nextConnection &&
-            contentsBlock.nextConnection.targetBlock()
+
+        contentsBlock = contentsBlock.nextConnection && contentsBlock.nextConnection.targetBlock()
       }
+
       // Remove last input if dummy and not empty.
-      if (lastInput && lastInput.type == 'input_dummy') {
-        var fields = lastInput.getInputTargetBlock('FIELDS')
-        if (fields && this.getFieldsJson(fields).join('').trim() != '') {
-          var align = lastInput.getFieldValue('ALIGN')
-          if (align != 'LEFT') {
+      if (lastInput && lastInput.type === 'input_dummy') {
+        let fields = lastInput.getInputTargetBlock('FIELDS')
+        if (fields && this.getFieldsJson(fields).join('').trim() !== '') {
+          let align = lastInput.getFieldValue('ALIGN')
+          if (align !== 'LEFT') {
             JS.lastDummyAlign0 = align
           }
           args.pop()
           message.pop()
         }
       }
+      
       JS.message0 = message.join(' ')
       if (args.length) {
         JS.args0 = args
       }
-      // Generate inline/external switch.
-      if (rootBlock.getFieldValue('INLINE') == 'EXT') {
+      
+      // Generate inline/external switch
+      if (rootBlock.getFieldValue('INLINE') === 'EXT') {
         JS.inputsInline = false
-      } else if (rootBlock.getFieldValue('INLINE') == 'INT') {
+      } else if (rootBlock.getFieldValue('INLINE') === 'INT') {
         JS.inputsInline = true
       }
-      // Generate output, or next/previous connections.
+
+      // Generate output, or next/previous connections
+      // @fixme JSON.parse/stringify was used by original blockly factory code,
+      // but we should move away from this since our use case is different
       switch (rootBlock.getFieldValue('CONNECTIONS')) {
         case 'LEFT':
-          JS.output =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE') || 'null')
-          break
+          JS.output = JSON.parse(this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE') || 'null')
+        break
         case 'BOTH':
-          JS.previousStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
-          JS.nextStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
-          break
+          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
+          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+        break
         case 'TOP':
-          JS.previousStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
-          break
+          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
+        break
         case 'BOTTOM':
-          JS.nextStatement =
-              JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
-          break
+          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+        break
       }
-      // Generate colour.
-      var colourBlock = rootBlock.getInputTargetBlock('COLOUR')
+
+      // Generate block metadata
+      let colourBlock = rootBlock.getInputTargetBlock('COLOUR')
       if (colourBlock && !colourBlock.disabled) {
-        var hue = parseInt(colourBlock.getFieldValue('HUE'), 10)
-        JS.colour = hue
+        JS.colour = parseInt(colourBlock.getFieldValue('HUE'), 10)
       }
-      JS.tooltip = ''
-      JS.helpUrl = 'http://www.example.com/'
-      return JSON.stringify(JS, null, '  ')
+
+      // @fixme let's just pass the object
+      return JSON.stringify(JS, null, 2)
     },
 
     /**
-     * Inject code into a pre tag, with syntax highlighting.
-     * Safe from HTML/script injection.
-     * @param {string} code Lines of code.
-     * @param {string} id ID of <pre> element to inject into.
-     */
-    injectCode (code, id) {
-      var pre = document.getElementById(id);
-      pre.textContent = code;
-    },
-
-    /**
-     * Update the preview display.
+     * Update the preview display
      */
     updatePreview () {
-      // Toggle between LTR/RTL if needed (also used in first display).
-      var newDir = document.getElementById('direction').value;
-      if (this.previewWorkspace) {
-        this.previewWorkspace.dispose();
-      }
-      var rtl = newDir == 'rtl';
+      // Create a new preview
+      this.previewWorkspace && this.previewWorkspace.dispose()
 
+      // Reuse Factory options
       const options = Object.assign({}, this.options)
       options.zoom.controls = false
       options.trashcan = false
       options.toolbox = null
-      
-      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options});
-      this.previewWorkspace.clear();
+      this.previewWorkspace = Blockly.inject('preview', {media: 'media/', ...options})
+      this.previewWorkspace.clear()
 
-      // Fetch the code and determine its format (JSON or JavaScript).
-      var format = document.getElementById('format').value;
-      if (format == 'Manual') {
-        var code = document.getElementById('languageTA').value;
-        // If the code is JSON, it will parse, otherwise treat as JS.
-        try {
-          JSON.parse(code);
-          format = 'JSON';
-        } catch (e) {
-          format = 'JavaScript';
-        }
-      } else {
-        var code = document.getElementById('languagePre').textContent;
-      }
-      if (!code.trim()) {
-        // Nothing to render.  Happens while cloud storage is loading.
-        return;
+      // Exit if nothing to render (eg loading from a store)
+      if (!this.code.blockJSON.trim()) {
+        return
       }
 
       // Backup Blockly.Blocks object so that main workspace and preview don't
-      // collide if user creates a 'factory_base' block, for instance.
-      var backupBlocks = Blockly.Blocks;
+      // collide if user creates a 'factory_base' block, for instance
+      const backupBlocks = Blockly.Blocks
       try {
-        // Make a shallow copy.
-        Blockly.Blocks = {};
-        for (var prop in backupBlocks) {
-          Blockly.Blocks[prop] = backupBlocks[prop];
+        // Make a shallow copy
+        Blockly.Blocks = {}
+        for (let prop in backupBlocks) {
+          Blockly.Blocks[prop] = backupBlocks[prop]
         }
 
-        if (format == 'JSON') {
-          var json = JSON.parse(code);
-          Blockly.Blocks[json.type || 'unnamed'] = {
-            init: function() {
-              this.jsonInit(json);
-            }
-          };
-        } else if (format == 'JavaScript') {
-          eval(code);
-        } else {
-          throw 'Unknown format: ' + format;
+        const json = JSON.parse(this.code.blockJSON)
+        Blockly.Blocks[json.type || 'unnamed'] = {
+          init: function() {
+            this.jsonInit(json)
+          }
         }
 
-        // Look for a block on Blockly.Blocks that does not match the backup.
-        var blockType = null;
-        for (var type in Blockly.Blocks) {
-          if (typeof Blockly.Blocks[type].init == 'function' &&
-              Blockly.Blocks[type] != backupBlocks[type]) {
-            blockType = type;
-            break;
+        // Look for a block on Blockly.Blocks that does not match the backup
+        let blockType = null
+        for (let type in Blockly.Blocks) {
+          if (typeof Blockly.Blocks[type].init === 'function' && Blockly.Blocks[type] !== backupBlocks[type]) {
+            blockType = type
+            break
           }
         }
         if (!blockType) {
-          return;
+          return
         }
 
-        // Create the preview block.
-        var previewBlock = this.previewWorkspace.newBlock(blockType);
-        previewBlock.initSvg();
-        previewBlock.render();
-        previewBlock.setMovable(false);
-        previewBlock.setDeletable(false);
-        previewBlock.moveBy(15, 10);
-        this.previewWorkspace.clearUndo();
+        // Create the preview block
+        const previewBlock = this.previewWorkspace.newBlock(blockType)
+        previewBlock.initSvg()
+        previewBlock.render()
+        previewBlock.setMovable(false)
+        previewBlock.setDeletable(false)
+        previewBlock.moveBy(15, 10)
+        this.previewWorkspace.clearUndo()
 
-        this.updateGenerator(previewBlock);
+        this.updateGenerator(previewBlock)
       } finally {
-        Blockly.Blocks = backupBlocks;
+        Blockly.Blocks = backupBlocks
       }
     },
 
     /**
-     * Update the generator code.
-     * @param {!Blockly.Block} block Rendered block in preview workspace.
+     * Generates variable code
+     */
+    makeVar (root, name) {
+      name = name.toLowerCase().replace(/\W/g, '_')
+      return '  let ' + root + '_' + name
+    },
+
+    /**
+     * Update the generator code
+     * @param {!Blockly.Block} block Rendered block in preview workspace
      */
     updateGenerator (block) {
-      function makeVar(root, name) {
-        name = name.toLowerCase().replace(/\W/g, '_');
-        return '  var ' + root + '_' + name;
-      }
-      var language = document.getElementById('language').value;
-      var code = [];
-      code.push("Blockly." + language + "['" + block.type +
-                "'] = function(block) {");
+      let code = [`Blockly.JavaScript['${block.type}'] = function(block) {`]
 
-      // Generate getters for any fields or inputs.
-      for (var i = 0, input; input = block.inputList[i]; i++) {
-        for (var j = 0, field; field = input.fieldRow[j]; j++) {
-          var name = field.name;
-          if (!name) {
-            continue;
-          }
+      // Generate getters for any fields or inputs
+      for (let i = 0, input; input = block.inputList[i]; i++) {
+        for (let j = 0, field; field = input.fieldRow[j]; j++) {
+          // Inject field variables
+          if (!field.name) continue
           if (field instanceof Blockly.FieldVariable) {
-            // Subclass of Blockly.FieldDropdown, must test first.
-            code.push(makeVar('variable', name) +
-                      " = Blockly." + language +
-                      ".variableDB_.getName(block.getFieldValue('" + name +
-                      "'), Blockly.Variables.NAME_TYPE);");
+            // Subclass of Blockly.FieldDropdown, must test first
+            code.push(`${this.makeVar('variable', field.name)} = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('${field.name}'), Blockly.Variables.NAME_TYPE)`)
           } else if (field instanceof Blockly.FieldAngle) {
-            // Subclass of Blockly.FieldTextInput, must test first.
-            code.push(makeVar('angle', name) +
-                      " = block.getFieldValue('" + name + "');");
+            // Subclass of Blockly.FieldTextInput, must test first
+            code.push(`${this.makeVar('angle', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldColour) {
-            code.push(makeVar('colour', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('colour', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldCheckbox) {
-            code.push(makeVar('checkbox', name) +
-                      " = block.getFieldValue('" + name + "') == 'TRUE';");
+            code.push(`${this.makeVar('checkbox', field.name)} = block.getFieldValue('${field.name}') === 'TRUE'`)
           } else if (field instanceof Blockly.FieldDropdown) {
-            code.push(makeVar('dropdown', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('dropdown', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldNumber) {
-            code.push(makeVar('number', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('number', field.name)} = block.getFieldValue('${field.name}')`)
           } else if (field instanceof Blockly.FieldTextInput) {
-            code.push(makeVar('text', name) +
-                      " = block.getFieldValue('" + name + "');");
+            code.push(`${this.makeVar('text', field.name)} = block.getFieldValue('${field.name}')`)
           }
         }
-        var name = input.name;
-        if (name) {
-          if (input.type == Blockly.INPUT_VALUE) {
-            code.push(makeVar('value', name) +
-                      " = Blockly." + language + ".valueToCode(block, '" + name +
-                      "', Blockly." + language + ".ORDER_ATOMIC);");
-          } else if (input.type == Blockly.NEXT_STATEMENT) {
-            code.push(makeVar('statements', name) +
-                      " = Blockly." + language + ".statementToCode(block, '" +
-                      name + "');");
-          }
-        }
-      }
-      // Most languages end lines with a semicolon.  Python does not.
-      var lineEnd = {
-        'JavaScript': ';',
-        'Python': '',
-        'PHP': ';',
-        'Dart': ';'
-      };
-      code.push("  // TODO: Assemble " + language + " into code variable.");
-      if (block.outputConnection) {
-        code.push("  var code = '...';");
-        code.push("  // TODO: Change ORDER_NONE to the correct strength.");
-        code.push("  return [code, Blockly." + language + ".ORDER_NONE];");
-      } else {
-        code.push("  var code = '..." + (lineEnd[language] || '') + "\\n';");
-        code.push("  return code;");
-      }
-      code.push("};");
 
-      this.injectCode(code.join('\n'), 'generatorPre');
+        // Inject inputs and statements
+        if (!input.name) continue
+        if (input.type === Blockly.INPUT_VALUE) {
+          code.push(`${this.makeVar('value', input.name)} = Blockly.JavaScript.valueToCode(block, '${input.name}', Blockly.JavaScript.ORDER_ATOMIC)`)
+        } else if (input.type === Blockly.NEXT_STATEMENT) {
+          code.push(`${this.makeVar('statements', input.name)} = Blockly.JavaScript.statementToCode(block, '${input.name}')`)
+        }
+      }
+
+      // Inject user code
+      code.push('\n  // @injectUserCode\n')
+      if (block.outputConnection) {
+        code.push('  return [code, Blockly.JavaScript.ORDER_NONE]')
+      } else {
+        code.push('  return code')
+      }
+      code.push('}')
+
+      this.code.generator = code.join('\n')
     },
 
     /**
-     * Returns field strings and any config.
-     * @param {!Blockly.Block} block Input block.
-     * @return {!Array.<string|!Object>} Array of static text and field configs.
-     * @private
+     * Returns field strings and any config
+     * 
+     * @param {!Blockly.Block} block Input block
+     * @return {!Array.<string|!Object>} Array of static text and field configs
      */
     getFieldsJson (block) {
-      var fields = [];
+      let fields = []
+      
       while (block) {
         if (!block.disabled && !block.getInheritedDisabled()) {
           switch (block.type) {
             case 'field_static':
-              // Result: 'hello'
-              fields.push(block.getFieldValue('TEXT'));
-              break;
+              fields.push(block.getFieldValue('TEXT'))
+            break
+
             case 'field_input':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 text: block.getFieldValue('TEXT')
-              });
-              break;
+              })
+            break
+
             case 'field_number':
-              var obj = {
+              let obj = {
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 value: Number(block.getFieldValue('VALUE'))
-              };
-              var min = Number(block.getFieldValue('MIN'));
+              }
+
+              let min = Number(block.getFieldValue('MIN'))
               if (min > -Infinity) {
-                obj.min = min;
+                obj.min = min
               }
-              var max = Number(block.getFieldValue('MAX'));
+
+              let max = Number(block.getFieldValue('MAX'))
               if (max < Infinity) {
-                obj.max = max;
+                obj.max = max
               }
-              var precision = Number(block.getFieldValue('PRECISION'));
+
+              let precision = Number(block.getFieldValue('PRECISION'))
               if (precision) {
-                obj.precision = precision;
+                obj.precision = precision
               }
-              fields.push(obj);
-              break;
+              fields.push(obj)
+            break
+
             case 'field_angle':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 angle: Number(block.getFieldValue('ANGLE'))
-              });
-              break;
+              })
+            break
+
             case 'field_checkbox':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
-                checked: block.getFieldValue('CHECKED') == 'TRUE'
-              });
-              break;
+                checked: block.getFieldValue('CHECKED') === 'TRUE'
+              })
+            break
+
             case 'field_colour':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 colour: block.getFieldValue('COLOUR')
-              });
-              break;
+              })
+            break
+
             case 'field_variable':
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
                 variable: block.getFieldValue('TEXT') || null
-              });
-              break;
+              })
+            break
+
             case 'field_dropdown':
-              var options = [];
-              for (var i = 0; i < block.optionCount_; i++) {
-                options[i] = [block.getFieldValue('USER' + i),
-                    block.getFieldValue('CPU' + i)];
+              let options = []
+              for (let i = 0; i < block.optionCount_; i++) {
+                options[i] = [block.getFieldValue('USER' + i), block.getFieldValue('CPU' + i)]
               }
+
               if (options.length) {
                 fields.push({
                   type: block.type,
                   name: block.getFieldValue('FIELDNAME'),
                   options: options
-                });
+                })
               }
-              break;
+            break
+
             case 'field_image':
               fields.push({
                 type: block.type,
@@ -556,75 +508,74 @@ export default {
                 width: Number(block.getFieldValue('WIDTH')),
                 height: Number(block.getFieldValue('HEIGHT')),
                 alt: block.getFieldValue('ALT')
-              });
-              break;
+              })
+            break
           }
         }
-        block = block.nextConnection && block.nextConnection.targetBlock();
+
+        block = block.nextConnection && block.nextConnection.targetBlock()
       }
-      return fields;
+
+      return fields
     },
 
     /**
-     * Fetch the type(s) defined in the given input.
-     * Format as a string for appending to the generated code.
-     * @param {!Blockly.Block} block Block with input.
-     * @param {string} name Name of the input.
-     * @return {?string} String defining the types.
+     * Fetch the type(s) defined in the given input
+     * Format as a string for appending to the generated code
+     * 
+     * @param {!Blockly.Block} block Block with input
+     * @param {string} name Name of the input
+     * @return {?string} String defining the types
      */
     getOptTypesFrom (block, name) {
-      var types = this.getTypesFrom(block, name);
-      if (types.length == 0) {
-        return undefined;
-      } else if (types.indexOf('null') != -1) {
-        return 'null';
-      } else if (types.length == 1) {
-        return types[0];
+      let types = this.getTypesFrom(block, name)
+
+      if (types.length === 0) {
+        return undefined
+      } else if (types.indexOf('null') !== -1) {
+        return 'null'
+      } else if (types.length === 1) {
+        return types[0]
       } else {
-        return '[' + types.join(', ') + ']';
+        return '[' + types.join(', ') + ']'
       }
     },
 
     /**
-     * Fetch the type(s) defined in the given input.
-     * @param {!Blockly.Block} block Block with input.
-     * @param {string} name Name of the input.
-     * @return {!Array.<string>} List of types.
-     * @private
+     * Fetch the type(s) defined in the given input
+     * 
+     * @param {!Blockly.Block} block Block with input
+     * @param {string} name Name of the input
+     * @return {!Array.<string>} List of types
      */
     getTypesFrom(block, name) {
-      var typeBlock = block.getInputTargetBlock(name);
-      var types;
+      let typeBlock = block.getInputTargetBlock(name)
+      let types
+
       if (!typeBlock || typeBlock.disabled) {
-        types = [];
-      } else if (typeBlock.type == 'type_other') {
-        types = [this.escapeString(typeBlock.getFieldValue('TYPE'))];
-      } else if (typeBlock.type == 'type_group') {
-        types = [];
-        for (var i = 0; i < typeBlock.typeCount_; i++) {
-          types = types.concat(this.getTypesFrom(typeBlock, 'TYPE' + i));
+        types = []
+      } else if (typeBlock.type === 'type_other') {
+        types = [JSON.stringify(typeBlock.getFieldValue('TYPE'))]
+      } else if (typeBlock.type === 'type_group') {
+        types = []
+
+        for (let i = 0; i < typeBlock.typeCount_; i++) {
+          types = types.concat(this.getTypesFrom(typeBlock, 'TYPE' + i))
         }
-        // Remove duplicates.
-        var hash = Object.create(null);
-        for (var n = types.length - 1; n >= 0; n--) {
+
+        // Remove duplicates
+        let hash = Object.create(null)
+        for (let n = types.length - 1; n >= 0; n--) {
           if (hash[types[n]]) {
-            types.splice(n, 1);
+            types.splice(n, 1)
           }
-          hash[types[n]] = true;
+          hash[types[n]] = true
         }
       } else {
-        types = [this.escapeString(typeBlock.valueType)];
+        types = [JSON.stringify(typeBlock.valueType)]
       }
-      return types;
-    },
 
-    /**
-     * Escape a string.
-     * @param {string} string String to escape.
-     * @return {string} Escaped string surrounded by quotes.
-     */
-    escapeString(string) {
-      return JSON.stringify(string);
+      return types
     }
   }
 }
@@ -635,6 +586,7 @@ table
   height: 100%
   width: 100%
 </style>
+
 <style lang="sass">
 #preview
   display: flex
