@@ -3,7 +3,7 @@ import Blockly from 'blockly'
 /**
  * A color box with a quasar color picker
  */
-Blockly.Blocks['styles_color'] = {
+Blockly.Blocks['style_color'] = {
   // Set the colour of the block
   init: function() {
     this.appendDummyInput()
