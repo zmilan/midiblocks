@@ -36,7 +36,7 @@ Blockly.Blocks['factory_base'] = {
     // Set the color and its shadow
     this.appendValueInput('COLOR')
         .setCheck('Color')
-        .appendField('color')
+        .appendField('styles')
     setTimeout(() => {
       if (!this.getInputTargetBlock('COLOR')) {
         this.connectOutputShadow('COLOR', 'style_color')

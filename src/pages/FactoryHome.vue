@@ -6,8 +6,14 @@ q-page.full-height
         #preview(style='flex: 0 1 250px')
         CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
     template(v-slot:before)
+      //- @todo Move this into component
       q-dialog(v-model='colorPicker.isVisible')
-        q-color(v-model='colorPicker.color' style='max-width: 250px' no-header no-footer default-view='palette' :palette='colorPicker.palette' @change='onColorPickerChange')
+        q-card.q-pa-none(style='max-width: 300px;')
+          q-card-section
+            q-color(v-model='colorPicker.color' default-view='palette' :palette='colorPicker.palette' @input='onColorPickerChange')
+          q-card-actions(align='right')
+            q-btn(flat label='Cancel' @click='cancelColor')
+            q-btn(color='secondary' label='Update' @click='colorPicker.isVisible = false')
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 </template>
 
@@ -45,7 +51,8 @@ export default {
       hasLoaded: false,
 
       colorPicker: {
-        color: '#fad000',
+        origColor: '',
+        color: '',
         isVisible: false,
         palette: ['#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D37F0'],
         block: null
@@ -108,8 +115,8 @@ export default {
      * @todo Move into component
      */
     showColorPicker (ev) {
-      this.colorPicker.color = '#000'
       this.colorPicker.isVisible = true
+      this.colorPicker.origColor = this.colorPicker.color = ev.detail.color
       this.colorPicker.block = ev.detail.block
     },
 
@@ -118,9 +125,16 @@ export default {
      * @todo Move into component
      */
     onColorPickerChange (color) {
-      this.colorPicker.isVisible = false
       this.colorPicker.block.getField('COLOR').setValue(color)
       this.colorPicker.block.setFieldValue(color, 'COLOR')
+    },
+
+    /**
+     * Restores the color
+     */
+    cancelColor () {
+      this.colorPicker.block.setFieldValue(this.colorPicker.origColor, 'COLOR')
+      this.colorPicker.isVisible = false
     },
     
     /**

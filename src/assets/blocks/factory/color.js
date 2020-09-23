@@ -22,7 +22,10 @@ Blockly.Blocks['style_color'] = {
     setTimeout(() => {
       // @TODO also handle focus/tabstop
       this.getField('COLOR').getClickTarget_().addEventListener('click', () => {
-        document.dispatchEvent(new CustomEvent('blockly.showColorPicker', {detail: {block: this}}))
+        document.dispatchEvent(new CustomEvent('blockly.showColorPicker', {detail: {
+          block: this,
+          color: this.getColour()
+        }}))
       })
     })
   },
