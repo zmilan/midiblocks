@@ -58,7 +58,7 @@
       <shadow type="type_null" id="Pc94G3fR|)sRXrk8h$L("></shadow>
     </value>
     <value name="COLOUR">
-      <block type="colour_hue" id="F7P+r_wjMbf[*jAq04c`">
+      <block type="color" id="F7P+r_wjMbf[*jAq04c`">
         <mutation colour="#a5a55b"></mutation>
         <field name="HUE">60</field>
       </block>

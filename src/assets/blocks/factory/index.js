@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import Blockly from 'blockly'
+import './color'
 
 /**
  * @fileoverview Blocks for Blockly's Block Factory application.
@@ -715,33 +716,6 @@ Blockly.Blocks['type_other'] = {
       "tooltip": "Custom type to allow.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=702"
     });
-  }
-};
-
-Blockly.Blocks['colour_hue'] = {
-  // Set the colour of the block.
-  init: function() {
-    this.appendDummyInput()
-        .appendField('hue:')
-        .appendField(new Blockly.FieldAngle('0', this.validator), 'HUE');
-    this.setOutput(true, 'Colour');
-    this.setTooltip('Paint the block with this colour.');
-    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=55');
-  },
-  validator: function(text) {
-    // Update the current block's colour to match.
-    var hue = parseInt(text, 10);
-    if (!isNaN(hue)) {
-      this.sourceBlock_.setColour(hue);
-    }
-  },
-  mutationToDom: function(workspace) {
-    var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.getColour());
-    return container;
-  },
-  domToMutation: function(container) {
-    this.setColour(container.getAttribute('colour'));
   }
 };
 

@@ -131,11 +131,11 @@ export default [
     children: [
       {
         tag: 'block',
-        type: 'colour_hue',
+        type: 'color',
         children: [
           {
             tag: 'mutation',
-            colour: '20',
+            colour: '#fad000',
             children: [
               {
                 tag: 'field',
