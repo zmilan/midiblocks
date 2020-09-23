@@ -3,7 +3,6 @@
   router-view
 
   //- Error: Generic
-  //- @todo move into component
   q-dialog(v-model='!!errors.generic' persistent)
     q-card.bg-negative
       q-card-section.row.items-center
@@ -60,7 +59,6 @@ export default {
   data () {
     return {
       // Will display different modals based on error messages
-      // @todo move this to store
       errors: {
         generic: ''
       }
