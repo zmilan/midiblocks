@@ -33,15 +33,7 @@ export default {
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
       })
-    }, 50, {leading: true, trailing: true}),
-
-    // @fixme delete
-    code: {
-      deep: true,
-      handler (code) {
-        console.log(code)
-      }
-    }
+    }, 50, {leading: true, trailing: true})
   },
 
   data () {
@@ -54,7 +46,7 @@ export default {
         // The user added code
         user: currentFactory.code || '',
         // The code generated from the factory
-        blockJSON: '',
+        blockJSON: {},
         // Generated code
         generator: ''
       },
@@ -170,12 +162,10 @@ export default {
 
     /**
      * Update the language code as JSON
+     * 
      * @param {string} blockType Name of block
      * @param {!Blockly.Block} rootBlock Factory_base block
      * @return {string} Generated language code
-     * @private
-     * 
-     * @fixme Just build an object, not a string
      */
     formatJson (blockType, rootBlock) {
       const JS = {
@@ -208,9 +198,7 @@ export default {
             input.name = contentsBlock.getFieldValue('INPUTNAME')
           }
 
-          // @fixme JSON.parse/stringify was used by original blockly factory code,
-          // but we should move away from this since our use case is different
-          let check = JSON.parse(this.getOptTypesFrom(contentsBlock, 'TYPE') || 'null')
+          let check = this.getOptTypesFrom(contentsBlock, 'TYPE')
           if (check) {
             input.check = check
           }
@@ -254,21 +242,19 @@ export default {
       }
 
       // Generate output, or next/previous connections
-      // @fixme JSON.parse/stringify was used by original blockly factory code,
-      // but we should move away from this since our use case is different
       switch (rootBlock.getFieldValue('CONNECTIONS')) {
         case 'LEFT':
-          JS.output = JSON.parse(this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE') || 'null')
+          JS.output = this.getOptTypesFrom(rootBlock, 'OUTPUTTYPE')
         break
         case 'BOTH':
-          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
-          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+          JS.previousStatement = this.getOptTypesFrom(rootBlock, 'TOPTYPE')
+          JS.nextStatement = this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE')
         break
         case 'TOP':
-          JS.previousStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'TOPTYPE') || 'null')
+          JS.previousStatement = this.getOptTypesFrom(rootBlock, 'TOPTYPE')
         break
         case 'BOTTOM':
-          JS.nextStatement = JSON.parse(this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE') || 'null')
+          JS.nextStatement = this.getOptTypesFrom(rootBlock, 'BOTTOMTYPE')
         break
       }
 
@@ -278,8 +264,7 @@ export default {
         JS.colour = parseInt(colourBlock.getFieldValue('HUE'), 10)
       }
 
-      // @fixme let's just pass the object
-      return JSON.stringify(JS, null, 2)
+      return JS
     },
 
     /**
@@ -298,7 +283,7 @@ export default {
       this.previewWorkspace.clear()
 
       // Exit if nothing to render (eg loading from a store)
-      if (!this.code.blockJSON.trim()) {
+      if (!Object.keys(this.code.blockJSON)) {
         return
       }
 
@@ -312,7 +297,7 @@ export default {
           Blockly.Blocks[prop] = backupBlocks[prop]
         }
 
-        const json = JSON.parse(this.code.blockJSON)
+        const json = this.code.blockJSON
         Blockly.Blocks[json.type || 'unnamed'] = {
           init: function() {
             this.jsonInit(json)
@@ -482,7 +467,7 @@ export default {
               fields.push({
                 type: block.type,
                 name: block.getFieldValue('FIELDNAME'),
-                variable: block.getFieldValue('TEXT') || null
+                variable: block.getFieldValue('TEXT')
               })
             break
 
@@ -555,7 +540,7 @@ export default {
       if (!typeBlock || typeBlock.disabled) {
         types = []
       } else if (typeBlock.type === 'type_other') {
-        types = [JSON.stringify(typeBlock.getFieldValue('TYPE'))]
+        types = [typeBlock.getFieldValue('TYPE')]
       } else if (typeBlock.type === 'type_group') {
         types = []
 
@@ -572,7 +557,7 @@ export default {
           hash[types[n]] = true
         }
       } else {
-        types = [JSON.stringify(typeBlock.valueType)]
+        types = [typeBlock.valueType]
       }
 
       return types
