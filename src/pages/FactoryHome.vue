@@ -6,14 +6,7 @@ q-page.full-height
         #preview(style='flex: 0 1 250px')
         CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
     template(v-slot:before)
-      //- @todo Move this into component
-      q-dialog(v-model='colorPicker.isVisible' @hide='cancelColor' @escape-key='cancelColor')
-        q-card(style='max-width: 300px;')
-          q-card-section.q-px-none.q-pt-none
-            q-color(v-model='colorPicker.color' default-view='palette' :palette='colorPicker.palette' @input='onColorPickerChange')
-          q-card-actions(align='right')
-            q-btn(flat label='Cancel' @click='cancelColor')
-            q-btn(color='secondary' label='Update' @click='saveColor')
+      ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 </template>
 
@@ -21,6 +14,7 @@ q-page.full-height
 import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
+import ColorPicker from '../components/ColorPicker'
 import {mapState} from 'vuex'
 import Blockly from 'blockly'
 import store from 'store'
@@ -28,9 +22,9 @@ import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
 
 export default {
-  name: 'PageCodeHome',
+  name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor},
+  components: {Workspace, CodeEditor, ColorPicker},
 
   watch: {
     /**
@@ -50,14 +44,6 @@ export default {
     return {
       hasLoaded: false,
 
-      colorPicker: {
-        origColor: '',
-        color: '',
-        isVisible: false,
-        palette: ['#ff628c', '#FF9D00', '#fad000', '#2ca300', '#2EC4B6', '#5D37F0'],
-        block: null
-      },
-      
       code: {
         // The code generated from the factory
         blockJSON: {},
@@ -102,49 +88,9 @@ export default {
     }
 
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
-    document.addEventListener('blockly.showColorPicker', this.showColorPicker)
-  },
-
-  destroyed () {
-    document.removeEventListener('blockly.showColorPicker', this.showColorPicker)
   },
 
   methods: {
-    /**
-     * Show the color picker
-     * @todo Move into component
-     */
-    showColorPicker (ev) {
-      this.colorPicker.isVisible = true
-      this.colorPicker.origColor = this.colorPicker.color = ev.detail.color
-      this.colorPicker.block = ev.detail.block
-    },
-
-    /**
-     * Update the color picker
-     * @todo Move into component
-     */
-    onColorPickerChange (color) {
-      this.colorPicker.block.getField('COLOR').setValue(color)
-      this.colorPicker.block.setFieldValue(color, 'COLOR')
-    },
-
-    /**
-     * Restores the color
-     */
-    cancelColor () {
-      this.colorPicker.block.setFieldValue(this.colorPicker.origColor, 'COLOR')
-      this.colorPicker.isVisible = false
-    },
-
-    /**
-     * Saves the color
-     */
-    saveColor () {
-      this.colorPicker.origColor = this.colorPicker.color
-      this.colorPicker.isVisible = false
-    },
-    
     /**
      * Autosave code to localstorage
      */
