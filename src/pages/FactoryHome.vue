@@ -7,13 +7,13 @@ q-page.full-height
         CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
     template(v-slot:before)
       //- @todo Move this into component
-      q-dialog(v-model='colorPicker.isVisible')
+      q-dialog(v-model='colorPicker.isVisible' @hide='cancelColor' @escape-key='cancelColor')
         q-card.q-pa-none(style='max-width: 300px;')
           q-card-section
             q-color(v-model='colorPicker.color' default-view='palette' :palette='colorPicker.palette' @input='onColorPickerChange')
           q-card-actions(align='right')
             q-btn(flat label='Cancel' @click='cancelColor')
-            q-btn(color='secondary' label='Update' @click='colorPicker.isVisible = false')
+            q-btn(color='secondary' label='Update' @click='saveColor')
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 </template>
 
@@ -134,6 +134,14 @@ export default {
      */
     cancelColor () {
       this.colorPicker.block.setFieldValue(this.colorPicker.origColor, 'COLOR')
+      this.colorPicker.isVisible = false
+    },
+
+    /**
+     * Saves the color
+     */
+    saveColor () {
+      this.colorPicker.origColor = this.colorPicker.color
       this.colorPicker.isVisible = false
     },
     
