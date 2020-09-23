@@ -1,19 +1,32 @@
 <template lang="pug">
-  MonacoEditor(ref='editor' v-model='code' language='javascript' :options='options' @editorDidMount='editorDidMount' theme='shadesofpurple')
+  MonacoEditor(ref='editor' v-model='code' language='javascript' :options='settings' @editorDidMount='editorDidMount' theme='shadesofpurple')
 </template>
 
 <script>
 import MonacoEditor from 'vue-monaco'
+import {defaultsDeep} from 'lodash'
 
 /**
  * A Monaco (VSCode) editor
+ * 
+ * @prop options {Object} @see https://microsoft.github.io/monaco-editor/api/interfaces/monaco.editor.ieditorconstructionoptions.html
+ * @prop value {String} The initial code to use
  * @emits onCodeChange [{STR} code]
  */
 export default {
   name: 'PageCode',
 
   components: {MonacoEditor},
-  props: ['value'],
+  props: {
+    options: {
+      type: Object,
+      default: () => {}
+    },
+    value: {
+      type: String,
+      default: ''
+    }
+  },
 
   watch: {
     code (code) {
@@ -25,11 +38,11 @@ export default {
     return {
       code: this.$props.value,
       
-      options: {
+      settings: defaultsDeep(this.$props.options, {
         theme: 'shadesofpurple',
         automaticLayout: true,
         minimap: {enabled: false}
-      }
+      })
     }
   },
 

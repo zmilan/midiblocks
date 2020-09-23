@@ -4,6 +4,7 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
+        CodeEditor(@onCodeChange='onVariablesChange' :value='code.generator' :options='{readOnly: true}')
         CodeEditor(@onCodeChange='onCodeChange' :value='code.user')
     template(v-slot:before)
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
@@ -105,6 +106,12 @@ export default {
     onCodeChange (code) {
       this.code.user = code
       this.autosave()
+      console.log('onCodeChange', code)
+    },
+
+    onVariablesChange (code) {
+      this.code.generator = code
+      console.log('onVariablesChange', code)
     },
 
     /**
@@ -336,7 +343,7 @@ export default {
      */
     makeVar (root, name) {
       name = name.toLowerCase().replace(/\W/g, '_')
-      return '  let ' + root + '_' + name
+      return 'let ' + root + '_' + name
     },
 
     /**
@@ -344,7 +351,7 @@ export default {
      * @param {!Blockly.Block} block Rendered block in preview workspace
      */
     updateGenerator (block) {
-      let code = [`Blockly.JavaScript['${block.type}'] = function(block) {`]
+      let code = []
 
       // Generate getters for any fields or inputs
       for (let i = 0, input; input = block.inputList[i]; i++) {
@@ -379,14 +386,12 @@ export default {
         }
       }
 
-      // Inject user code
-      code.push('\n  // @injectUserCode\n')
-      if (block.outputConnection) {
-        code.push('  return [code, Blockly.JavaScript.ORDER_NONE]')
-      } else {
-        code.push('  return code')
-      }
-      code.push('}')
+      // Inject statements
+      // if (block.outputConnection) {
+      //   code.push('return [code, Blockly.JavaScript.ORDER_NONE]')
+      // } else {
+      //   code.push('return code')
+      // }
 
       this.code.generator = code.join('\n')
     },
