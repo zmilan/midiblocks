@@ -53,7 +53,7 @@
       </block>
     </value>
     <value name="COLOUR">
-      <block type="colour_hue" id="52pCu;m{zL#EVO.aQZeM">
+      <block type="color" id="52pCu;m{zL#EVO.aQZeM">
         <mutation colour="#a5935b"></mutation>
         <field name="HUE">45</field>
       </block>

@@ -4,119 +4,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import Blockly from 'blockly'
-
-/**
- * @fileoverview Blocks for Blockly's Block Factory application.
- * @author fraser@google.com (Neil Fraser)
- */
-'use strict';
-
-Blockly.Blocks['factory_base'] = {
-  // Base of new block.
-  init: function() {
-    this.setColour('#2ca300');
-    this.appendDummyInput()
-        .appendField('name')
-        .appendField(new Blockly.FieldTextInput('block_type'), 'NAME');
-    this.appendStatementInput('INPUTS')
-        .setCheck('Input')
-        .appendField('inputs');
-    var dropdown = new Blockly.FieldDropdown([
-        ['automatic inputs', 'AUTO'],
-        ['external inputs', 'EXT'],
-        ['inline inputs', 'INT']]);
-    this.appendDummyInput()
-        .appendField(dropdown, 'INLINE');
-    dropdown = new Blockly.FieldDropdown([
-        ['no connections', 'NONE'],
-        ['← left output', 'LEFT'],
-        ['↕ top+bottom connections', 'BOTH'],
-        ['↑ top connection', 'TOP'],
-        ['↓ bottom connection', 'BOTTOM']],
-        function(option) {
-          this.sourceBlock_.updateShape_(option);
-          // Connect a shadow block to this new input.
-          this.sourceBlock_.spawnOutputShadow_(option);
-        });
-    this.appendDummyInput()
-        .appendField(dropdown, 'CONNECTIONS');
-    this.appendValueInput('COLOUR')
-        .setCheck('Colour')
-        .appendField('colour');
-    this.setTooltip('Build a custom block by plugging\n' +
-        'fields, inputs and other blocks here.');
-    this.setHelpUrl(
-        'https://developers.google.com/blockly/guides/create-custom-blocks/block-factory');
-  },
-  mutationToDom: function() {
-    var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('connections', this.getFieldValue('CONNECTIONS'));
-    return container;
-  },
-  domToMutation: function(xmlElement) {
-    var connections = xmlElement.getAttribute('connections');
-    this.updateShape_(connections);
-  },
-  spawnOutputShadow_: function(option) {
-    // Helper method for deciding which type of outputs this block needs
-    // to attach shadow blocks to.
-    switch (option) {
-      case 'LEFT':
-        this.connectOutputShadow_('OUTPUTTYPE');
-        break;
-      case 'TOP':
-        this.connectOutputShadow_('TOPTYPE');
-        break;
-      case 'BOTTOM':
-        this.connectOutputShadow_('BOTTOMTYPE');
-        break;
-      case 'BOTH':
-        this.connectOutputShadow_('TOPTYPE');
-        this.connectOutputShadow_('BOTTOMTYPE');
-        break;
-    }
-  },
-  connectOutputShadow_: function(outputType) {
-    // Helper method to create & connect shadow block.
-    var type = this.workspace.newBlock('type_null');
-    type.setShadow(true);
-    type.outputConnection.connect(this.getInput(outputType).connection);
-    type.initSvg();
-    type.render();
-  },
-  updateShape_: function(option) {
-    var outputExists = this.getInput('OUTPUTTYPE');
-    var topExists = this.getInput('TOPTYPE');
-    var bottomExists = this.getInput('BOTTOMTYPE');
-    if (option == 'LEFT') {
-      if (!outputExists) {
-        this.addTypeInput_('OUTPUTTYPE', 'output type');
-      }
-    } else if (outputExists) {
-      this.removeInput('OUTPUTTYPE');
-    }
-    if (option == 'TOP' || option == 'BOTH') {
-      if (!topExists) {
-        this.addTypeInput_('TOPTYPE', 'top type');
-      }
-    } else if (topExists) {
-      this.removeInput('TOPTYPE');
-    }
-    if (option == 'BOTTOM' || option == 'BOTH') {
-      if (!bottomExists) {
-        this.addTypeInput_('BOTTOMTYPE', 'bottom type');
-      }
-    } else if (bottomExists) {
-      this.removeInput('BOTTOMTYPE');
-    }
-  },
-  addTypeInput_: function(name, label) {
-    this.appendValueInput(name)
-        .setCheck('Type')
-        .appendField(label);
-    this.moveInputBefore(name, 'COLOUR');
-  }
-};
+import './base'
+import './color'
 
 var FIELD_MESSAGE = 'fields %1 %2';
 var FIELD_ARGS = [
@@ -715,33 +604,6 @@ Blockly.Blocks['type_other'] = {
       "tooltip": "Custom type to allow.",
       "helpUrl": "https://www.youtube.com/watch?v=s2_xaEvcVI0#t=702"
     });
-  }
-};
-
-Blockly.Blocks['colour_hue'] = {
-  // Set the colour of the block.
-  init: function() {
-    this.appendDummyInput()
-        .appendField('hue:')
-        .appendField(new Blockly.FieldAngle('0', this.validator), 'HUE');
-    this.setOutput(true, 'Colour');
-    this.setTooltip('Paint the block with this colour.');
-    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=55');
-  },
-  validator: function(text) {
-    // Update the current block's colour to match.
-    var hue = parseInt(text, 10);
-    if (!isNaN(hue)) {
-      this.sourceBlock_.setColour(hue);
-    }
-  },
-  mutationToDom: function(workspace) {
-    var container = Blockly.utils.xml.createElement('mutation');
-    container.setAttribute('colour', this.getColour());
-    return container;
-  },
-  domToMutation: function(container) {
-    this.setColour(container.getAttribute('colour'));
   }
 };
 
