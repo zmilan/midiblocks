@@ -69,17 +69,17 @@ Blockly.Blocks['factory_base'] = {
     switch (option) {
       case 'LEFT':
         this.connectOutputShadow('OUTPUTTYPE')
-        break
+      break
       case 'TOP':
         this.connectOutputShadow('TOPTYPE')
-        break
+      break
       case 'BOTTOM':
         this.connectOutputShadow('BOTTOMTYPE')
-        break
+      break
       case 'BOTH':
         this.connectOutputShadow('TOPTYPE')
         this.connectOutputShadow('BOTTOMTYPE')
-        break
+      break
     }
   },
 

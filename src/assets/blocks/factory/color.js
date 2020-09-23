@@ -6,6 +6,8 @@ import Blockly from 'blockly'
 Blockly.Blocks['style_color'] = {
   // Set the colour of the block
   init: function() {
+    this.setColour('#fad000')
+    
     this.appendDummyInput()
         .appendField('color:')
         .appendField(new Blockly.FieldTextInput('#fad000', this.setColor), 'COLOR')
