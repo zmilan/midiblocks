@@ -263,9 +263,9 @@ export default {
       }
 
       // Generate block metadata
-      let colourBlock = rootBlock.getInputTargetBlock('COLOUR')
+      let colourBlock = rootBlock.getInputTargetBlock('COLOR')
       if (colourBlock && !colourBlock.disabled) {
-        JS.colour = parseInt(colourBlock.getFieldValue('HUE'), 10)
+        JS.colour = colourBlock.getFieldValue('COLOR')
       }
 
       return JS

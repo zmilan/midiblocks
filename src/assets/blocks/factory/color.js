@@ -3,14 +3,13 @@ import Blockly from 'blockly'
 /**
  * A color box with a quasar color picker
  */
-Blockly.Blocks['color'] = {
+Blockly.Blocks['styles_color'] = {
   // Set the colour of the block
   init: function() {
-    this.setColour('#ff0000')
     this.appendDummyInput()
         .appendField('color:')
-        .appendField(new Blockly.FieldTextInput('#fad000', this.setColor), 'HUE')
-    this.setOutput(true, 'Colour')
+        .appendField(new Blockly.FieldTextInput('#fad000', this.setColor), 'COLOR')
+    this.setOutput(true, 'Color')
     this.setTooltip('Paint the block with this color.')
     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=55')
   },
@@ -23,7 +22,7 @@ Blockly.Blocks['color'] = {
   },
 
   mutationToDom: function(workspace) {
-    var container = Blockly.utils.xml.createElement('mutation')
+    const container = Blockly.utils.xml.createElement('mutation')
     container.setAttribute('colour', this.getColour())
     return container
   },

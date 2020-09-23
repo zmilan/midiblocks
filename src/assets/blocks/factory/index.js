@@ -41,9 +41,9 @@ Blockly.Blocks['factory_base'] = {
         });
     this.appendDummyInput()
         .appendField(dropdown, 'CONNECTIONS');
-    this.appendValueInput('COLOUR')
-        .setCheck('Colour')
-        .appendField('colour');
+    this.appendValueInput('COLOR')
+        .setCheck('Color')
+        .appendField('color');
     this.setTooltip('Build a custom block by plugging\n' +
         'fields, inputs and other blocks here.');
     this.setHelpUrl(
@@ -115,7 +115,7 @@ Blockly.Blocks['factory_base'] = {
     this.appendValueInput(name)
         .setCheck('Type')
         .appendField(label);
-    this.moveInputBefore(name, 'COLOUR');
+    this.moveInputBefore(name, 'COLOR');
   }
 };
 

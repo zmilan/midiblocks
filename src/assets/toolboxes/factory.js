@@ -131,7 +131,7 @@ export default [
     children: [
       {
         tag: 'block',
-        type: 'color',
+        type: 'styles_color',
         children: [
           {
             tag: 'mutation',
@@ -139,8 +139,8 @@ export default [
             children: [
               {
                 tag: 'field',
-                name: 'HUE',
-                value: 2
+                name: 'COLOR',
+                value: '#fad000'
               }
             ]
           }
