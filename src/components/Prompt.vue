@@ -50,7 +50,6 @@ export default {
     /**
      * Close the modal
      * @emits blockly.prompt.submit {String: The submitted prompt}
-     * @todo move into component
      */
     submitPrompt () {
       if (this.prompt.callback) {

@@ -6,6 +6,7 @@ q-page.full-height
         #preview(style='flex: 0 1 250px')
         CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
     template(v-slot:before)
+      ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
 </template>
 
@@ -13,6 +14,7 @@ q-page.full-height
 import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
+import ColorPicker from '../components/ColorPicker'
 import {mapState} from 'vuex'
 import Blockly from 'blockly'
 import store from 'store'
@@ -20,9 +22,9 @@ import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
 
 export default {
-  name: 'PageCodeHome',
+  name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor},
+  components: {Workspace, CodeEditor, ColorPicker},
 
   watch: {
     /**
@@ -36,16 +38,12 @@ export default {
     }, 50, {leading: true, trailing: true})
   },
 
-  computed: {
-
-  },
-
   data () {
     const currentFactory = store.get('currentFactory', {})
     
     return {
       hasLoaded: false,
-      
+
       code: {
         // The code generated from the factory
         blockJSON: {},
@@ -115,7 +113,6 @@ export default {
      * Handles Workspace events
      */
     workspaceEventHandler (ev) {
-      // @todo Move this logic into Workspace component
       switch (ev.type) {
         case Blockly.Events.FINISHED_LOADING:
           this.hasLoaded = true
