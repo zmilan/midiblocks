@@ -8,6 +8,8 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
+        q-btn.full-width.text-black(color='secondary' icon='fas fa-save' @click='saveBlock')
+          span.q-ml-sm Save
 </template>
 
 <script>
@@ -99,6 +101,13 @@ export default {
         code: this.code.generated,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       })
+    },
+
+    /**
+     * Saves the block so that it's useable in Studio etc
+     */
+    saveBlock () {
+      console.log('saveBlock')
     },
 
     /**

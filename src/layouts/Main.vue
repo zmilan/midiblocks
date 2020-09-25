@@ -21,9 +21,9 @@ q-layout(view='lHh Lpr lFf')
       .text-center(v-else)
         q-spinner(color='primary')
     q-space
-    q-item
-      q-item-section
-        q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
+    //- q-item
+    //-   q-item-section
+    //-     q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
 
   //- Page
   q-page-container
