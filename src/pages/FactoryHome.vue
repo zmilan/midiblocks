@@ -22,11 +22,22 @@ import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'FactoryHome',
 
   components: {Workspace, CodeEditor, ColorPicker},
+
+  computed: {
+    saveData () {
+      return {
+        uuid: this.uuid,
+        code: this.code.generated,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      }
+    }
+  },
 
   watch: {
     /**
@@ -45,6 +56,8 @@ export default {
     
     return {
       hasLoaded: false,
+
+      uuid: currentFactory.uuid || uuidv4(),
 
       code: {
         // The code generated from the factory
@@ -97,17 +110,17 @@ export default {
      * Autosave code to localstorage
      */
     autosave () {
-      store.set('currentFactory', {
-        code: this.code.generated,
-        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
-      })
+      store.set('currentFactory', this.saveData)
     },
 
     /**
      * Saves the block so that it's useable in Studio etc
      */
     saveBlock () {
-      console.log('saveBlock')
+      const blocks = store.get('blocks', {})
+      blocks[this.uuid] = this.saveData
+
+      store.set('blocks', blocks)
     },
 
     /**
