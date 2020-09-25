@@ -103,6 +103,16 @@ export default {
     }
 
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+
+    this.$mousetrap.bindGlobal('ctrl+s', ev => {
+      ev.preventDefault()
+      
+      this.saveBlock()
+    })
+  },
+
+  destroyed () {
+    this.$mousetrap.unbind('ctrl+s')
   },
 
   methods: {
@@ -119,8 +129,13 @@ export default {
     saveBlock () {
       const blocks = store.get('blocks', {})
       blocks[this.uuid] = this.saveData
-
       store.set('blocks', blocks)
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Block saved',
+        timeout: 2000
+      })
     },
 
     /**
