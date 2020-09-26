@@ -30,9 +30,19 @@ export default {
   components: {Workspace, CodeEditor, ColorPicker},
 
   computed: {
+    /**
+     * Returns the data used for saving this view
+     * @returns {Object} save data
+     */
     saveData () {
+      const rootBlock = this.getRootBlock()
+      const category = rootBlock ? rootBlock.getFieldValue('category') : 'NONE'
+      const name = rootBlock ? rootBlock.getFieldValue('name') : this.uuid.replace(/\-/g, '_')
+      
       return {
         uuid: this.uuid,
+        name,
+        category,
         code: this.code.generated,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       }
@@ -129,7 +139,6 @@ export default {
     saveBlock () {
       const blocks = store.get('blocks', {})
       blocks[this.uuid] = this.saveData
-      store.set('blocks', blocks)
 
       this.$q.notify({
         type: 'positive',
@@ -175,7 +184,7 @@ export default {
       const rootBlock = this.getRootBlock()
       if (!rootBlock) return
 
-      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase() || ''
+      let blockType = rootBlock.getFieldValue('name').trim().toLowerCase() || ''
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
       this.code.blockJSON = this.formatJson(blockType, rootBlock)

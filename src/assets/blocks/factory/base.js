@@ -8,15 +8,17 @@ Blockly.Blocks['factory_base'] = {
     // Name
     this.appendDummyInput()
         .appendField('name')
-        .appendField(new Blockly.FieldTextInput('block_type'), 'NAME')
+        .appendField(new Blockly.FieldTextInput('block_type'), 'name')
 
     // Category Dropdown
     let dropdown = new Blockly.FieldDropdown([
-        ['events category', 'EVENTS'],
-        ['event modifiers category', 'EVENT_MODIFIERS']
+      ['events', 'event'],
+      ['event modifiers', 'event_modifier'],
+      ['send events', 'event_send']
     ])
     this.appendDummyInput()
-        .appendField(dropdown, 'CATEGORY')
+      .appendField('category')
+      .appendField(dropdown, 'category')
 
     // Inputs
     this.appendStatementInput('INPUTS')
