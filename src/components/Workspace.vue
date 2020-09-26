@@ -7,14 +7,18 @@
     @mouseleave='isMouseInQuasarToolbox = false')
 
     //- Quasar Toolbox
-    q-list.q-pa-sm
-      template(v-for='category in toolbox')
-        q-separator(v-if='category.tag === "sep"')
-        q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
-          q-item-section(avatar)
-            q-icon(:style='"color:" + category.colour' :name='category.icon')
-          q-item-section.gt-sm
-            q-item-label(:style='"color:" + category.colour') {{category.name}}
+    .q-pa-sm.flex.column
+      q-list
+        template(v-for='category in toolbox')
+          q-separator(v-if='category.tag === "sep"')
+          q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
+            q-item-section(avatar)
+              q-icon(:style='"color:" + category.colour' :name='category.icon')
+            q-item-section.gt-sm
+              q-item-label(:style='"color:" + category.colour') {{category.name}}
+      q-list(style='flex: 0 0 auto')
+        slot
+
   .min-height-inherit.position-relative(@click='closeToolboxFLyout')
     .blockly(style='min-height: inherit' :class='{"blockly-inline": inline}')
       //- Blockly

@@ -1,8 +1,9 @@
 export default [
   {
     tag: 'category',
-    name: 'On Event',
-    icon: 'fas fa-broadcast-tower',
+    category: 'event',
+    name: 'Events',
+    icon: 'fas fa-gamepad',
     colour: '#fad000',
     children: [
       {
@@ -13,8 +14,9 @@ export default [
   },
   {
     tag: 'category',
+    category: 'event_modifier',
     name: 'Event Modifiers',
-    icon: 'fas fa-cogs',
+    icon: 'fas fa-filter',
     colour: '#FF9D00',
     children: [
       {
@@ -25,8 +27,9 @@ export default [
   },  
   {
     tag: 'category',
+    category: 'event_send',
     name: 'Send Event',
-    icon: 'fab fa-usb',
+    icon: 'fas fa-broadcast-tower',
     colour: '#2EC4B6',
     children: [
       {
@@ -41,9 +44,10 @@ export default [
   },
   {
     tag: 'category',
+    category: 'logic',
     name: 'Logic',
     colour: '#5D37F0',
-    icon: 'fas fa-filter',
+    icon: 'fas fa-code-branch fa-flip-vertical',
     children: [
       {
         tag: 'block',
@@ -99,6 +103,7 @@ export default [
   {
     tag: 'category',
     name: 'Loops',
+    category: 'loops',
     colour: '#2ca300',
     icon: 'fas fa-infinity',
     children: [
@@ -227,6 +232,7 @@ export default [
   {
     tag: 'category',
     name: 'Math',
+    category: 'events',
     colour: '#A599E9',
     icon: 'fas fa-calculator',
     children: [

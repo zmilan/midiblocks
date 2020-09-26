@@ -5,15 +5,28 @@ Blockly.Blocks['factory_base'] = {
   init: function() {
     this.setColour('#2ca300')
 
+    // Name
     this.appendDummyInput()
         .appendField('name')
-        .appendField(new Blockly.FieldTextInput('block_type'), 'NAME')
+        .appendField(new Blockly.FieldTextInput('block_type'), 'name')
 
+    // Category Dropdown
+    let dropdown = new Blockly.FieldDropdown([
+      ['events', 'event'],
+      ['event modifiers', 'event_modifier'],
+      ['send events', 'event_send']
+    ])
+    this.appendDummyInput()
+      .appendField('category')
+      .appendField(dropdown, 'category')
+
+    // Inputs
     this.appendStatementInput('INPUTS')
         .setCheck('Input')
         .appendField('inputs')
 
-    let dropdown = new Blockly.FieldDropdown([
+    // Input Type & Connections
+    dropdown = new Blockly.FieldDropdown([
         ['automatic inputs', 'AUTO'],
         ['external inputs', 'EXT'],
         ['inline inputs', 'INT']])

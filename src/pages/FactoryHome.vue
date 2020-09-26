@@ -4,10 +4,12 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
-        CodeEditor(@onCodeChange='onCodeChange' :prefix='code.prefix' :value='code.generated')
+        CodeEditor(@onCodeChange='onCodeChange' :value='block.code')
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
+        q-btn.full-width.text-black(color='secondary' icon='fas fa-save' @click='saveBlock')
+          span.q-ml-sm Save
 </template>
 
 <script>
@@ -20,11 +22,29 @@ import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'FactoryHome',
 
   components: {Workspace, CodeEditor, ColorPicker},
+
+  computed: {
+    /**
+     * Returns the data used for saving this view
+     * @returns {Object} save data
+     */
+    saveData () {
+      const rootBlock = this.getRootBlock()
+      const category = rootBlock ? rootBlock.getFieldValue('category') : 'NONE'
+      
+      return {
+        ...this.block,
+        category,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      }
+    }
+  },
 
   watch: {
     /**
@@ -44,13 +64,13 @@ export default {
     return {
       hasLoaded: false,
 
-      code: {
+      // Block data
+      block: {
+        uuid: currentFactory.uuid || uuidv4(),
         // The code generated from the factory
-        blockJSON: {},
-        // Variables, which go above the user typed code
-        prefix: '',
-        // Generated code
-        generated: currentFactory.code || ''
+        json: {},
+        // User entered code
+        code: currentFactory.code || '',
       },
       
       // is the splitter in horizontal or vertical mode
@@ -73,7 +93,7 @@ export default {
   mounted () {
     set(window, 'app.$factory', this)
     
-    // Load workspace
+    // Create workspace
     const currentFactory = store.get('currentFactory', {})
     if (currentFactory.workspace) {
       Blockly.Xml.domToWorkspace(
@@ -87,7 +107,18 @@ export default {
       )
     }
 
+    // Listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+
+    // Autosave with CTRL+S
+    this.$mousetrap.bindGlobal('ctrl+s', ev => {
+      ev.preventDefault()
+      this.saveBlock()
+    })
+  },
+
+  destroyed () {
+    this.$mousetrap.unbind('ctrl+s')
   },
 
   methods: {
@@ -95,9 +126,21 @@ export default {
      * Autosave code to localstorage
      */
     autosave () {
-      store.set('currentFactory', {
-        code: this.code.generated,
-        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      store.set('currentFactory', this.saveData)
+    },
+
+    /**
+     * Saves the block so that it's useable in Studio etc
+     */
+    saveBlock () {
+      const blocks = store.get('blocks', {})
+      blocks[this.block.uuid] = this.saveData
+      store.set('blocks', blocks)
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Block saved',
+        timeout: 2000
       })
     },
 
@@ -105,7 +148,7 @@ export default {
      * Handles code editor changes
      */
     onCodeChange (code) {
-      this.code.generated = code
+      this.block.code = code
       this.autosave()
     },
 
@@ -138,10 +181,10 @@ export default {
       const rootBlock = this.getRootBlock()
       if (!rootBlock) return
 
-      let blockType = rootBlock.getFieldValue('NAME').trim().toLowerCase() || ''
+      let blockType = rootBlock.getFieldValue('name').trim().toLowerCase() || ''
       blockType = blockType.replace(/\W/g, '_').replace(/^(\d)/, '_\\1')
 
-      this.code.blockJSON = this.formatJson(blockType, rootBlock)
+      this.block.json = this.formatJson(blockType, rootBlock)
       this.updatePreview()
     },
 
@@ -284,7 +327,7 @@ export default {
       this.previewWorkspace.clear()
 
       // Exit if nothing to render (eg loading from a store)
-      if (!Object.keys(this.code.blockJSON)) {
+      if (!Object.keys(this.block.json)) {
         return
       }
 
@@ -298,7 +341,7 @@ export default {
           Blockly.Blocks[prop] = backupBlocks[prop]
         }
 
-        const json = this.code.blockJSON
+        const json = this.block.json
         Blockly.Blocks[json.type || 'unnamed'] = {
           init: function() {
             this.jsonInit(json)
@@ -355,6 +398,10 @@ export default {
           if (field instanceof Blockly.FieldVariable) {
             // Subclass of Blockly.FieldDropdown, must test first
             code.push(`${this.makeVar('variable', field.name)} = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('${field.name}'), Blockly.Variables.NAME_TYPE)`)
+            code.push({
+              type: 'variable',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldAngle) {
             // Subclass of Blockly.FieldTextInput, must test first
             code.push(`${this.makeVar('angle', field.name)} = block.getFieldValue('${field.name}')`)
@@ -388,7 +435,7 @@ export default {
       // }
 
       // Inject variables
-      this.code.prefix = code.join('\n')
+      // this.block.code.prefix = code.join('\n')
     },
 
     /**

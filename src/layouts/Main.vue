@@ -4,25 +4,26 @@ q-layout(view='lHh Lpr lFf')
   q-header.main-header-left-pixel-gap-fix
     q-toolbar
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
+      q-toolbar-title
+        router-link.text-decoration-none.text-white(:to='{name: "Home"}')
+          img.gt-sm.q-mr-sm(src='~assets/logo-title.png' height=32 style='vertical-align: middle')
+          img.lt-md.q-mr-sm(src='~assets/logo-title-favicon.png' height=32 style='vertical-align: middle')
+        small.gt-xs.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -3px)') {{version}}
       q-space
       q-toggle.no-select(color='negative' dark v-model='isMIDIActive') MIDI is {{isMIDIActive ? 'enabled' : 'disabled'}}
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered)
     q-toolbar.bg-primary.text-white
-      q-toolbar-title.text-center
-        router-link.text-decoration-none.text-white(:to='{name: "Home"}')
-          img.q-mr-sm(src='~assets/logo-title.png' height=26 style='vertical-align: middle; transform: translateY(-2px)')
-        small.gt-xs.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -4px)') {{version}}
     q-list.q-pa-sm
       template(v-if='boot.mainNavPanel')
         MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
       .text-center(v-else)
         q-spinner(color='primary')
     q-space
-    q-item
-      q-item-section
-        q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
+    //- q-item
+    //-   q-item-section
+    //-     q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
 
   //- Page
   q-page-container

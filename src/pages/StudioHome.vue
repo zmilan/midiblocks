@@ -94,7 +94,7 @@ export default {
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
       options: {},
-      toolbox,
+      toolbox: this.getToolbox(),
 
       // Spliter width in pixels
       splitter: store.get('splitter') || window.innerWidth / 3
@@ -122,6 +122,46 @@ export default {
           this.hasLoaded && this.autosave()
         break;
       }
+    },
+
+    /**
+     * Gets an organized Blockly toolbox JSON, which consists of core blocks and custom blocks
+     */
+    getToolbox () {
+      const coreBlocks = [...toolbox]
+      const customBlocks = store.get('blocks', {})
+
+      // Map categories to indexes
+      const coreBlockCats = coreBlocks.map(block => {
+        return block.category || ''
+      })
+
+      // Add custom block to appropriate category
+      Object.keys(customBlocks).forEach(id => {
+        const customBlock = customBlocks[id]
+        const catIndex = coreBlockCats.indexOf(customBlock.category)
+
+        if (coreBlocks[catIndex]) {
+          coreBlocks[catIndex].children.push({
+            tag: 'block',
+            type: customBlock.json.type
+          })
+
+          // Create block...
+          Blockly.Blocks[customBlock.json.type] = {
+            init: function() {
+              this.jsonInit(customBlock.json)
+            }
+          }
+          // ...and generator
+          Blockly.JavaScript[customBlock.json.type] = function (block) {
+            let code = customBlock.code || ''
+            return code
+          }
+        }
+      })
+
+      return coreBlocks
     },
 
     /**
