@@ -138,20 +138,25 @@ export default {
 
       // Add custom block to appropriate category
       Object.keys(customBlocks).forEach(id => {
-        const block = customBlocks[id]
-        const catIndex = coreBlockCats.indexOf(block.category)
+        const customBlock = customBlocks[id]
+        const catIndex = coreBlockCats.indexOf(customBlock.category)
 
         if (coreBlocks[catIndex]) {
           coreBlocks[catIndex].children.push({
             tag: 'block',
-            type: block.name
+            type: customBlock.json.type
           })
 
-          // Create block
-          Blockly.Blocks[block.name] = {
+          // Create block...
+          Blockly.Blocks[customBlock.json.type] = {
             init: function() {
-              this.jsonInit(block.json)
+              this.jsonInit(customBlock.json)
             }
+          }
+          // ...and generator
+          Blockly.JavaScript[customBlock.json.type] = function (block) {
+            let code = customBlock.code || ''
+            return code
           }
         }
       })
