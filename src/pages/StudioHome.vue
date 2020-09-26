@@ -146,6 +146,13 @@ export default {
             tag: 'block',
             type: block.name
           })
+
+          // Create block
+          Blockly.Blocks[block.name] = {
+            init: function() {
+              this.jsonInit(block.json)
+            }
+          }
         }
       })
 

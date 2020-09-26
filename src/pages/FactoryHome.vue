@@ -43,6 +43,7 @@ export default {
         uuid: this.uuid,
         name,
         category,
+        json: this.code.blockJSON,
         code: this.code.generated,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       }
@@ -139,6 +140,7 @@ export default {
     saveBlock () {
       const blocks = store.get('blocks', {})
       blocks[this.uuid] = this.saveData
+      store.set('blocks', blocks)
 
       this.$q.notify({
         type: 'positive',
