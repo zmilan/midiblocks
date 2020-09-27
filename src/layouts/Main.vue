@@ -21,9 +21,9 @@ q-layout(view='lHh Lpr lFf')
       .text-center(v-else)
         q-spinner(color='primary')
     q-space
-    //- q-item
-    //-   q-item-section
-    //-     q-btn.text-black(type='a' color='secondary' href='/wp-admin') Login
+    q-item
+      q-item-section
+        ImporterExporter
 
   //- Page
   q-page-container
@@ -33,13 +33,17 @@ q-layout(view='lHh Lpr lFf')
 <script>
 import {get, set} from 'lodash'
 import pkg from '../../package.json'
-import MainNavLink from 'components/mainNavPanel/Link.vue'
+import MainNavLink from 'components/mainNavPanel/Link'
+import ImporterExporter from 'components/ImporterExporter'
 import {mapState} from 'vuex'
 
 export default {
   name: 'MainLayout',
 
-  components: { MainNavLink },
+  components: {
+    ImporterExporter,
+    MainNavLink
+  },
 
   computed: {
     ...mapState(['user'])
