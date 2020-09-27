@@ -1,6 +1,5 @@
 <template lang="pug">
-q-btn.text-black(type='a' color='secondary' icon='fas fa-user' @click='isDialogVisible = true')
-  span.q-ml-sm Import/Export Profile
+q-btn(type='a' color='secondary' icon='fas fa-user' @click='isDialogVisible = true') Import/Export Profile
 
   q-dialog(v-model='isDialogVisible')
     q-card
@@ -11,8 +10,8 @@ q-btn.text-black(type='a' color='secondary' icon='fas fa-user' @click='isDialogV
       q-card-actions(align='right')
         q-btn(flat @click='isDialogVisible = false') Cancel
         q-space
-        q-btn.text-black(color='secondary' icon='fas fa-upload') Import
-        q-btn.text-black(color='secondary' icon='fas fa-download') Export
+        q-btn(color='secondary' icon='fas fa-upload') Import
+        q-btn(color='secondary' icon='fas fa-download') Export
 </template>
 
 <script>
