@@ -114,6 +114,7 @@ export default {
         timeout: 5000
       })
       console.warn('Error importing file:', err)
+      this.isBusy = false
     }
   }
 }
