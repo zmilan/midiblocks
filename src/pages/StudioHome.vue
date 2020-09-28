@@ -4,7 +4,7 @@ q-page.full-height
 </template>
 
 <script>
-import {throttle, cloneDeep} from 'lodash'
+import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
 import store from 'store'
 import '../assets/blocks/midi-args'
@@ -24,6 +24,8 @@ export default {
    * Initialize WebMidi
    */
   mounted () {
+    set(window, 'app.$studio', this)
+
     webmidi.enable((errors) => {
       const inputs = {}
       const outputs = {}

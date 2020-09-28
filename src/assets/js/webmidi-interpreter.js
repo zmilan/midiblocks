@@ -1,9 +1,4 @@
 /**
- * IMPORTANT NOTE
- * This project MUST be ES5 compliant as that is what the JS Interpreter uses
- */
-
-/**
  * Simple tests
  */
 hasNumber = /\d/

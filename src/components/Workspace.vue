@@ -11,7 +11,7 @@
       q-list
         template(v-for='category in toolbox')
           q-separator(v-if='category.tag === "sep"')
-          q-item(v-else clickable :style='"color:" + category.colour' @click='showToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
+          q-item(v-else clickable :style='"color:" + category.colour' @click='toggleToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
             q-item-section(avatar)
               q-icon(:style='"color:" + category.colour' :name='category.icon')
             q-item-section.gt-sm
@@ -132,10 +132,17 @@ export default {
     /**
      * Open the flyout based on the clicked item
      */
-    showToolboxFlyout (category, ev) {
-      let nodes = []
+    toggleToolboxFlyout (category, ev) {
+      // Hide flyout
+      if (this.isFlyoutOpen === category.name) {
+        this.blockly.getFlyout().hide()
+        this.isFlyoutOpen = null
+        this.lastClickedCategory = null
+        return
+      }
 
       // Show flyout
+      let nodes = []
       if (category.custom) {
         this.blockly.getFlyout().show(category.custom)        
       } else {
@@ -176,6 +183,7 @@ export default {
      */
     run () {
       const code = Blockly.JavaScript.workspaceToCode(this.blockly)
+      console.log(STRING_WebmidiInterpreter + '\n' + code)
       this.interpreter = new Interpreter(
         Babel.transform(STRING_WebmidiInterpreter + '\n' + code, {
           presets: ['env'],
