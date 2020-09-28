@@ -13,8 +13,8 @@ q-btn(type='a' color='secondary' icon='fas fa-user' @click='showModal') Import/E
         q-btn(flat @click='isDialogVisible = false') Cancel
         q-file.hidden(ref='file' v-model='file')
         q-space
-        q-btn(color='secondary' icon='fas fa-download' @click='importState') Import
-        q-btn(color='secondary' icon='fas fa-upload' @click='exportState') Export
+        q-btn(color='secondary' icon='fas fa-download' @click='importState' :loading='isBusy') Import
+        q-btn(color='secondary' icon='fas fa-upload' @click='exportState' :loading='isBusy') Export
 </template>
 
 <script>
@@ -29,6 +29,7 @@ export default {
 
   data: () => {
     return {
+      isBusy: false,
       file: null,
       isDialogVisible: false
     }
@@ -54,7 +55,7 @@ export default {
                 timeout: 3000
               })
 
-              this.isDialogVisible = false
+              this.$store.commit('tally', 'reloads')
             })
             .catch(err => this.showError(err))
         } catch (err) {
@@ -69,7 +70,10 @@ export default {
      * Imports a json file to overwrite the apps current state, including localStorage
      */
     importState (ev) {
-      this.$refs.file.pickFiles(ev)
+      this.isBusy = true
+      this.$nextTick(() => {
+        this.$refs.file.pickFiles(ev)
+      })
     },
     
     /**

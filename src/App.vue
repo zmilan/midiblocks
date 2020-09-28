@@ -1,5 +1,5 @@
 <template lang="pug">
-#q-app
+#q-app(:key='reloads')
   router-view
 
   //- Error: Generic
@@ -18,12 +18,17 @@
 import {set} from 'lodash'
 import Blockly from 'blockly'
 import Prompt from './components/Prompt'
+import {mapState} from 'vuex'
 
 export default {
   name: 'App',
 
   components: {
     Prompt
+  },
+
+  computed: {
+    ...mapState(['reloads'])
   },
 
   watch: {
