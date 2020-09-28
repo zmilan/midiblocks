@@ -5,12 +5,7 @@ export default [
     name: 'Events',
     icon: 'fas fa-gamepad',
     colour: '#fad000',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_on_event'
-      }
-    ]
+    children: []
   },
   {
     tag: 'category',
