@@ -8,7 +8,7 @@ q-dialog(v-model='prompt.visible')
     q-card-actions(align='right')
       q-btn(color='white' flat @click='prompt.visible = false') Cancel
       q-space
-      q-btn.text-black(color='secondary' @click='submitPrompt') Done
+      q-btn(color='secondary' @click='submitPrompt') Done
 </template>
 
 <script>

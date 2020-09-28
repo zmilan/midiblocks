@@ -17,6 +17,9 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
+      // Used to force rerender a component by updating a :key set to this
+      reloads: 0,
+      
       /**
        * Represents the api
        */
@@ -69,10 +72,19 @@ export default function (/* { ssrContext } */) {
       /**
        * Helper for setting any state
        * @param {*} state 
-       * @param {*} payload [stateId]
+       * @param {*} payload ["path.to.state", value]
        */
       set (state, payload) {
         set(state, payload[0], payload[1])
+      },
+
+      /**
+       * Helper for incrementing a state by 1
+       * @param {*} state 
+       * @param {String} path "path.to.state"
+       */
+      tally (state, path) {
+        set(state, path, get(state, path) + 1)
       }
     },
 
