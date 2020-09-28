@@ -155,8 +155,59 @@ export default {
           }
           // ...and generator
           Blockly.JavaScript[customBlock.json.type] = function (block) {
-            let code = customBlock.code || ''
-            return code
+            let code = []
+            let statements = []
+
+            customBlock.variables.forEach(variable => {
+              // Fields
+              if (variable.type === 'field') {
+                switch (variable.field) {
+                  case 'variable':
+                    code.push(`var $${variable.name} = ${JSON.stringify(Blockly.JavaScript.variableDB_.getName(block.getFieldValue(variable.name), Blockly.Variables.NAME_TYPE))};`)
+                  break
+                  case 'angle':
+                    code.push(`var $${variable.name} = ${block.getFieldValue(variable.name)};`)
+                  break
+                  case 'colour':
+                    code.push(`var $${variable.name} = ${JSON.stringify(block.getFieldValue(variable.name))};`)
+                  break
+                  case 'checkbox':
+                    code.push(`var $${variable.name} = ${block.getFieldValue(variable.name) === 'TRUE' ? 'true' : 'false'};`)
+                  break
+                  case 'dropdown':
+                    code.push(`var $${variable.name} = ${JSON.stringify(block.getFieldValue(variable.name))};`)
+                  break
+                  case 'number':
+                    code.push(`var $${variable.name} = ${block.getFieldValue(variable.name)};`)
+                  break
+                  case 'text':
+                    code.push(`var $${variable.name} = ${JSON.stringify(block.getFieldValue(variable.name))};`)
+                  break
+                }
+              // Inputs
+              } else {
+                switch (variable.input) {
+                  case 'value':
+                    code.push(`var $${variable.name} = ${JSON.stringify(Blockly.JavaScript.valueToCode(block, variable.name, Blockly.JavaScript.ORDER_ATOMIC))};`)
+                  break
+                  case 'statements':
+                    const statement = Blockly.JavaScript.statementToCode(block, variable.name)
+                    statements.push(statement)
+                  break
+                }
+              }
+            })
+            
+            code = code.join(';\n')
+            code += ';\n' + (customBlock.code || '')
+            code += `;\n ${statements.join(';\n')}`
+
+            // Return code
+            if (block.outputConnection) {
+              return [code, Blockly.JavaScript.ORDER_NONE]
+            } else {
+              return code
+            }
           }
         }
       })

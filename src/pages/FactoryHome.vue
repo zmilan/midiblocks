@@ -374,19 +374,11 @@ export default {
     },
 
     /**
-     * Generates variable code
-     */
-    makeVar (root, name) {
-      name = name.toLowerCase().replace(/\W/g, '_')
-      return 'let ' + root + '_' + name
-    },
-
-    /**
      * Update the generator code
      * @param {!Blockly.Block} block Rendered block in preview workspace
      */
     updateGenerator (block) {
-      let code = []
+      let vars = []
 
       // Generate getters for any fields or inputs
       for (let i = 0, input; input = block.inputList[i]; i++) {
@@ -395,45 +387,70 @@ export default {
           if (!field.name) continue
           if (field instanceof Blockly.FieldVariable) {
             // Subclass of Blockly.FieldDropdown, must test first
-            code.push(`${this.makeVar('variable', field.name)} = Blockly.JavaScript.variableDB_.getName(block.getFieldValue('${field.name}'), Blockly.Variables.NAME_TYPE)`)
-            code.push({
-              type: 'variable',
+            vars.push({
+              type: 'field',
+              field: 'variable',
               name: field.name
             })
           } else if (field instanceof Blockly.FieldAngle) {
             // Subclass of Blockly.FieldTextInput, must test first
-            code.push(`${this.makeVar('angle', field.name)} = block.getFieldValue('${field.name}')`)
+            vars.push({
+              type: 'field',
+              field: 'angle',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldColour) {
-            code.push(`${this.makeVar('colour', field.name)} = block.getFieldValue('${field.name}')`)
+            vars.push({
+              type: 'field',
+              field: 'color',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldCheckbox) {
-            code.push(`${this.makeVar('checkbox', field.name)} = block.getFieldValue('${field.name}') === 'TRUE'`)
+            vars.push({
+              type: 'field',
+              field: 'checkbox',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldDropdown) {
-            code.push(`${this.makeVar('dropdown', field.name)} = block.getFieldValue('${field.name}')`)
+            vars.push({
+              type: 'field',
+              field: 'dropdown',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldNumber) {
-            code.push(`${this.makeVar('number', field.name)} = block.getFieldValue('${field.name}')`)
+            vars.push({
+              type: 'field',
+              field: 'number',
+              name: field.name
+            })
           } else if (field instanceof Blockly.FieldTextInput) {
-            code.push(`${this.makeVar('text', field.name)} = block.getFieldValue('${field.name}')`)
+            vars.push({
+              type: 'field',
+              field: 'text',
+              name: field.name
+            })
           }
         }
 
         // Inject inputs and statements
         if (!input.name) continue
         if (input.type === Blockly.INPUT_VALUE) {
-          code.push(`${this.makeVar('value', input.name)} = Blockly.JavaScript.valueToCode(block, '${input.name}', Blockly.JavaScript.ORDER_ATOMIC)`)
+          vars.push({
+            type: 'input',
+            input: 'value',
+            name: input.name
+          })
         } else if (input.type === Blockly.NEXT_STATEMENT) {
-          code.push(`${this.makeVar('statements', input.name)} = Blockly.JavaScript.statementToCode(block, '${input.name}')`)
+          vars.push({
+            type: 'input',
+            input: 'statements',
+            name: input.name
+          })
         }
       }
 
-      // Inject statements
-      // if (block.outputConnection) {
-      //   code.push('return [code, Blockly.JavaScript.ORDER_NONE]')
-      // } else {
-      //   code.push('return code')
-      // }
-
       // Inject variables
-      // this.block.code.prefix = code.join('\n')
+      this.block.variables = vars
     },
 
     /**
