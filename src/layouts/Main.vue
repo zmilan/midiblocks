@@ -21,8 +21,8 @@ q-layout(view='lHh Lpr lFf')
       .text-center(v-else)
         q-spinner(color='primary')
     q-space
-    q-item
-      q-item-section
+    q-list(style='flex: 0 0 auto' dense)
+      q-item
         ImporterExporter
 
   //- Page

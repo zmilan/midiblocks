@@ -8,7 +8,11 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-        q-btn.full-width(color='secondary' icon='fas fa-save' @click='saveBlock') Save Block
+        q-item
+          q-btn.full-width(color='secondary' icon='fas fa-save' @click='saveBlock') Save Block
+        q-item
+        q-item
+          q-btn.full-width(color='tertiary' icon='fas fa-file' @click='saveBlock') New Block
 </template>
 
 <script>
