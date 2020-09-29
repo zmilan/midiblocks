@@ -12,7 +12,8 @@ q-page.full-height
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
         q-item
-          q-btn.full-width(color='secondary' icon='fas fa-save' @click='saveBlock') Save Block
+          q-btn.full-width(disabled color='secondary' icon='fas fa-save' @click='saveBlock' :disabled='!hasUnsavedChanges') Save Block
+          q-badge(v-if='hasUnsavedChanges' color='negative' floating) New changes
         q-item
         q-item
           q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
@@ -109,6 +110,9 @@ export default {
       // Whether the workspace is ready or not
       hasLoaded: false,
 
+      // True when autosaved but not manually saved
+      hasUnsavedChanges: false,
+
       // Models for dialogs
       dialog: {
         confirmNew: false,
@@ -179,6 +183,7 @@ export default {
      */
     autosave () {
       store.set('currentFactory', this.saveData)
+      this.hasUnsavedChanges = true
     },
 
     /**
@@ -188,6 +193,7 @@ export default {
       const blocks = store.get('blocks', {})
       blocks[this.block.uuid] = this.saveData
       store.set('blocks', blocks)
+      this.hasUnsavedChanges = false
 
       this.$q.notify({
         type: 'positive',
