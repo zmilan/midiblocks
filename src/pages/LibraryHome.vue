@@ -8,7 +8,7 @@ q-page.full-height
 
     div(v-else v-html='post.content')
 
-    LibraryGrid(if='blocks.length' :blocks='blocks')
+    LibraryGrid
 </template>
 
 <script>
@@ -22,12 +22,6 @@ export default {
 
   computed: {
     ...mapState(['post'])
-  },
-
-  data () {
-    return {
-      blocks: []
-    }
   },
 
   mounted () {

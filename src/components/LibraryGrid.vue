@@ -8,6 +8,8 @@
       q-card-section
         h3 {{block.name}}
         p {{block.json.tooltip}}
+      q-card-actions(align='right')
+        slot(:block='block')
 </template>
 
 <script>
