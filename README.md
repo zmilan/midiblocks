@@ -32,6 +32,7 @@ npm start
             <li><a href="#motivation">Motivation</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#milestones">Milestones</a></li>
+            <li><a href="#keyboard-shortcuts">Keyboard Shortcuts</a></li>
           </ul>
           <br>
         </li>
@@ -84,8 +85,7 @@ npm start
 
 
 # About
-
-**Midiblocks is an attempt to simplify MIDI mapping and MIDI scripting to such a degree that it is doable by anyone, even those without coding experience.**
+**Midiblocks is an [a11y](https://www.a11yproject.com/) friendly [Visual Language](https://en.wikipedia.org/wiki/Visual_programming_language) to help you map and script MIDI devices with libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/)/[q5.js](https://github.com/LingDong-/q5xjs), and more ✨**
 
 Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like: [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks:
 
@@ -115,7 +115,34 @@ Ultimately, the goal is to expose browser based creativity and machine learning 
 - A "GitHub/NPM for MIDI" that lets you quickly create, import, fork, and share MIDI mappings and scripts
 - Create integrations with creativity libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), and [handsfree.js](https://github.com/handsfreejs/handsfree)
 
+## Keyboard Shortcuts
 
+<table>
+  <thead>
+    <tr>
+      <th>Location</th>
+      <th>Shortcut</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Anywhere</td>
+      <td><kbd>s</kbd></td>
+      <td>Navigate to the Studio</td>
+    </tr>
+    <tr>
+      <td>Anywhere</td>
+      <td><kbd>f</kbd></td>
+      <td>Navigate to the Factory</td>
+    </tr>
+    <tr>
+      <td>Factory</td>
+      <td><kbd>ctrl + s</kbd></td>
+      <td>Save the current block</td>
+    </tr>
+  </tbody>
+</table>
 
 -------------------------------------------------------------------------------
 
@@ -149,7 +176,6 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 
 ## Limitations
 
-- **Generated code must be in ES5.** We use [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter) to run code in a sandboxed environment which only supports ES5, but we will be adding Babel soon so that you can use the latest JavaScript has to offer!
 - Sandboxed code runs roughly 200x slower, but we'll provide workarounds as we work to lower this
 
 
@@ -167,24 +193,11 @@ For more info, including on how to support Firefox, Internet Explorer, and Safar
 # -----------
 # Start the app in development mode with localStorage
 npm start
-# (alias)
-npm run dev
-# (alias)
-npm run dev:local
-
-# Start the app in development mode with remote storage
-npm run dev:remote
-
 
 # PRODUCTION
 # ----------
 # Build the app for production with localStorage
 npm run build
-# (alias)
-npm run build:local
-
-# Build the app for production with remote storage
-npm run build:remote
 ```
 
 ## Dev Notes
