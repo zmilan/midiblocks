@@ -62,9 +62,11 @@ export default {
     saveData () {
       const rootBlock = this.getRootBlock()
       const category = rootBlock ? rootBlock.getFieldValue('category') : 'NONE'
+      const name = rootBlock ? rootBlock.getFieldValue('name') : 'Untitled'
       
       return {
         ...this.block,
+        name,
         category,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       }
@@ -93,7 +95,7 @@ export default {
       // Models for dialogs
       dialog: {
         confirmNew: false,
-        loadBlock: true
+        loadBlock: false
       },
 
       // Block data

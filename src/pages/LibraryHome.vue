@@ -5,78 +5,40 @@ q-page.full-height
 
     div.center-children(v-if='post.isChecking')
       q-spinner(color='primary' size='5em')
+
     div(v-else v-html='post.content')
-    template(if='blocks.length')
-      .row.q-col-gutter-md
-        .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.title')
-          q-card
-            q-card-section
-              Workspace(:options='options' style="right: 0" :blocks='[block]' :inline='true' :toolbox='toolbox')
-            q-separator
-            q-card-section
-              h3 {{block.title}}
-              p {{block.short_description[0]}}
+
+    LibraryGrid(if='blocks.length' :blocks='blocks')
 </template>
 
 <script>
-import Workspace from '../components/Workspace'
+import LibraryGrid from '../components/LibraryGrid'
 import {mapState} from 'vuex'
 
 export default {
   name: 'LibraryHome',
 
-  components: {
-    Workspace
-  },
+  components: {LibraryGrid},
 
   computed: {
-    ...mapState(['post']),
-
-    toolbox () {
-      let toolbox = []
-
-      this.blocks.forEach(block => {
-        toolbox.push({
-          tag: 'category',
-          name: 'Readonly',
-          colour: '#fff',
-          children: [
-            {
-              tag: 'block',
-              type: block.type
-            }
-          ]
-        })
-      })
-      
-      return toolbox
-    }
+    ...mapState(['post'])
   },
 
   data () {
     return {
-      blocks: [],
-
-      options: {
-        trashcan: false,
-        zoom: {
-          controls: false,
-          pinch: true,
-          wheel: true,
-          startScale: 0.75
-        }
-      }
+      blocks: []
     }
   },
 
   mounted () {
-    this.$store.dispatch('apiGet', 'library')
-      .then(resp => {
-        this.blocks = resp.data.blocks
-      })
-      .catch(err => {
-        this.$root.$emit('error', err)
-      })
+    // @todo uncomment once a backend is added
+    // this.$store.dispatch('apiGet', 'library')
+    //   .then(resp => {
+    //     this.blocks = resp.data.blocks
+    //   })
+    //   .catch(err => {
+    //     this.$root.$emit('error', err)
+    //   })
   }
 }
 </script>
