@@ -13,8 +13,8 @@ q-btn.full-width(type='a' color='secondary' icon='fas fa-user' @click='showModal
         q-btn(flat @click='isDialogVisible = false') Cancel
         q-file.hidden(ref='file' v-model='file')
         q-space
-        q-btn(color='secondary' icon='fas fa-download' @click='importState') Import
-        q-btn(color='secondary' icon='fas fa-upload' @click='exportState') Export
+        q-btn(color='secondary' icon='fas fa-file-import' @click='importState') Import
+        q-btn(color='secondary' icon='fas fa-file-export' @click='exportState') Export
 </template>
 
 <script>

@@ -16,6 +16,8 @@ q-page.full-height
         q-item
         q-item
           q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
+        q-item
+          q-btn.full-width(color='tertiary' icon='fas fa-folder-open' @click='dialog.loadBlock = true') Load Block
 
   //- Modals
   q-dialog(v-model='dialog.confirmNew')
@@ -31,6 +33,8 @@ q-page.full-height
         q-btn(flat @click='dialog.confirmNew = false') Cancel
         q-space
         q-btn(color='secondary' @click='createNewBlock') Yes
+
+  DialogLoadBlock(@change='onDialogeLoadBlockChange' :model='dialog.loadBlock')
 </template>
 
 <script>
@@ -38,6 +42,7 @@ import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import ColorPicker from '../components/ColorPicker'
+import DialogLoadBlock from '../components/DialogLoadBlock'
 import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
@@ -47,7 +52,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor, ColorPicker},
+  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock},
 
   computed: {
     /**
@@ -87,7 +92,8 @@ export default {
 
       // Models for dialogs
       dialog: {
-        confirmNew: false
+        confirmNew: false,
+        loadBlock: true
       },
 
       // Block data
@@ -185,6 +191,13 @@ export default {
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
+    },
+
+    /**
+     * Loads a new block into the workspace
+     */
+    onDialogeLoadBlockChange (state) {
+      this.dialog.loadBlock = state
     },
 
     /**
