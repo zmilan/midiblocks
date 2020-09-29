@@ -223,15 +223,15 @@ export default {
      */
     addBlocks () {
       this.blocks.forEach(block => {
-        Blockly.Blocks[block.title] = {
+        Blockly.Blocks[block.name] = {
           init: function () {
-            this.jsonInit(JSON.parse(block.block_definition))
+            this.jsonInit(block.json)
           }
         }
-        Blockly.JavaScript[block.title] = () => ''
+        Blockly.JavaScript[block.name] = () => ''
 
         // Inject into workspace
-        const theBlock = this.blockly.newBlock(block.title)
+        const theBlock = this.blockly.newBlock(block.name)
         theBlock.initSvg()
         theBlock.render()
 
