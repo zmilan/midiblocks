@@ -1,7 +1,7 @@
 <template lang="pug">
 q-dialog(v-model='isVisible' maximized)
-  q-card
-    q-card-section
+  q-card.full-height.flex.column
+    q-card-section(style='flex: 0 0 auto')
       .text-h6
         i.fas.fa-folder-open
         span.q-ml-md Load block
@@ -9,6 +9,8 @@ q-dialog(v-model='isVisible' maximized)
       LibraryGrid
         template(slot-scope='props')
           q-btn(color='secondary' @click='loadBlock(props)' icon='fas fa-folder-open') Load Block
+    q-card-actions(style='flex: 0 0 auto')
+      q-btn.full-width(color='negative' @click='isVisible = false') Cancel
 </template>
 
 <script>
@@ -48,6 +50,11 @@ export default {
     loadBlock (props) {
       store.set('currentFactory', props.block)
       this.$store.commit('tally', 'reloads')
+      this.$q.notify({
+        type: 'positive',
+        message: `Block "${props.block.name}" loaded!`,
+        timeout: 3000
+      })
     }
   }
 }
