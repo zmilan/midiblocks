@@ -13,12 +13,7 @@ export default [
     name: 'Event Modifiers',
     icon: 'fas fa-filter',
     colour: '#FF9D00',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_arg_compare_note'
-      }
-    ]
+    children: []
   },  
   {
     tag: 'category',
