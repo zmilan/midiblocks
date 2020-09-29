@@ -4,14 +4,10 @@ q-page.full-height
 </template>
 
 <script>
-import {throttle} from 'lodash'
+import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
 import store from 'store'
-import '../assets/blocks/midi-events'
-import '../assets/blocks/midi-args'
-import '../assets/blocks/midi-send'
 import webmidi from 'webmidi'
-import Interpreter from 'js-interpreter'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
 
@@ -26,6 +22,8 @@ export default {
    * Initialize WebMidi
    */
   mounted () {
+    set(window, 'app.$studio', this)
+
     webmidi.enable((errors) => {
       const inputs = {}
       const outputs = {}
@@ -65,7 +63,6 @@ export default {
     }
 
     // Setup listeners
-    this.$root.$on('interpreter.triggerEvent', this.triggerEvent)
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
   },
 
@@ -128,11 +125,11 @@ export default {
      * Gets an organized Blockly toolbox JSON, which consists of core blocks and custom blocks
      */
     getToolbox () {
-      const coreBlocks = [...toolbox]
+      const categories = cloneDeep(toolbox)
       const customBlocks = store.get('blocks', {})
 
       // Map categories to indexes
-      const coreBlockCats = coreBlocks.map(block => {
+      const coreBlockCats = categories.map(block => {
         return block.category || ''
       })
 
@@ -141,8 +138,8 @@ export default {
         const customBlock = customBlocks[id]
         const catIndex = coreBlockCats.indexOf(customBlock.category)
 
-        if (coreBlocks[catIndex]) {
-          coreBlocks[catIndex].children.push({
+        if (categories[catIndex]) {
+          categories[catIndex].children.push({
             tag: 'block',
             type: customBlock.json.type
           })
@@ -199,6 +196,7 @@ export default {
             
             code = code.join(';\n')
             code += ';\n' + (customBlock.code || '')
+            // console.log(code)
 
             // Return code
             if (block.outputConnection) {
@@ -210,7 +208,7 @@ export default {
         }
       })
 
-      return coreBlocks
+      return categories
     },
 
     /**
@@ -231,7 +229,7 @@ export default {
 
       events.forEach(eventName => {
         input.addListener(eventName, 'all', ev => {
-          this.$root.$emit('interpreter.triggerEvent', eventName, ev)
+          this.triggerEvent(eventName, ev)
         })
       })
 
@@ -249,17 +247,15 @@ export default {
      */
     triggerEvent (eventName, ev) {
       // Run the code
-      if (this.code) {
-        let data = Object.assign({}, ev)
-        data.target = Object.assign({}, data.target)
-        delete data.target._midiInput
-        delete data.target._userHandlers
-        delete data.target.lastMessage
-        data = JSON.stringify(data)
-        
-        Interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
-        Interpreter.run()
-      }
+      let data = Object.assign({}, ev)
+      data.target = Object.assign({}, data.target)
+      delete data.target._midiInput
+      delete data.target._userHandlers
+      delete data.target.lastMessage
+      data = JSON.stringify(data)
+      
+      this.$refs.workspace.interpreter.appendCode(`triggerEvent('${eventName}', '${data}')`)
+      this.$refs.workspace.interpreter.run()
 
       // Update device message
       let midiName

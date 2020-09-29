@@ -1,5 +1,5 @@
 <template lang="pug">
-q-btn(type='a' color='secondary' icon='fas fa-user' @click='showModal') Import/Export Profile
+q-btn.full-width(type='a' color='secondary' icon='fas fa-user' @click='showModal') Import/Export Profile
   q-dialog(v-model='isDialogVisible')
     q-card
       q-card-section

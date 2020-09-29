@@ -168,7 +168,7 @@ module.exports = function (ctx) {
       manifest: {
         name: `Midiblocks`,
         short_name: `Midiblocks`,
-        description: `A tightly integrated WordPress Quasar SPA theme with sandboxed Midiblocks`,
+        description: 'A visual MIDI mapping and scripting platform',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',

@@ -1,14 +1,36 @@
 <template lang="pug">
 q-page.full-height
   q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' unit='px' reverse)
+    //- Block preview and code editor
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
         CodeEditor(@onCodeChange='onCodeChange' :value='block.code')
+
+    //- Workspace
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-        q-btn.full-width(color='secondary' icon='fas fa-save' @click='saveBlock') Save Block
+        q-item
+          q-btn.full-width(color='secondary' icon='fas fa-save' @click='saveBlock') Save Block
+        q-item
+        q-item
+          q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
+
+  //- Modals
+  q-dialog(v-model='dialog.confirmNew')
+    q-card
+      q-card-section
+        .text-h6
+          i.fas.fa-file
+          span.q-ml-md Create new block?
+      q-card-section
+        //- @todo Only show if there aren't saved changes
+        p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
+      q-card-actions(align='right')
+        q-btn(flat @click='dialog.confirmNew = false') Cancel
+        q-space
+        q-btn(color='secondary' @click='createNewBlock') Yes
 </template>
 
 <script>
@@ -60,7 +82,13 @@ export default {
     const currentFactory = store.get('currentFactory', {})
     
     return {
+      // Whether the workspace is ready or not
       hasLoaded: false,
+
+      // Models for dialogs
+      dialog: {
+        confirmNew: false
+      },
 
       // Block data
       block: {
@@ -140,6 +168,15 @@ export default {
         message: 'Block saved',
         timeout: 2000
       })
+    },
+
+    /**
+     * Creates a new block
+     */
+    createNewBlock () {
+      this.block.uuid = uuidv4()
+      store.remove('currentFactory')
+      this.$store.commit('tally', 'reloads')
     },
 
     /**

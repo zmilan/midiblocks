@@ -19,6 +19,8 @@ import {set} from 'lodash'
 import Blockly from 'blockly'
 import Prompt from './components/Prompt'
 import {mapState} from 'vuex'
+import defaultWorkspace from './assets/workspaces/default'
+import store from 'store'
 
 export default {
   name: 'App',
@@ -75,6 +77,13 @@ export default {
     this.$root.$on('error', this.onError)
     set(window, 'app.version', this.$v)
     set(window, 'app.$', this)
+
+    // Load default workspace if no localstorage
+    if (!localStorage.currentFactory) {
+      Object.keys(defaultWorkspace.localStorage).forEach(key => {
+        store.set(key, defaultWorkspace.localStorage[key])
+      })
+    }
   },
 
   destroyed () {

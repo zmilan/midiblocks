@@ -3,14 +3,23 @@
   main.q-page
     background: transparent
 
+// Brand
+.text-tertiary
+  color: $tertiary
+
+.bg-tertiary
+  background: $tertiary
+  .q-btn__content
+    color: #fff !important
+  
 // Buttons
-.q-btn.bg-secondary,
-.q-btn.bg-secondary.text-white
+.q-btn
   overflow: hidden
   
   .q-icon
     margin-right: 5px
-  
+
+.q-btn.bg-secondary  
   .q-btn__content
     color: $primary
 

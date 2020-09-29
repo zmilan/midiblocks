@@ -5,12 +5,7 @@ export default [
     name: 'Events',
     icon: 'fas fa-gamepad',
     colour: '#fad000',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_on_event'
-      }
-    ]
+    children: []
   },
   {
     tag: 'category',
@@ -18,12 +13,7 @@ export default [
     name: 'Event Modifiers',
     icon: 'fas fa-filter',
     colour: '#FF9D00',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_arg_compare_note'
-      }
-    ]
+    children: []
   },  
   {
     tag: 'category',
@@ -31,12 +21,7 @@ export default [
     name: 'Send Event',
     icon: 'fas fa-broadcast-tower',
     colour: '#2EC4B6',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_send_note'
-      }
-    ]
+    children: []
   },
   {
     tag: 'sep',
