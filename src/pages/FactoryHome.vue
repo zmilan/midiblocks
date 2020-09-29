@@ -18,6 +18,9 @@ q-page.full-height
           q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
         q-item
           q-btn.full-width(color='tertiary' icon='fas fa-folder-open' @click='dialog.loadBlock = true') Load Block
+        q-item
+        q-item
+          q-btn.full-width(color='negative' icon='fas fa-trash' @click='dialog.deleteConfirm = true') Delete Block
 
   //- Modals
   q-dialog(v-model='dialog.confirmNew')
@@ -33,6 +36,20 @@ q-page.full-height
         q-btn(flat @click='dialog.confirmNew = false') Cancel
         q-space
         q-btn(color='secondary' @click='createNewBlock') Yes
+
+  //- @todo Refactor this dialog style into a component
+  q-dialog(v-model='dialog.deleteConfirm')
+    q-card.bg-negative
+      q-card-section
+        .text-h6
+          i.fas.fa-trash
+          span.q-ml-md Delete block?
+      q-card-section
+        p Are you sure you want to delete this block? This cannot be undone!
+      q-card-actions(align='right')
+        q-btn(flat @click='dialog.deleteConfirm = false') Cancel
+        q-space
+        q-btn(color='secondary' @click='deleteBlock') Yes
 
   DialogLoadBlock(@change='onDialogeLoadBlockChange' :model='dialog.loadBlock')
 </template>
@@ -95,6 +112,7 @@ export default {
       // Models for dialogs
       dialog: {
         confirmNew: false,
+        deleteConfirm: false,
         loadBlock: false
       },
 
@@ -200,6 +218,22 @@ export default {
      */
     onDialogeLoadBlockChange (state) {
       this.dialog.loadBlock = state
+    },
+
+    /**
+     * Deletes the block and creates a new one
+     */
+    deleteBlock () {
+      let blocks = store.get('blocks')
+      delete blocks[this.block.uuid]
+      store.set('blocks', blocks)
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Block deleted',
+        timeout: 2000
+      })
+      this.createNewBlock()
     },
 
     /**
