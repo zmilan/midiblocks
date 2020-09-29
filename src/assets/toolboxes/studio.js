@@ -21,12 +21,7 @@ export default [
     name: 'Send Event',
     icon: 'fas fa-broadcast-tower',
     colour: '#2EC4B6',
-    children: [
-      {
-        tag: 'block',
-        type: 'midi_send_note'
-      }
-    ]
+    children: []
   },
   {
     tag: 'sep',

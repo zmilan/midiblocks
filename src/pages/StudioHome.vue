@@ -7,7 +7,6 @@ q-page.full-height
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
 import store from 'store'
-import '../assets/blocks/midi-send'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
