@@ -183,7 +183,6 @@ export default {
      */
     run () {
       const code = Blockly.JavaScript.workspaceToCode(this.blockly)
-      console.log(STRING_WebmidiInterpreter + '\n' + code)
       this.interpreter = new Interpreter(
         Babel.transform(STRING_WebmidiInterpreter + '\n' + code, {
           presets: ['env'],
