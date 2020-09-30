@@ -8,22 +8,23 @@ q-page.full-height
 
     div(v-else v-html='post.content')
 
-    h4 Building blocks
-    BlocksGrid(:blocks='allBlocks')
-
     h4 Midiblocks
+    MidiblocksTable(:midiblocks='allMidiblocks')
+
+    h4 Building blocks
     BlocksGrid(:blocks='allBlocks')
 </template>
 
 <script>
 import BlocksGrid from '../components/library/BlocksGrid'
+import MidiblocksTable from '../components/library/MidiblocksTable'
 import {mapState} from 'vuex'
 import store from 'store'
 
 export default {
   name: 'LibraryHome',
 
-  components: {BlocksGrid},
+  components: {BlocksGrid, MidiblocksTable},
 
   computed: {
     ...mapState(['post'])
@@ -31,7 +32,8 @@ export default {
 
   data () {
     return {
-      allBlocks: store.get('blocks')
+      allBlocks: store.get('blocks'),
+      allMidiblocks: store.get('midiblocks')
     }
   },
 
