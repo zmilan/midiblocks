@@ -35,21 +35,19 @@ q-page.full-height
 
   //- Modals
   DialogConfirm(v-model='dialog.confirmNew'
-    @change='dialog.confirmNew = $event'
     @accept='createNewBlock'
     icon='fas fa-file'
     title='Create new block?')
       p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
   DialogConfirm(v-model='dialog.deleteConfirm'
-    @change='dialog.deleteConfirm = $event'
     @accept='deleteBlock'
     bg='negative'
     icon='fas fa-trash'
     title='Delete block?')
       p Are you sure you want to delete this block? This cannot be undone!
 
-  DialogLoadBlock(@change='onDialogeLoadBlockChange' :model='dialog.loadBlock')
+  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock')
 </template>
 
 <script>
@@ -215,18 +213,24 @@ export default {
     },
 
     /**
+     * Load the block
+     */
+    loadBlock (props) {
+      store.set('currentFactory', props.block)
+      this.$store.commit('tally', 'reloads')
+      this.$q.notify({
+        type: 'positive',
+        message: `Block "${props.block.name}" loaded!`,
+        timeout: 3000
+      })
+    },
+
+    /**
      * Handles code editor changes
      */
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
-    },
-
-    /**
-     * Loads a new block into the workspace
-     */
-    onDialogeLoadBlockChange (state) {
-      this.dialog.loadBlock = state
     },
 
     /**

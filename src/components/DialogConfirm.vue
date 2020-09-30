@@ -1,5 +1,5 @@
 <template lang="pug">
-q-dialog(:value='value' @input='$emit("change", $event)')
+q-dialog(:value='value' @input='$emit("input", $event)')
   q-card(:class='background')
     q-card-section
       .text-h6
@@ -36,11 +36,11 @@ export default {
   methods: {
     accept () {
       this.$emit('accept', false)
-      this.$emit('change', false)
+      this.$emit('input', false)
     },
     decline () {
       this.$emit('decline', false)
-      this.$emit('change', false)
+      this.$emit('input', false)
     }
   }
 }

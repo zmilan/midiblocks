@@ -25,25 +25,26 @@ q-page.full-height
 
   //- Dialogs
   DialogConfirm(v-model='dialog.confirmNew'
-    @change='dialog.confirmNew = $event'
     @accept='createNewBlock'
     icon='fas fa-file'
     title='Create new Midiblock?')
       p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
 
   DialogConfirm(v-model='dialog.deleteConfirm'
-    @change='dialog.deleteConfirm = $event'
     @accept='deleteBlock'
     bg='negative'
     icon='fas fa-trash'
     title='Delete midiblock?')
       p Are you sure you want to delete this midiblock? This cannot be undone!
+      
+  DialogLoadBlock(v-model='dialog.loadBlock')
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
 import DialogConfirm from '../components/DialogConfirm'
+import DialogLoadBlock from '../components/DialogLoadBlock'
 import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
@@ -56,7 +57,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'MainLayout',
 
-  components: {Workspace, DialogConfirm},
+  components: {Workspace, DialogConfirm, DialogLoadBlock},
 
   computed: {
     /**
