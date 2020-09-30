@@ -62,6 +62,7 @@ export default {
   methods: {
     editorDidMount (editor) {
       const monaco = this.$refs.editor.monaco
+      this.$refs.editor.getMonaco().getModel().updateOptions({tabSize: 2})
   
       monaco.editor.defineTheme('shadesofpurple', {
           base: 'vs-dark',

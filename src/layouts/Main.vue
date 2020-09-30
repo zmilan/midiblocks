@@ -73,6 +73,7 @@ export default {
 
   /**
    * Load and setup payload
+   * - Binds global navigation shortcuts
    */
   mounted () {
     this.$nextTick(() => {
@@ -89,6 +90,21 @@ export default {
           })
       }
     })
+
+    this.$mousetrap.bind('s', ev => {
+      ev.preventDefault()
+      this.$router.push({name: 'Studio'})
+    })
+
+    this.$mousetrap.bind('f', ev => {
+      ev.preventDefault()
+      this.$router.push({name: 'Factory'})
+    })
+  },
+
+  destroyed () {
+    this.$mousetrap.unbind('s')
+    this.$mousetrap.unbind('f')
   }
 }
 </script>
