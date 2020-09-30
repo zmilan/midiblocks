@@ -30,6 +30,14 @@ q-page.full-height
     icon='fas fa-file'
     title='Create new Midiblock?')
       p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
+
+  DialogConfirm(v-model='dialog.deleteConfirm'
+    @change='dialog.deleteConfirm = $event'
+    @accept='deleteBlock'
+    bg='negative'
+    icon='fas fa-trash'
+    title='Delete midiblock?')
+      p Are you sure you want to delete this midiblock? This cannot be undone!
 </template>
 
 <script>
@@ -192,6 +200,10 @@ export default {
     createNewBlock () {
       store.remove('currentStudio')
       this.$store.commit('tally', 'reloads')
+    },
+    
+    deleteBlock () {
+      console.log('deleteBlock')
     },
     
     /**

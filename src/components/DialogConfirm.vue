@@ -35,12 +35,12 @@ export default {
 
   methods: {
     accept () {
-      this.$emit('accept')
-      this.isVisible = false
+      this.$emit('accept', false)
+      this.$emit('change', false)
     },
     decline () {
-      this.$emit('decline')
-      this.isVisible = false
+      this.$emit('decline', false)
+      this.$emit('change', false)
     }
   }
 }
