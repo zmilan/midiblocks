@@ -1,6 +1,27 @@
 <template lang="pug">
 q-page.full-height
   Workspace(ref='workspace' :options='options' :toolbox='toolbox' :blocks='[]' @change='workspaceEventHandler')
+    q-item.q-mb-lg(@click='saveBlock' clickable)
+      q-item-section(avatar)
+        q-icon(color='secondary' name='fas fa-save')
+      q-item-section.gt-sm
+        q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+        q-item-label.text-secondary Save Midiblock
+    q-item(@click='dialog.confirmNew = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='positive' name='fas fa-file')
+      q-item-section.gt-sm
+        q-item-label.text-positive New Midiblock
+    q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='positive' name='fas fa-folder-open')
+      q-item-section.gt-sm
+        q-item-label.text-positive Load Midiblock
+    q-item(@click='dialog.deleteConfirm = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='negative' name='fas fa-trash')
+      q-item-section.gt-sm
+        q-item-label.text-negative Delete Midiblock
 </template>
 
 <script>
@@ -80,6 +101,7 @@ export default {
   
   data () {
     return {
+      isUnsaved: false,
       hasLoaded: false,
       
       errors: {
@@ -99,6 +121,13 @@ export default {
   },
 
   methods: {
+    /**
+     * Save the midiblock
+     */
+    saveBlock () {
+      console.log('saveBlock')
+    },
+    
     /**
      * Handles Workspace events
      */
@@ -196,7 +225,6 @@ export default {
             
             code = code.join(';\n')
             code += ';\n' + (customBlock.code || '')
-            // console.log(code)
 
             // Return code
             if (block.outputConnection) {
