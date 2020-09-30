@@ -16,7 +16,7 @@
               q-icon(:style='"color:" + category.colour' :name='category.icon')
             q-item-section.gt-sm
               q-item-label(:style='"color:" + category.colour') {{category.name}}
-      q-list(style='flex: 0 0 auto' dense)
+      q-list(style='flex: 0 0 auto')
         slot
 
   .min-height-inherit.position-relative(@click='closeToolboxFLyout')

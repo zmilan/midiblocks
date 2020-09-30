@@ -11,17 +11,27 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-        q-item
-          q-btn.full-width(disabled color='secondary' icon='fas fa-save' @click='saveBlock' :disabled='!isUnsaved') Save Block
-          q-badge(v-if='isUnsaved' color='negative' floating) New changes
-        q-item
-        q-item
-          q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
-        q-item
-          q-btn.full-width(color='tertiary' icon='fas fa-folder-open' @click='dialog.loadBlock = true') Load Block
-        q-item
-        q-item
-          q-btn.full-width(color='negative' icon='fas fa-trash' @click='dialog.deleteConfirm = true') Delete Block
+        q-item.q-mb-lg(@click='saveBlock' clickable)
+          q-item-section(avatar)
+            q-icon(color='secondary' name='fas fa-save')
+          q-item-section.gt-sm
+            q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+            q-item-label.text-secondary Save Block
+        q-item(@click='dialog.confirmNew = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='positive' name='fas fa-file')
+          q-item-section.gt-sm
+            q-item-label.text-positive New Block
+        q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='positive' name='fas fa-folder-open')
+          q-item-section.gt-sm
+            q-item-label.text-positive Load Block
+        q-item(@click='dialog.deleteConfirm = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='negative' name='fas fa-trash')
+          q-item-section.gt-sm
+            q-item-label.text-negative Delete Block
 
   //- Modals
   q-dialog(v-model='dialog.confirmNew')
