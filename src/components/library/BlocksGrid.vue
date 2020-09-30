@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import Workspace from '../components/Workspace'
+import Workspace from '../../components/Workspace'
 import store from 'store'
 
 /**
  * Displays a grid of blocks in the users current library
  */
 export default {
-  name: 'LibraryGrid',
+  name: 'BlocksGrid',
 
   props: {
     blocks: {

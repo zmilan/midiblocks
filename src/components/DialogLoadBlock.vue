@@ -6,7 +6,7 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
         i.fas.fa-folder-open
         span.q-ml-md Load block
     q-card-section
-      LibraryGrid(:blocks='blocks')
+      BlocksGrid(:blocks='blocks')
         template(slot-scope='props')
           q-btn(color='secondary' @click='$emit("load", props)' icon='fas fa-folder-open') Load Block
     q-card-actions(style='flex: 0 0 auto')
@@ -14,7 +14,7 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
 </template>
 
 <script>
-import LibraryGrid from '../components/LibraryGrid'
+import BlocksGrid from '../components/library/BlocksGrid'
 import store from 'store'
 
 /**
@@ -25,6 +25,6 @@ export default {
 
   props: ['value', 'type', 'blocks'],
 
-  components: {LibraryGrid}
+  components: {BlocksGrid}
 }
 </script>

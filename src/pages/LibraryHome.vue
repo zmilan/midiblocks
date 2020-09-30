@@ -8,18 +8,22 @@ q-page.full-height
 
     div(v-else v-html='post.content')
 
-    LibraryGrid(:blocks='allBlocks')
+    h4 Building blocks
+    BlocksGrid(:blocks='allBlocks')
+
+    h4 Midiblocks
+    BlocksGrid(:blocks='allBlocks')
 </template>
 
 <script>
-import LibraryGrid from '../components/LibraryGrid'
+import BlocksGrid from '../components/library/BlocksGrid'
 import {mapState} from 'vuex'
 import store from 'store'
 
 export default {
   name: 'LibraryHome',
 
-  components: {LibraryGrid},
+  components: {BlocksGrid},
 
   computed: {
     ...mapState(['post'])
