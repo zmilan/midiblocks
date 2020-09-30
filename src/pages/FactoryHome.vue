@@ -65,6 +65,9 @@ import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
 import { v4 as uuidv4 } from 'uuid'
 
+/**
+ * @todo document
+ */
 export default {
   name: 'FactoryHome',
 

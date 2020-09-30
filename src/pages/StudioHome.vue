@@ -22,22 +22,32 @@ q-page.full-height
         q-icon(color='negative' name='fas fa-trash')
       q-item-section.gt-sm
         q-item-label.text-negative Delete Midiblock
+
+  //- Dialogs
+  DialogConfirm(v-model='dialog.confirmNew'
+    @change='dialog.confirmNew = $event'
+    @accept='createNewBlock'
+    icon='fas fa-file'
+    title='Create new Midiblock?')
+      p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
+import DialogConfirm from '../components/DialogConfirm'
 import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
 
+/**
+ * @todo document
+ */
 export default {
   name: 'MainLayout',
 
-  components: {
-    Workspace
-  },
+  components: {Workspace, DialogConfirm},
 
   /**
    * Initialize WebMidi
@@ -133,6 +143,14 @@ export default {
      */
     saveBlock () {
       console.log('saveBlock')
+    },
+
+    /**
+     * Creates a new midiblock
+     */
+    createNewBlock () {
+      store.remove('currentStudio')
+      this.$store.commit('tally', 'reloads')
     },
     
     /**
