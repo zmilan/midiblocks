@@ -34,19 +34,13 @@ q-page.full-height
             q-item-label.text-negative Delete Block
 
   //- Modals
-  q-dialog(v-model='dialog.confirmNew')
-    q-card
-      q-card-section
-        .text-h6
-          i.fas.fa-file
-          span.q-ml-md Create new block?
-      q-card-section
-        //- @todo Only show if there aren't saved changes
-        p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
-      q-card-actions(align='right')
-        q-btn(flat @click='dialog.confirmNew = false') Cancel
-        q-space
-        q-btn(color='secondary' @click='createNewBlock') Yes
+  DialogConfirm(v-model='dialog.confirmNew'
+    @change='dialog.confirmNew = $event'
+    @accept='createNewBlock'
+    icon='fas fa-file'
+    title='Create new block?')
+      //- @todo Only show if there aren't saved changes
+      p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
   //- @todo Refactor this dialog style into a component
   q-dialog(v-model='dialog.deleteConfirm')
@@ -71,6 +65,7 @@ import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import ColorPicker from '../components/ColorPicker'
 import DialogLoadBlock from '../components/DialogLoadBlock'
+import DialogConfirm from '../components/DialogConfirm'
 import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
@@ -80,7 +75,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock},
+  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm},
 
   computed: {
     /**
@@ -188,6 +183,10 @@ export default {
   },
 
   methods: {
+    log () {
+      console.log(arguments)
+    },
+    
     /**
      * Autosave code to localstorage
      */

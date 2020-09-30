@@ -109,6 +109,13 @@ export default {
           enable: false
         }
       },
+
+      // Models for dialogs
+      dialog: {
+        confirmNew: false,
+        deleteConfirm: false,
+        loadBlock: false
+      },
       
       // Blockly options
       // @see https://developers.google.com/blockly/guides/configure/web/configuration_struct
