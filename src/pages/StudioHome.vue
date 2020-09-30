@@ -43,8 +43,8 @@ q-page.full-height
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
-import DialogConfirm from '../components/DialogConfirm'
-import DialogLoadBlock from '../components/DialogLoadBlock'
+import DialogLoadBlock from '../components/dialog/LoadBlock'
+import DialogConfirm from '../components/dialog/Confirm'
 import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'

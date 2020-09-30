@@ -14,7 +14,7 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
 </template>
 
 <script>
-import BlocksGrid from '../components/library/BlocksGrid'
+import BlocksGrid from '../library/BlocksGrid'
 import store from 'store'
 
 /**

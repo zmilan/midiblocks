@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Workspace from '../../components/Workspace'
+import Workspace from '../Workspace'
 import store from 'store'
 
 /**
