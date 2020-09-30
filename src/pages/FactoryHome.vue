@@ -39,22 +39,15 @@ q-page.full-height
     @accept='createNewBlock'
     icon='fas fa-file'
     title='Create new block?')
-      //- @todo Only show if there aren't saved changes
       p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
-  //- @todo Refactor this dialog style into a component
-  q-dialog(v-model='dialog.deleteConfirm')
-    q-card.bg-negative
-      q-card-section
-        .text-h6
-          i.fas.fa-trash
-          span.q-ml-md Delete block?
-      q-card-section
-        p Are you sure you want to delete this block? This cannot be undone!
-      q-card-actions(align='right')
-        q-btn(flat @click='dialog.deleteConfirm = false') Cancel
-        q-space
-        q-btn(color='secondary' @click='deleteBlock') Yes
+  DialogConfirm(v-model='dialog.deleteConfirm'
+    @change='dialog.deleteConfirm = $event'
+    @accept='deleteBlock'
+    bg='negative'
+    icon='fas fa-trash'
+    title='Delete block?')
+      p Are you sure you want to delete this block? This cannot be undone!
 
   DialogLoadBlock(@change='onDialogeLoadBlockChange' :model='dialog.loadBlock')
 </template>

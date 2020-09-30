@@ -1,6 +1,6 @@
 <template lang="pug">
 q-dialog(:value='value' @input='$emit("change", $event)')
-  q-card
+  q-card(:class='background')
     q-card-section
       .text-h6
         i(:class='icon')
@@ -17,12 +17,21 @@ q-dialog(:value='value' @input='$emit("change", $event)')
 /**
  * Displays a Yes/No confirmation dialog
  * 
- * @props {Boolean} isVisible The dialog model
+ * @prop {Boolean} value The dialog model
+ * @prop {String} icon The dialogs icon shown before title (ex, "fas fa-file")
+ * @prop {String} title
+ * @prop {String} bg The background color
  */
 export default {
   name: 'DialogConfirm',
 
-  props: ['value', 'icon', 'title'],
+  props: ['value', 'icon', 'title', 'bg'],
+
+  computed: {
+    background () {
+      return 'bg-' + this.bg
+    }
+  },
 
   methods: {
     accept () {
