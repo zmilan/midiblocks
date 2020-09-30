@@ -41,7 +41,7 @@ export default {
           field: 'description',
           name: 'description',
           align: 'left'
-        },
+        }
       ]
     }
   }

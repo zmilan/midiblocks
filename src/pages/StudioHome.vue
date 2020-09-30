@@ -37,13 +37,13 @@ q-page.full-height
     title='Delete midiblock?')
       p Are you sure you want to delete this midiblock? This cannot be undone!
       
-  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadMidiblock' type='midiblocks')
+  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
-import DialogLoadBlock from '../components/dialog/LoadBlock'
+import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
 import DialogConfirm from '../components/dialog/Confirm'
 import store from 'store'
 import webmidi from 'webmidi'
@@ -57,7 +57,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'MainLayout',
 
-  components: {Workspace, DialogConfirm, DialogLoadBlock},
+  components: {Workspace, DialogConfirm, DialogLoadMidiblock},
 
   computed: {
     /**
@@ -136,6 +136,8 @@ export default {
     const currentStudio = store.get('currentStudio', {})
 
     return {
+      allMidiblocks: store.get('midiblocks', {}),
+      
       // Whether the autosave has been saved to a midiblock or not
       isUnsaved: store.get('isStudioUnsaved'),
       
@@ -207,7 +209,7 @@ export default {
      * Deletes the midiblock
      */
     deleteBlock () {
-      let midiblocks = store.get('midiblocks')
+      let midiblocks = store.get('midiblocks', {})
       delete midiblocks[this.block.uuid]
       store.set('midiblocks', midiblocks)
 
