@@ -47,7 +47,7 @@ q-page.full-height
     title='Delete block?')
       p Are you sure you want to delete this block? This cannot be undone!
 
-  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock')
+  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='allBlocks')
 </template>
 
 <script>
@@ -106,6 +106,8 @@ export default {
     const currentFactory = store.get('currentFactory', {})
     
     return {
+      allBlocks: store.get('blocks', {}),
+      
       // Whether the workspace is ready or not
       hasLoaded: false,
 

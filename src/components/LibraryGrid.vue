@@ -3,7 +3,7 @@
   .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.name')
     q-card
       q-card-section
-        Workspace(:options='options' :blocks='[block]' :inline='true' :toolbox='toolbox')
+        Workspace(:options='options' :blocks='[block]' :midiblocks='[midiblocks]' :inline='true' :toolbox='toolbox')
       q-separator
       q-card-section
         h3 {{block.name}}
@@ -22,25 +22,36 @@ import store from 'store'
 export default {
   name: 'LibraryGrid',
 
+  props: {
+    blocks: {
+      type: Object
+    },
+    midiblocks: {
+      type: Object
+    }
+  },
+
   components: {Workspace},
 
   computed: {
     toolbox () {
       let toolbox = []
 
-      Object.keys(this.blocks).forEach(key => {
-        toolbox.push({
-          tag: 'category',
-          name: 'Readonly',
-          colour: '#fff',
-          children: [
-            {
-              tag: 'block',
-              type: this.blocks[key].category
-            }
-          ]
+      if (this.blocks.length) {
+        Object.keys(this.blocks).forEach(key => {
+          toolbox.push({
+            tag: 'category',
+            name: 'Readonly',
+            colour: '#fff',
+            children: [
+              {
+                tag: 'block',
+                type: this.blocks[key].category
+              }
+            ]
+          })
         })
-      })
+      }
 
       return toolbox
     }
@@ -48,8 +59,6 @@ export default {
 
   data () {
     return {
-      blocks: store.get('blocks'),
-
       options: {
         trashcan: false,
         zoom: {

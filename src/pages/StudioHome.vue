@@ -37,7 +37,7 @@ q-page.full-height
     title='Delete midiblock?')
       p Are you sure you want to delete this midiblock? This cannot be undone!
       
-  DialogLoadBlock(v-model='dialog.loadBlock')
+  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadMidiblock' type='midiblocks')
 </template>
 
 <script>
@@ -217,6 +217,13 @@ export default {
         timeout: 2000
       })
       this.createNewBlock()
+    },
+
+    /**
+     * Loads a Midiblock
+     */
+    loadMidiblock (props) {
+      console.log('test', props)
     },
     
     /**
