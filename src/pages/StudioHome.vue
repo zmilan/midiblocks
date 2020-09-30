@@ -202,8 +202,20 @@ export default {
       this.$store.commit('tally', 'reloads')
     },
     
+    /**
+     * Deletes the midiblock
+     */
     deleteBlock () {
-      console.log('deleteBlock')
+      let midiblocks = store.get('midiblocks')
+      delete midiblocks[this.block.uuid]
+      store.set('midiblocks', midiblocks)
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Midiblock deleted',
+        timeout: 2000
+      })
+      this.createNewBlock()
     },
     
     /**
