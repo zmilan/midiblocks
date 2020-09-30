@@ -5,7 +5,7 @@ q-page.full-height
     template(v-slot:after)
       .flex.column.min-height-inherit
         #preview(style='flex: 0 1 250px')
-        CodeEditor(@onCodeChange='onCodeChange' :value='block.code')
+        CodeEditor(ref='code' @onCodeChange='onCodeChange' :value='block.code')
 
     //- Workspace
     template(v-slot:before)
