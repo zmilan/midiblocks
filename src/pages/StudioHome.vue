@@ -40,6 +40,7 @@ import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
+import { v4 as uuidv4 } from 'uuid'
 
 /**
  * @todo document
@@ -48,6 +49,19 @@ export default {
   name: 'MainLayout',
 
   components: {Workspace, DialogConfirm},
+
+  computed: {
+    /**
+     * Returns the data used for saving this view
+     * @returns {Object} save data
+     */
+    saveData () {
+      return {
+        ...this.block,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      }
+    }
+  },
 
   /**
    * Initialize WebMidi
@@ -110,14 +124,22 @@ export default {
   },
   
   data () {
+    const currentStudio = store.get('currentStudio', {})
+
     return {
-      isUnsaved: false,
+      // Whether the autosave has been saved to a midiblock or not
+      isUnsaved: store.get('isStudioUnsaved'),
+      
       hasLoaded: false,
       
       errors: {
         webmidi: {
           enable: false
         }
+      },
+
+      block: {
+        uuid: currentStudio.uuid || uuidv4()
       },
 
       // Models for dialogs
@@ -139,10 +161,29 @@ export default {
 
   methods: {
     /**
+     * Save states
+     */
+    autosave () {
+      store.set('currentStudio', this.saveData)
+      store.set('isStudioUnsaved', true)
+      this.isUnsaved = true
+    },
+
+    /**
      * Save the midiblock
      */
     saveBlock () {
-      console.log('saveBlock')
+      const midiblocks = store.get('midiblocks', {})
+      midiblocks[this.block.uuid] = this.saveData
+      store.set('midiblocks', midiblocks)
+      store.set('isStudioUnsaved', false)
+      this.isUnsaved = false
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Midiblock saved',
+        timeout: 2000
+      })
     },
 
     /**
@@ -262,15 +303,6 @@ export default {
       })
 
       return categories
-    },
-
-    /**
-     * Save states
-     */
-    autosave () {
-      store.set('currentStudio', {
-        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
-      })
     },
 
     /**

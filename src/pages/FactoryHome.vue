@@ -179,10 +179,6 @@ export default {
   },
 
   methods: {
-    log () {
-      console.log(arguments)
-    },
-    
     /**
      * Autosave code to localstorage
      */
