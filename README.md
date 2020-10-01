@@ -198,6 +198,11 @@ npm start
 # ----------
 # Build the app for production with localStorage
 npm run build
+
+# DEPLOY
+# ----------
+# Push the app to firebase (must have Firebase Tools: npm i -g firebase-tools)
+npm run deploy
 ```
 
 ## Dev Notes

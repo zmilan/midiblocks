@@ -8,11 +8,8 @@
   "scripts": {
     "start": "npm run dev:local",
     "dev": "npm run dev:local",
-    "dev:local": "quasar dev --use-local-storage",
-    "dev:remote": "quasar dev --use-remote-storage",
     "build": "quasar build --use-local-storage",
-    "build:local": "quasar build --use-local-storage",
-    "build:remote": "quasar build --use-remote-storage",
+    "deploy": "firebase deploy",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
