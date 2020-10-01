@@ -1,8 +1,16 @@
 <template lang="pug">
-q-table(:data='blocks' :columns='columns')
+q-table(:data='blocks' :columns='columns' row-key='uuid')
+  template(v-slot:body-cell-actions='props')
+    q-td(:props='props')
+      q-btn.bg-secondary(@click='loadMidiblock(props.key)') Load
 </template>
 
 <script>
+import store from 'store'
+
+/**
+ * Displays a table containing all available midiblocks
+ */
 export default {
   name: 'MidiblocksTable',
 
@@ -28,21 +36,39 @@ export default {
           label: 'Title',
           field: 'title',
           name: 'title',
+          sortable: true,
           align: 'left'
         },
         {
           label: 'Updated',
           field: 'updated',
           name: 'updated',
+          sortable: true,
           align: 'left'
         },
         {
           label: 'Description',
           field: 'description',
           name: 'description',
+          sortable: true,
+          align: 'left'
+        },
+        {
+          label: 'Actions',
+          name: 'actions',
           align: 'left'
         }
       ]
+    }
+  },
+
+  methods: {
+    /**
+     * Loads the midiblock
+     */
+    loadMidiblock (key) {
+      store.set('currentStudio', this.midiblocks[key])
+      this.$store.commit('tally', 'reloads')
     }
   }
 }
