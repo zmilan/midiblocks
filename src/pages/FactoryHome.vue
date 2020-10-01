@@ -11,48 +11,43 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-        q-item
-          q-btn.full-width(disabled color='secondary' icon='fas fa-save' @click='saveBlock' :disabled='!isUnsaved') Save Block
-          q-badge(v-if='isUnsaved' color='negative' floating) New changes
-        q-item
-        q-item
-          q-btn.full-width(color='tertiary' icon='fas fa-file' @click='dialog.confirmNew = true') New Block
-        q-item
-          q-btn.full-width(color='tertiary' icon='fas fa-folder-open' @click='dialog.loadBlock = true') Load Block
-        q-item
-        q-item
-          q-btn.full-width(color='negative' icon='fas fa-trash' @click='dialog.deleteConfirm = true') Delete Block
+        q-item.q-mb-lg(@click='saveBlock' clickable)
+          q-item-section(avatar)
+            q-icon(color='secondary' name='fas fa-save')
+          q-item-section.gt-sm
+            q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+            q-item-label.text-secondary Save Block
+        q-item(@click='dialog.confirmNew = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='positive' name='fas fa-file')
+          q-item-section.gt-sm
+            q-item-label.text-positive New Block
+        q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='positive' name='fas fa-folder-open')
+          q-item-section.gt-sm
+            q-item-label.text-positive Load Block
+        q-item(@click='dialog.deleteConfirm = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='negative' name='fas fa-trash')
+          q-item-section.gt-sm
+            q-item-label.text-negative Delete Block
 
   //- Modals
-  q-dialog(v-model='dialog.confirmNew')
-    q-card
-      q-card-section
-        .text-h6
-          i.fas.fa-file
-          span.q-ml-md Create new block?
-      q-card-section
-        //- @todo Only show if there aren't saved changes
-        p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
-      q-card-actions(align='right')
-        q-btn(flat @click='dialog.confirmNew = false') Cancel
-        q-space
-        q-btn(color='secondary' @click='createNewBlock') Yes
+  DialogConfirm(v-model='dialog.confirmNew'
+    @accept='createNewBlock'
+    icon='fas fa-file'
+    title='Create new block?')
+      p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
-  //- @todo Refactor this dialog style into a component
-  q-dialog(v-model='dialog.deleteConfirm')
-    q-card.bg-negative
-      q-card-section
-        .text-h6
-          i.fas.fa-trash
-          span.q-ml-md Delete block?
-      q-card-section
-        p Are you sure you want to delete this block? This cannot be undone!
-      q-card-actions(align='right')
-        q-btn(flat @click='dialog.deleteConfirm = false') Cancel
-        q-space
-        q-btn(color='secondary' @click='deleteBlock') Yes
+  DialogConfirm(v-model='dialog.deleteConfirm'
+    @accept='deleteBlock'
+    bg='negative'
+    icon='fas fa-trash'
+    title='Delete block?')
+      p Are you sure you want to delete this block? This cannot be undone!
 
-  DialogLoadBlock(@change='onDialogeLoadBlockChange' :model='dialog.loadBlock')
+  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='allBlocks')
 </template>
 
 <script>
@@ -60,17 +55,21 @@ import '../assets/blocks/factory'
 import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import ColorPicker from '../components/ColorPicker'
-import DialogLoadBlock from '../components/DialogLoadBlock'
+import DialogLoadBlock from '../components/dialog/LoadBlock'
+import DialogConfirm from '../components/dialog/Confirm'
 import Blockly from 'blockly'
 import store from 'store'
 import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
 import { v4 as uuidv4 } from 'uuid'
 
+/**
+ * @todo document
+ */
 export default {
   name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock},
+  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm},
 
   computed: {
     /**
@@ -107,6 +106,8 @@ export default {
     const currentFactory = store.get('currentFactory', {})
     
     return {
+      allBlocks: store.get('blocks', {}),
+      
       // Whether the workspace is ready or not
       hasLoaded: false,
 
@@ -214,18 +215,24 @@ export default {
     },
 
     /**
+     * Load the block
+     */
+    loadBlock (props) {
+      store.set('currentFactory', props.block)
+      this.$store.commit('tally', 'reloads')
+      this.$q.notify({
+        type: 'positive',
+        message: `Block "${props.block.name}" loaded!`,
+        timeout: 3000
+      })
+    },
+
+    /**
      * Handles code editor changes
      */
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
-    },
-
-    /**
-     * Loads a new block into the workspace
-     */
-    onDialogeLoadBlockChange (state) {
-      this.dialog.loadBlock = state
     },
 
     /**

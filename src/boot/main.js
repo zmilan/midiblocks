@@ -9,6 +9,7 @@ import 'geteventlisteners'
 Vue.prototype.$axios = axios
 Vue.prototype.$v = pkg.version
 Vue.prototype.$markdown = new MarkdownIt()
+Vue.prototype.$log = console.log
 
 // Ignored elements for Blockly
 Vue.config.ignoredElements = ['field','block','category','xml','mutation','value','sep']

@@ -1,21 +1,75 @@
 <template lang="pug">
 q-page.full-height
   Workspace(ref='workspace' :options='options' :toolbox='toolbox' :blocks='[]' @change='workspaceEventHandler')
+    q-item.q-mb-lg(@click='saveBlock' clickable)
+      q-item-section(avatar)
+        q-icon(color='secondary' name='fas fa-save')
+      q-item-section.gt-sm
+        q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+        q-item-label.text-secondary Save Midiblock
+    q-item(@click='dialog.confirmNew = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='positive' name='fas fa-file')
+      q-item-section.gt-sm
+        q-item-label.text-positive New Midiblock
+    q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='positive' name='fas fa-folder-open')
+      q-item-section.gt-sm
+        q-item-label.text-positive Load Midiblock
+    q-item(@click='dialog.deleteConfirm = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='negative' name='fas fa-trash')
+      q-item-section.gt-sm
+        q-item-label.text-negative Delete Midiblock
+
+  //- Dialogs
+  DialogConfirm(v-model='dialog.confirmNew'
+    @accept='createNewBlock'
+    icon='fas fa-file'
+    title='Create new Midiblock?')
+      p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
+
+  DialogConfirm(v-model='dialog.deleteConfirm'
+    @accept='deleteBlock'
+    bg='negative'
+    icon='fas fa-trash'
+    title='Delete midiblock?')
+      p Are you sure you want to delete this midiblock? This cannot be undone!
+      
+  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
 import Workspace from '../components/Workspace'
+import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
+import DialogConfirm from '../components/dialog/Confirm'
 import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
+import { v4 as uuidv4 } from 'uuid'
 
+/**
+ * @todo document
+ */
 export default {
   name: 'MainLayout',
 
-  components: {
-    Workspace
+  components: {Workspace, DialogConfirm, DialogLoadMidiblock},
+
+  computed: {
+    /**
+     * Returns the data used for saving this view
+     * @returns {Object} save data
+     */
+    saveData () {
+      return {
+        ...this.block,
+        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
+      }
+    }
   },
 
   /**
@@ -79,13 +133,31 @@ export default {
   },
   
   data () {
+    const currentStudio = store.get('currentStudio', {})
+
     return {
+      allMidiblocks: store.get('midiblocks', {}),
+      
+      // Whether the autosave has been saved to a midiblock or not
+      isUnsaved: store.get('isStudioUnsaved'),
+      
       hasLoaded: false,
       
       errors: {
         webmidi: {
           enable: false
         }
+      },
+
+      block: {
+        uuid: currentStudio.uuid || uuidv4()
+      },
+
+      // Models for dialogs
+      dialog: {
+        confirmNew: false,
+        deleteConfirm: false,
+        loadBlock: false
       },
       
       // Blockly options
@@ -99,6 +171,63 @@ export default {
   },
 
   methods: {
+    /**
+     * Save states
+     */
+    autosave () {
+      store.set('currentStudio', this.saveData)
+      store.set('isStudioUnsaved', true)
+      this.isUnsaved = true
+    },
+
+    /**
+     * Save the midiblock
+     */
+    saveBlock () {
+      const midiblocks = store.get('midiblocks', {})
+      midiblocks[this.block.uuid] = this.saveData
+      store.set('midiblocks', midiblocks)
+      store.set('isStudioUnsaved', false)
+      this.isUnsaved = false
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Midiblock saved',
+        timeout: 2000
+      })
+    },
+
+    /**
+     * Creates a new midiblock
+     */
+    createNewBlock () {
+      store.remove('currentStudio')
+      this.$store.commit('tally', 'reloads')
+    },
+    
+    /**
+     * Deletes the midiblock
+     */
+    deleteBlock () {
+      let midiblocks = store.get('midiblocks', {})
+      delete midiblocks[this.block.uuid]
+      store.set('midiblocks', midiblocks)
+
+      this.$q.notify({
+        type: 'positive',
+        message: 'Midiblock deleted',
+        timeout: 2000
+      })
+      this.createNewBlock()
+    },
+
+    /**
+     * Loads a Midiblock
+     */
+    loadMidiblock (props) {
+      console.log('test', props)
+    },
+    
     /**
      * Handles Workspace events
      */
@@ -196,7 +325,6 @@ export default {
             
             code = code.join(';\n')
             code += ';\n' + (customBlock.code || '')
-            // console.log(code)
 
             // Return code
             if (block.outputConnection) {
@@ -209,15 +337,6 @@ export default {
       })
 
       return categories
-    },
-
-    /**
-     * Save states
-     */
-    autosave () {
-      store.set('currentStudio', {
-        workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
-      })
     },
 
     /**
