@@ -6,10 +6,9 @@
   "author": "Oz Ramos <midiblocks@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "npm run dev:local",
-    "dev": "npm run dev:local",
+    "start": "npm run dev",
+    "dev": "quasar dev --use-local-storage",
     "build": "quasar build --use-local-storage",
-    "deploy": "firebase deploy",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
