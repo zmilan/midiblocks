@@ -1,12 +1,17 @@
 <template lang="pug">
 q-page.full-height
   Workspace(ref='workspace' :options='options' :toolbox='toolbox' :blocks='[]' @change='workspaceEventHandler')
-    q-item.q-mb-lg(@click='saveBlock' clickable)
+    q-item(@click='saveBlock' clickable)
       q-item-section(avatar)
         q-icon(color='secondary' name='fas fa-save')
       q-item-section.gt-sm
         q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
         q-item-label.text-secondary Save Midiblock
+    q-item.q-mb-lg(@click='dialog.editSettings = true' clickable)
+      q-item-section(avatar)
+        q-icon(name='fas fa-cogs')
+      q-item-section.gt-sm
+        q-item-label Update Settings
     q-item(@click='dialog.confirmNew = true' clickable)
       q-item-section(avatar)
         q-icon(color='positive' name='fas fa-file')
@@ -36,6 +41,13 @@ q-page.full-height
     icon='fas fa-trash'
     title='Delete midiblock?')
       p Are you sure you want to delete this midiblock? This cannot be undone!
+
+  DialogConfirm(v-model='dialog.editSettings'
+    @accept='updateSettings'
+    bg='primary'
+    icon='fas fa-cogs'
+    title='Update settings'
+    accept-label='Update')
       
   DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
 </template>
@@ -157,6 +169,7 @@ export default {
       dialog: {
         confirmNew: false,
         deleteConfirm: false,
+        editSettings: true,
         loadBlock: false
       },
       
@@ -226,6 +239,13 @@ export default {
      */
     loadMidiblock (props) {
       console.log('test', props)
+    },
+
+    /**
+     * Save and apply settings
+     */
+    updateSettings () {
+      console.log('updateSettings')
     },
     
     /**

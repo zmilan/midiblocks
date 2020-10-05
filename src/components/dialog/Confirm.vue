@@ -10,7 +10,7 @@ q-dialog(:value='value' @input='$emit("input", $event)')
     q-card-actions(align='right')
       q-btn(flat @click='decline') Cancel
       q-space
-      q-btn(color='secondary' @click='accept') Yes
+      q-btn(color='secondary' @click='accept') {{acceptLabel || 'Yes'}}
 </template>
 
 <script>
@@ -21,16 +21,21 @@ q-dialog(:value='value' @input='$emit("input", $event)')
  * @prop {String} icon The dialogs icon shown before title (ex, "fas fa-file")
  * @prop {String} title
  * @prop {String} bg The background color
+ * @prop {String} acceptLabel The label to apply to the accept button
  */
 export default {
   name: 'DialogConfirm',
 
-  props: ['value', 'icon', 'title', 'bg'],
+  props: ['value', 'icon', 'title', 'bg', 'accept-label'],
 
   computed: {
     background () {
       return 'bg-' + this.bg
     }
+  },
+
+  mounted () {
+    console.log('mounted confirm')
   },
 
   methods: {
