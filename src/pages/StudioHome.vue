@@ -48,7 +48,8 @@ q-page.full-height
     icon='fas fa-cogs'
     title='Update settings'
     accept-label='Update')
-      q-input(ref='autofocus' label='Title' color='tertiary' v-model='meta._title')
+      q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
+      q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
   DialogLoadMidiblock(v-model='dialog.loadBlock' :midiblocks='allMidiblocks')
 </template>
