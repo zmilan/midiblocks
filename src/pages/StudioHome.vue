@@ -48,7 +48,7 @@ q-page.full-height
     icon='fas fa-cogs'
     title='Update settings'
     accept-label='Update')
-      q-input(label='Title' color='tertiary' v-model='meta._title')
+      q-input(ref='autofocus' label='Title' color='tertiary' v-model='meta._title')
       
   DialogLoadMidiblock(v-model='dialog.loadBlock' :midiblocks='allMidiblocks')
 </template>

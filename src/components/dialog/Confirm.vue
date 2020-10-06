@@ -16,6 +16,7 @@ q-dialog(:value='value' @input='$emit("input", $event)')
 <script>
 /**
  * Displays a Yes/No confirmation dialog
+ * - Add ref='autofocus' to a slot element to focus it on mount
  * 
  * @prop {Boolean} value The dialog model
  * @prop {String} icon The dialogs icon shown before title (ex, "fas fa-file")
@@ -34,8 +35,17 @@ export default {
     }
   },
 
-  mounted () {
-    console.log('mounted confirm')
+  watch: {
+    /**
+     * Autofocus element with ref='autofocus'
+     */
+    value (isVisible) {
+      this.$nextTick(() => {
+        if (this.$slots.default && this.$slots.default[0].context.$refs.autofocus && isVisible) {
+          this.$slots.default[0].context.$refs.autofocus.focus()
+        }
+      })
+    }
   },
 
   methods: {

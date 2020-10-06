@@ -21,8 +21,8 @@ export default {
 
     Object.keys(this.$props.midiblocks).forEach(key => {
       blocks.push({
-        title: 'untitled',
-        description: this.$props.midiblocks[key].description,
+        title: this.$props.midiblocks[key].title || 'untitled',
+        description: this.$props.midiblocks[key].description || '',
         updated: this.$props.midiblocks[key].updated,
         uuid: this.$props.midiblocks[key].uuid
       })
