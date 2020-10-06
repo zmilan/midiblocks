@@ -21,7 +21,7 @@ q-page.full-height
           q-item-section(avatar)
             q-icon(name='fas fa-cogs')
           q-item-section.gt-sm
-            q-item-label Update Settings
+            q-item-label Block Settings
         q-item(@click='dialog.confirmNew = true' clickable)
           q-item-section(avatar)
             q-icon(color='positive' name='fas fa-file')
@@ -56,7 +56,7 @@ q-page.full-height
     @accept='updateSettings'
     bg='primary'
     icon='fas fa-cogs'
-    title='Update settings'
+    title='Block Settings'
     accept-label='Update')
       q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
