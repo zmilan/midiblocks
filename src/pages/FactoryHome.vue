@@ -58,8 +58,7 @@ q-page.full-height
     icon='fas fa-cogs'
     title='Update settings'
     accept-label='Update')
-      q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
-      q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
+      q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
   DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='allBlocks')
 </template>
@@ -97,6 +96,7 @@ export default {
       
       return {
         ...this.block,
+        description: this.meta.description,
         name,
         category,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
@@ -147,11 +147,8 @@ export default {
 
       meta: {
         // What gets saved
-        title: currentFactory.title || 'Untitled',
-        // Intermediary step (value inside modal)
-        _title: currentFactory.title || 'Untitled',
-        
         description: currentFactory.description || '',
+        // Intermediary step (value inside modal)
         _description: currentFactory.description || ''
       },
 
