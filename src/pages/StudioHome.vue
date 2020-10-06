@@ -1,12 +1,17 @@
 <template lang="pug">
 q-page.full-height
   Workspace(ref='workspace' :options='options' :toolbox='toolbox' :blocks='[]' @change='workspaceEventHandler')
-    q-item.q-mb-lg(@click='saveBlock' clickable)
+    q-item(@click='saveBlock' clickable)
       q-item-section(avatar)
         q-icon(color='secondary' name='fas fa-save')
       q-item-section.gt-sm
         q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
         q-item-label.text-secondary Save Midiblock
+    q-item.q-mb-lg(@click='showSettings' clickable)
+      q-item-section(avatar)
+        q-icon(name='fas fa-cogs')
+      q-item-section.gt-sm
+        q-item-label Midiblock Settings
     q-item(@click='dialog.confirmNew = true' clickable)
       q-item-section(avatar)
         q-icon(color='positive' name='fas fa-file')
@@ -36,8 +41,17 @@ q-page.full-height
     icon='fas fa-trash'
     title='Delete midiblock?')
       p Are you sure you want to delete this midiblock? This cannot be undone!
+
+  DialogConfirm(v-model='dialog.editSettings'
+    @accept='updateSettings'
+    bg='primary'
+    icon='fas fa-cogs'
+    title='Midiblock Settings'
+    accept-label='Update')
+      q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
+      q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
-  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
+  DialogLoadMidiblock(v-model='dialog.loadBlock' :midiblocks='allMidiblocks')
 </template>
 
 <script>
@@ -66,6 +80,8 @@ export default {
      */
     saveData () {
       return {
+        title: this.meta.title,
+        description: this.meta.description,
         ...this.block,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
       }
@@ -136,6 +152,7 @@ export default {
     const currentStudio = store.get('currentStudio', {})
 
     return {
+      // @todo move this to store
       allMidiblocks: store.get('midiblocks', {}),
       
       // Whether the autosave has been saved to a midiblock or not
@@ -153,10 +170,21 @@ export default {
         uuid: currentStudio.uuid || uuidv4()
       },
 
+      meta: {
+        // What gets saved
+        title: currentStudio.title || 'Untitled',
+        // Intermediary step (value inside modal)
+        _title: currentStudio.title || 'Untitled',
+        
+        description: currentStudio.description || '',
+        _description: currentStudio.description || ''
+      },
+
       // Models for dialogs
       dialog: {
         confirmNew: false,
         deleteConfirm: false,
+        editSettings: false,
         loadBlock: false
       },
       
@@ -222,10 +250,21 @@ export default {
     },
 
     /**
-     * Loads a Midiblock
+     * Shows settings modal, reset its fields, focus element
      */
-    loadMidiblock (props) {
-      console.log('test', props)
+    showSettings () {
+      this.meta._title = this.meta.title
+      this.meta._description = this.meta.description
+      this.dialog.editSettings = true
+    },
+
+    /**
+     * Save and apply settings
+     */
+    updateSettings () {
+      this.meta.title = this.meta._title
+      this.meta.description = this.meta._description
+      this.autosave()
     },
     
     /**

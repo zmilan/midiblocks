@@ -11,12 +11,17 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
-        q-item.q-mb-lg(@click='saveBlock' clickable)
+        q-item(@click='saveBlock' clickable)
           q-item-section(avatar)
             q-icon(color='secondary' name='fas fa-save')
           q-item-section.gt-sm
             q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
             q-item-label.text-secondary Save Block
+        q-item.q-mb-lg(@click='showSettings' clickable)
+          q-item-section(avatar)
+            q-icon(name='fas fa-cogs')
+          q-item-section.gt-sm
+            q-item-label Block Settings
         q-item(@click='dialog.confirmNew = true' clickable)
           q-item-section(avatar)
             q-icon(color='positive' name='fas fa-file')
@@ -46,6 +51,14 @@ q-page.full-height
     icon='fas fa-trash'
     title='Delete block?')
       p Are you sure you want to delete this block? This cannot be undone!
+
+  DialogConfirm(v-model='dialog.editSettings'
+    @accept='updateSettings'
+    bg='primary'
+    icon='fas fa-cogs'
+    title='Block Settings'
+    accept-label='Update')
+      q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
   DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='allBlocks')
 </template>
@@ -83,6 +96,7 @@ export default {
       
       return {
         ...this.block,
+        description: this.meta.description,
         name,
         category,
         workspace: Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(this.$refs.workspace.blockly))
@@ -118,7 +132,8 @@ export default {
       dialog: {
         confirmNew: false,
         deleteConfirm: false,
-        loadBlock: false
+        loadBlock: false,
+        editSettings: false
       },
 
       // Block data
@@ -129,7 +144,14 @@ export default {
         // User entered code
         code: currentFactory.code || '',
       },
-      
+
+      meta: {
+        // What gets saved
+        description: currentFactory.description || '',
+        // Intermediary step (value inside modal)
+        _description: currentFactory.description || ''
+      },
+
       // is the splitter in horizontal or vertical mode
       splitter: store.get('splitter') || window.innerWidth / 3,
 
@@ -225,6 +247,24 @@ export default {
         message: `Block "${props.block.name}" loaded!`,
         timeout: 3000
       })
+    },
+
+    /**
+     * Shows settings modal, reset its fields, focus element
+     */
+    showSettings () {
+      this.meta._title = this.meta.title
+      this.meta._description = this.meta.description
+      this.dialog.editSettings = true
+    },
+
+    /**
+     * Save and apply settings
+     */
+    updateSettings () {
+      this.meta.title = this.meta._title
+      this.meta.description = this.meta._description
+      this.autosave()
     },
 
     /**
