@@ -96,6 +96,20 @@ export default {
       })
       origNotify(...args)
     }
+
+    /**
+     * Override console warnings and errors
+     */
+    const err = console.error
+    console.error = (...args) => {
+      this.$store.commit('push', ['eventLogs.error', args])
+      err(...args)
+    }
+    const warn = console.warn
+    console.warn = (...args) => {
+      this.$store.commit('push', ['eventLogs.warn', args])
+      warn(...args)
+    }
   },
 
   destroyed () {

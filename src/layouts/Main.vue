@@ -31,10 +31,12 @@ q-layout(view='lHh Lpr lFf')
 
   //- Status bar
   q-footer
-    q-bar.bg-inactive(dense)
+    q-bar.bg-inactive
       div
-        span.text-info Last event: 
-        span.text-white {{lastEvent.log}}
+        q-badge.q-mr-sm(v-if='eventLogs.error.length' color='negative') {{eventLogs.error.length}}
+        q-badge.q-mr-sm(v-if='eventLogs.warn.length' color='warning') {{eventLogs.warn.length}}
+        span.text-info Last event:
+        span.text-white.q-ml-sm {{lastEvent.log}}
 </template>
 
 <script>
@@ -53,7 +55,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user', 'lastEvent'])
+    ...mapState(['user', 'lastEvent', 'eventLogs'])
   },
 
   watch: {
