@@ -28,6 +28,11 @@ q-layout(view='lHh Lpr lFf')
   //- Page
   q-page-container
     router-view
+
+  //- Status bar
+  q-footer
+    q-bar.bg-inactive(dense)
+      div Status:
 </template>
 
 <script>
