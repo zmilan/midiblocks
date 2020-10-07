@@ -23,14 +23,24 @@ export default function (/* { ssrContext } */) {
       /**
        * Represents the api
        */
+      // @todo Remove this for now
       api: {
         domain: process.env.DEV ? 'http://midiblocks.local' : 'https://midiblocks.com',
         base: 'wp-json/midiblocks'
       },
 
       /**
+       * Contains information about the last app-level event
+       */
+      lastEvent: {
+        log: '',
+        data: {}
+      },
+
+      /**
        * User info
        */
+      // @todo Remove this for now
       user: {
         isLoggedIn: false
       },

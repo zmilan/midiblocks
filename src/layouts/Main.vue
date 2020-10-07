@@ -32,7 +32,9 @@ q-layout(view='lHh Lpr lFf')
   //- Status bar
   q-footer
     q-bar.bg-inactive(dense)
-      div Status:
+      div
+        span.text-info Last event: 
+        span.text-white {{lastEvent.log}}
 </template>
 
 <script>
@@ -51,7 +53,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'lastEvent'])
   },
 
   watch: {
