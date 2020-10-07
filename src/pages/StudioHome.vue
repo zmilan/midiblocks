@@ -220,7 +220,7 @@ export default {
 
       this.$q.notify({
         type: 'positive',
-        message: 'Midiblock saved',
+        message: `Midiblock "${midiblocks[this.block.uuid].title}" saved`,
         timeout: 2000
       })
     },
@@ -231,6 +231,7 @@ export default {
     createNewBlock () {
       store.remove('currentStudio')
       this.$store.commit('tally', 'reloads')
+      this.$store.commit('set', ['lastEvent', {log: 'New midiblock created'}])
     },
     
     /**
@@ -238,15 +239,17 @@ export default {
      */
     deleteBlock () {
       let midiblocks = store.get('midiblocks', {})
+      let title = midiblocks[this.block.uuid].title
       delete midiblocks[this.block.uuid]
       store.set('midiblocks', midiblocks)
 
       this.$q.notify({
         type: 'positive',
-        message: 'Midiblock deleted',
+        message: `Midiblock "${title}" deleted`,
         timeout: 2000
       })
       this.createNewBlock()
+      this.$store.commit('set', ['lastEvent', {log: `Midiblock "${title}" deleted`}])
     },
 
     /**

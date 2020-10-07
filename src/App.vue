@@ -84,6 +84,18 @@ export default {
         store.set(key, defaultWorkspace.localStorage[key])
       })
     }
+
+    /**
+     * Override notify to update status
+     * @todo Move this to a utility module
+     */
+    const origNotify = this.$q.notify
+    this.$q.notify = (...args) => {
+      args.forEach(arg => {
+        this.$store.commit('set', ['lastEvent', {log: arg.message}])
+      })
+      origNotify(...args)
+    }
   },
 
   destroyed () {

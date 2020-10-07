@@ -28,6 +28,13 @@ q-layout(view='lHh Lpr lFf')
   //- Page
   q-page-container
     router-view
+
+  //- Status bar
+  q-footer
+    q-bar.bg-inactive(dense)
+      div
+        span.text-info Last event: 
+        span.text-white {{lastEvent.log}}
 </template>
 
 <script>
@@ -46,7 +53,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'lastEvent'])
   },
 
   watch: {
