@@ -222,7 +222,7 @@ export default {
 
       this.$q.notify({
         type: 'positive',
-        message: 'Block saved',
+        message: `Block "${this.saveData.name}" saved`,
         timeout: 2000
       })
     },
@@ -234,6 +234,7 @@ export default {
       this.block.uuid = uuidv4()
       store.remove('currentFactory')
       this.$store.commit('tally', 'reloads')
+      this.$store.commit('set', ['lastEvent', {log: 'New block created'}])
     },
 
     /**
@@ -280,15 +281,17 @@ export default {
      */
     deleteBlock () {
       let blocks = store.get('blocks')
+      let name = blocks[this.block.uuid].name
       delete blocks[this.block.uuid]
       store.set('blocks', blocks)
 
       this.$q.notify({
         type: 'positive',
-        message: 'Block deleted',
+        message: `Block "${name}" deleted`,
         timeout: 2000
       })
       this.createNewBlock()
+      this.$store.commit('set', ['lastEvent', {log: `Block "${name}" deleted`}])
     },
 
     /**
