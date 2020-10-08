@@ -34,17 +34,30 @@ q-layout(view='lHh Lpr lFf')
     q-bar.bg-inactive
       div
         q-badge.q-mr-sm.cursor-pointer(v-if='eventLogs.error.length' color='negative' @click='dialog.error = true') {{eventLogs.error.length}}
-        q-badge.q-mr-sm.cursor-pointer(v-if='eventLogs.warn.length' color='warning' @click='dialog.warning = true') {{eventLogs.warn.length}}
+        q-badge.q-mr-sm.cursor-pointer(v-if='eventLogs.warn.length' color='block-orange' @click='dialog.warning = true') {{eventLogs.warn.length}}
         span.text-info Last event:
         span.text-white.q-ml-sm {{lastEvent.log}}
 
   //- Dialogs
   DialogConfirm(v-model='dialog.error'
     @accept='clearErrorLogs'
+    cancel-label='Close'
+    accept-label='Clear errors'
     bg='negative'
     icon='fas fa-bug'
     title='Error Logs')
     q-table(:data='eventLogs.error' :columns='columns.error')
+      template(v-slot:body-cell-log='props')
+        q-td.white-space-normal(:props='props') {{props.row.log}}
+
+  DialogConfirm(v-model='dialog.warning'
+    @accept='clearWarningLogs'
+    cancel-label='Close'
+    accept-label='Clear warnings'
+    bg='block-orange'
+    icon='fas fa-bug'
+    title='Warning Logs')
+    q-table(:data='eventLogs.warn' :columns='columns.error')
       template(v-slot:body-cell-log='props')
         q-td.white-space-normal(:props='props') {{props.row.log}}
 </template>
