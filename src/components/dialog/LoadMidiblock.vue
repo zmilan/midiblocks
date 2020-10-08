@@ -8,7 +8,7 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
     q-card-section
       MidiblocksTable(:midiblocks='midiblocks')
         template(slot-scope='props')
-          q-btn(color='secondary' @click='$emit("load", props)' icon='fas fa-folder-open') Load Block
+          q-btn(color='secondary' @click='$emit("load", props)' icon='fas fa-folder-open') Load Midiblock
     q-card-actions(style='flex: 0 0 auto')
       q-btn.full-width(color='negative' @click='$emit("input", $event.target.value)') Cancel
 </template>

@@ -1,8 +1,8 @@
 <template lang="pug">
-q-table.midiblocks-table(:data='blocks' :columns='columns' row-key='uuid')
+q-table.midiblocks-table(:data='Object.values(midiblocks)' :columns='columns' row-key='uuid')
   template(v-slot:body-cell-actions='props')
     q-td(:props='props')
-      q-btn.bg-secondary(@click='loadMidiblock(props.key)') Load
+      slot(:midiblock='midiblocks[props.key]')
 </template>
 
 <script>
@@ -17,20 +17,7 @@ export default {
   props: ['midiblocks'],
 
   data () {
-    const blocks = []
-
-    Object.keys(this.$props.midiblocks).forEach(key => {
-      blocks.push({
-        title: this.$props.midiblocks[key].title || 'untitled',
-        description: this.$props.midiblocks[key].description || '',
-        updated: this.$props.midiblocks[key].updated,
-        uuid: this.$props.midiblocks[key].uuid
-      })
-    })
-
     return {
-      blocks,
-
       columns: [
         {
           label: 'Title',
@@ -59,16 +46,6 @@ export default {
           align: 'left'
         }
       ]
-    }
-  },
-
-  methods: {
-    /**
-     * Loads the midiblock
-     */
-    loadMidiblock (key) {
-      store.set('currentStudio', this.midiblocks[key])
-      this.$store.commit('tally', 'reloads')
     }
   }
 }
