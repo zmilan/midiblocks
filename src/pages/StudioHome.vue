@@ -1,7 +1,7 @@
 <template lang="pug">
 q-page.full-height
   Workspace(ref='workspace' :options='options' :toolbox='toolbox' :blocks='[]' @change='workspaceEventHandler')
-    q-item(@click='saveBlock' clickable)
+    q-item(@click='saveMidiblock' clickable)
       q-item-section(avatar)
         q-icon(color='secondary' name='fas fa-save')
       q-item-section.gt-sm
@@ -134,6 +134,16 @@ export default {
 
     // Setup listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+
+    // Autosave with CTRL+S
+    this.$mousetrap.bindGlobal('ctrl+s', ev => {
+      ev.preventDefault()
+      this.saveMidiblock()
+    })
+  },
+
+  destroyed () {
+    this.$mousetrap.unbind('ctrl+s')
   },
 
   watch: {
@@ -211,7 +221,7 @@ export default {
     /**
      * Save the midiblock
      */
-    saveBlock () {
+    saveMidiblock () {
       const midiblocks = store.get('midiblocks', {})
       midiblocks[this.block.uuid] = this.saveData
       store.set('midiblocks', midiblocks)
