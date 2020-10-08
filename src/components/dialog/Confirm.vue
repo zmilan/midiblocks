@@ -8,9 +8,9 @@ q-dialog(:value='value' @input='$emit("input", $event)')
     q-card-section
       slot
     q-card-actions(align='right')
-      q-btn(flat @click='decline') Cancel
+      q-btn(flat @click='decline') {{cancelLabel || 'Cancel'}}
       q-space
-      q-btn(color='secondary' @click='accept') {{acceptLabel || 'Yes'}}
+      q-btn(:color='acceptColor || "secondary"' @click='accept') {{acceptLabel || 'Yes'}}
 </template>
 
 <script>
@@ -27,7 +27,7 @@ q-dialog(:value='value' @input='$emit("input", $event)')
 export default {
   name: 'DialogConfirm',
 
-  props: ['value', 'icon', 'title', 'bg', 'accept-label'],
+  props: ['value', 'icon', 'title', 'bg', 'accept-label', 'accept-color', 'cancel-label'],
 
   computed: {
     background () {

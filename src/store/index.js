@@ -38,6 +38,14 @@ export default function (/* { ssrContext } */) {
       },
 
       /**
+       * Contains a history of logs
+       */
+      eventLogs: {
+        warn: [],
+        error: []
+      },
+
+      /**
        * User info
        */
       // @todo Remove this for now
@@ -89,6 +97,17 @@ export default function (/* { ssrContext } */) {
       },
 
       /**
+       * Helper for pushing a payload into an array
+       * @param {*} state 
+       * @param {*} payload ["path.to.state", value]
+       */
+      push (state, payload) {
+        const data = get(state, payload[0])
+        data.push(payload[1])
+        set(state, payload[0], data)
+      },
+
+      /**
        * Helper for incrementing a state by 1
        * @param {*} state 
        * @param {String} path "path.to.state"
@@ -101,6 +120,8 @@ export default function (/* { ssrContext } */) {
     actions: {
       /**
        * GET data from storage, either from an API or localstorage
+       * @todo remove
+       * 
        * @param {*} param0 
        * @param {*} payload 
        */
