@@ -33,10 +33,20 @@ q-layout(view='lHh Lpr lFf')
   q-footer
     q-bar.bg-inactive
       div
-        q-badge.q-mr-sm(v-if='eventLogs.error.length' color='negative') {{eventLogs.error.length}}
-        q-badge.q-mr-sm(v-if='eventLogs.warn.length' color='warning') {{eventLogs.warn.length}}
+        q-badge.q-mr-sm.cursor-pointer(v-if='eventLogs.error.length' color='negative' @click='dialog.error = true') {{eventLogs.error.length}}
+        q-badge.q-mr-sm.cursor-pointer(v-if='eventLogs.warn.length' color='warning' @click='dialog.warning = true') {{eventLogs.warn.length}}
         span.text-info Last event:
         span.text-white.q-ml-sm {{lastEvent.log}}
+
+  //- Dialogs
+  DialogConfirm(v-model='dialog.error'
+    @accept='clearErrorLogs'
+    bg='negative'
+    icon='fas fa-bug'
+    title='Error Logs')
+    q-table(:data='eventLogs.error' :columns='columns.error')
+      template(v-slot:body-cell-log='props')
+        q-td.white-space-normal(:props='props') {{props.row.log}}
 </template>
 
 <script>
@@ -44,15 +54,13 @@ import {get, set} from 'lodash'
 import pkg from '../../package.json'
 import MainNavLink from 'components/mainNavPanel/Link'
 import ImporterExporter from 'components/ImporterExporter'
+import DialogConfirm from 'components/dialog/Confirm'
 import {mapState} from 'vuex'
 
 export default {
   name: 'MainLayout',
 
-  components: {
-    ImporterExporter,
-    MainNavLink
-  },
+  components: {ImporterExporter, MainNavLink, DialogConfirm},
 
   computed: {
     ...mapState(['user', 'lastEvent', 'eventLogs'])
@@ -70,7 +78,26 @@ export default {
   
   data () {
     return {
+      // @todo remove
       boot: {},
+
+      columns: {
+        error: [
+          {
+            label: 'Log',
+            field: 'log',
+            name: 'log',
+            sortable: true,
+            align: 'left'
+          }
+        ]
+      },
+
+      // Dialog models
+      dialog: {
+        error: false,
+        warning: false
+      },
 
       isMIDIActive: false,
       
@@ -114,6 +141,23 @@ export default {
   destroyed () {
     this.$mousetrap.unbind('s')
     this.$mousetrap.unbind('f')
+  },
+
+  methods: {
+    /**
+     * Clear logs
+     */
+    clearErrorLogs () {
+      this.$store.commit('set', ['eventLogs.error', []])
+    },
+    clearWarningLogs () {
+      this.$store.commit('set', ['eventLogs.error', []])
+      this.$store.commit('set', ['eventLogs.warn', []])
+    },
+    clearAllLogs () {
+      this.$store.commit('set', ['eventLogs.error', []])
+      this.$store.commit('set', ['eventLogs.warn', []])
+    }
   }
 }
 </script>

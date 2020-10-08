@@ -102,8 +102,6 @@ A core set of blocks will be provided for offline use (the default setup), but c
 
 ## Motivation
 
-Ultimately, the goal is to expose browser based creativity and machine learning libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/handsfreejs/handsfree), and many others to MIDI devices (and beyond) under a single visual language that can be used by anyone on anything.
-
 > 🚧 More info coming soon
 
 ## Features
@@ -113,7 +111,7 @@ Ultimately, the goal is to expose browser based creativity and machine learning 
 ## Milestones
 - Create a MIDI mapper and scripter that can be used by anyone, even those without prior coding experience
 - A "GitHub/NPM for MIDI" that lets you quickly create, import, fork, and share MIDI mappings and scripts
-- Create integrations with creativity libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), and [handsfree.js](https://github.com/handsfreejs/handsfree)
+- Create integrations with creativity libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), and [handsfree.js](https://github.com/midiblocks/handsfree)
 
 ## Keyboard Shortcuts
 

@@ -102,12 +102,12 @@ export default {
      */
     const err = console.error
     console.error = (...args) => {
-      this.$store.commit('push', ['eventLogs.error', args])
+      this.$store.commit('push', ['eventLogs.error', {log: args[0]}])
       err(...args)
     }
     const warn = console.warn
     console.warn = (...args) => {
-      this.$store.commit('push', ['eventLogs.warn', args])
+      this.$store.commit('push', ['eventLogs.warn', {log: args[0]}])
       warn(...args)
     }
   },
