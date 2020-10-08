@@ -51,7 +51,7 @@ q-page.full-height
       q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
       q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
-  DialogLoadMidiblock(v-model='dialog.loadBlock' :midiblocks='allMidiblocks')
+  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
 </template>
 
 <script>
@@ -232,6 +232,19 @@ export default {
       store.remove('currentStudio')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New midiblock created'}])
+    },
+
+    /**
+     * Loads the midiblock
+     */
+    loadMidiblock (props) {
+      store.set('currentStudio', props.midiblock)
+      this.$store.commit('tally', 'reloads')
+      this.$q.notify({
+        type: 'positive',
+        message: `Midilock "${props.midiblock.title}" loaded!`,
+        timeout: 3000
+      })
     },
     
     /**
