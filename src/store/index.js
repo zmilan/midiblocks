@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import {get, set, trimEnd} from 'lodash'
 import axios from 'axios'
 import localStorageAPI from '../assets/js/localstorage-api'
+import store from 'store'
 
 Vue.use(Vuex)
 
@@ -28,6 +29,12 @@ export default function (/* { ssrContext } */) {
         domain: process.env.DEV ? 'http://midiblocks.local' : 'https://midiblocks.com',
         base: 'wp-json/midiblocks'
       },
+
+      /**
+       * Blocks library
+       */
+      blocks: store.get('blocks'),
+      midiblocks: store.get('midiblocks'),
 
       /**
        * Contains information about the last app-level event

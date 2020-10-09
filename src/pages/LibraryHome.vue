@@ -9,10 +9,10 @@ q-page.full-height
     div(v-else v-html='post.content')
 
     h4 Midiblocks
-    MidiblocksTable(:midiblocks='allMidiblocks')
+    MidiblocksTable(:midiblocks='midiblocks')
 
     h4 Building blocks
-    BlocksGrid(:blocks='allBlocks')
+    BlocksGrid(:blocks='blocks')
 </template>
 
 <script>
@@ -27,14 +27,7 @@ export default {
   components: {BlocksGrid, MidiblocksTable},
 
   computed: {
-    ...mapState(['post'])
-  },
-
-  data () {
-    return {
-      allBlocks: store.get('blocks'),
-      allMidiblocks: store.get('midiblocks')
-    }
+    ...mapState(['post', 'blocks', 'midiblocks'])
   },
 
   mounted () {
