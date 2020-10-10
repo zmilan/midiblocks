@@ -10,11 +10,16 @@
         p.pre {{block.description}}
       q-card-actions(align='right')
         template(slot-scope='props')
+          q-btn(color='negative' @click='deleteBlock(block)' icon='fas fa-trash') Delete
+          q-space
           q-btn(color='secondary' @click='loadBlock(block)' icon='fas fa-folder-open') Load
+
+  DialogDeleteBlock(v-model='dialog.deleteBlock' :block='dialogBlock')
 </template>
 
 <script>
 import Workspace from '../Workspace'
+import DialogDeleteBlock from '../dialog/DeleteBlock'
 import store from 'store'
 import {mapState} from 'vuex'
 
@@ -30,7 +35,7 @@ export default {
     }
   },
 
-  components: {Workspace},
+  components: {Workspace, DialogDeleteBlock},
 
   computed: {
     ...mapState(['blocks']),
@@ -60,6 +65,14 @@ export default {
 
   data () {
     return {
+      dialogBlock: null,
+      
+      // Dialog models
+      dialog: {
+        deleteBlock: false
+      },
+      
+      // Blockly workspace
       options: {
         trashcan: false,
         zoom: {
@@ -89,6 +102,14 @@ export default {
       } else {
         this.$router.push({name: 'Factory'})
       }
+    },
+
+    /**
+     * Delete the block
+     */
+    deleteBlock (block) {
+      this.dialogBlock = block
+      this.dialog.deleteBlock = true
     }
   }
 }
