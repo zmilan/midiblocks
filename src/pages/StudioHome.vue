@@ -45,6 +45,8 @@ q-page.full-height
       q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
   DialogLoadMidiblock(v-model='dialog.loadBlock')
+
+  DialogDeleteMidiblock(v-model='dialog.deleteConfirm' :midiblock='block')
 </template>
 
 <script>
@@ -52,6 +54,7 @@ import {throttle, cloneDeep, set} from 'lodash'
 import {mapState} from 'vuex'
 import Workspace from '../components/Workspace'
 import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
+import DialogDeleteMidiblock from '../components/dialog/DeleteMidiblock'
 import DialogConfirm from '../components/dialog/Confirm'
 import store from 'store'
 import webmidi from 'webmidi'
@@ -65,7 +68,7 @@ import {v4 as uuidv4} from 'uuid'
 export default {
   name: 'MainLayout',
 
-  components: {Workspace, DialogConfirm, DialogLoadMidiblock},
+  components: {Workspace, DialogConfirm, DialogLoadMidiblock, DialogDeleteMidiblock},
 
   computed: {
     /**
