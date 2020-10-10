@@ -51,11 +51,12 @@ q-page.full-height
       q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
       q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
-  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
+  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='midiblocks')
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
+import {mapState} from 'vuex'
 import Workspace from '../components/Workspace'
 import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
 import DialogConfirm from '../components/dialog/Confirm'
@@ -63,7 +64,7 @@ import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
-import { v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4} from 'uuid'
 
 /**
  * @todo document
@@ -74,6 +75,8 @@ export default {
   components: {Workspace, DialogConfirm, DialogLoadMidiblock},
 
   computed: {
+    ...mapState(['midiblocks']),
+
     /**
      * Returns the data used for saving this view
      * @returns {Object} save data
@@ -162,9 +165,6 @@ export default {
     const currentStudio = store.get('currentStudio', {})
 
     return {
-      // @todo move this to store
-      allMidiblocks: store.get('midiblocks', {}),
-      
       // Whether the autosave has been saved to a midiblock or not
       isUnsaved: store.get('isStudioUnsaved'),
       

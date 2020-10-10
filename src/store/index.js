@@ -33,8 +33,8 @@ export default function (/* { ssrContext } */) {
       /**
        * Blocks library
        */
-      blocks: store.get('blocks'),
-      midiblocks: store.get('midiblocks'),
+      blocks: store.get('blocks', {}),
+      midiblocks: store.get('midiblocks', {}),
 
       /**
        * Contains information about the last app-level event
