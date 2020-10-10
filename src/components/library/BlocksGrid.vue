@@ -9,12 +9,14 @@
         h3 {{block.name}}
         p.pre {{block.description}}
       q-card-actions(align='right')
-        slot(:block='block')
+        template(slot-scope='props')
+          q-btn(color='secondary' @click='loadBlock(block)' icon='fas fa-folder-open') Load
 </template>
 
 <script>
 import Workspace from '../Workspace'
 import store from 'store'
+import {mapState} from 'vuex'
 
 /**
  * Displays a grid of blocks in the users current library
@@ -23,9 +25,6 @@ export default {
   name: 'BlocksGrid',
 
   props: {
-    blocks: {
-      type: Object
-    },
     midiblocks: {
       type: Object
     }
@@ -34,6 +33,8 @@ export default {
   components: {Workspace},
 
   computed: {
+    ...mapState(['blocks']),
+    
     toolbox () {
       let toolbox = []
 
@@ -67,6 +68,26 @@ export default {
           wheel: true,
           startScale: 0.75
         }
+      }
+    }
+  },
+
+  methods: {
+    /**
+     * Load the block
+     */
+    loadBlock (block) {
+      store.set('currentFactory', block)
+      this.$q.notify({
+        type: 'positive',
+        message: `Block "${block.name}" loaded!`,
+        timeout: 3000
+      })
+
+      if (this.$route.name === 'Factory') {
+        this.$store.commit('tally', 'reloads')
+      } else {
+        this.$router.push({name: 'Factory'})
       }
     }
   }

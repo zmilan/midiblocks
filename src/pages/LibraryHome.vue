@@ -12,7 +12,7 @@ q-page.full-height
     MidiblocksTable(:midiblocks='midiblocks')
 
     h4 Building blocks
-    BlocksGrid(:blocks='blocks')
+    BlocksGrid
 </template>
 
 <script>
@@ -27,7 +27,7 @@ export default {
   components: {BlocksGrid, MidiblocksTable},
 
   computed: {
-    ...mapState(['post', 'blocks', 'midiblocks'])
+    ...mapState(['post', 'midiblocks'])
   },
 
   mounted () {

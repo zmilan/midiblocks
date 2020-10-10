@@ -60,7 +60,7 @@ q-page.full-height
     accept-label='Update')
       q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
-  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='blocks')
+  DialogLoadBlock(v-model='dialog.loadBlock')
 </template>
 
 <script>
@@ -75,7 +75,6 @@ import store from 'store'
 import {set, throttle} from 'lodash'
 import toolbox from '../assets/toolboxes/factory'
 import { v4 as uuidv4 } from 'uuid'
-import {mapState} from 'vuex'
 
 /**
  * @todo document
@@ -86,8 +85,6 @@ export default {
   components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm},
 
   computed: {
-    ...mapState(['blocks']),
-    
     /**
      * Returns the data used for saving this view
      * @returns {Object} save data
@@ -236,19 +233,6 @@ export default {
       store.remove('currentFactory')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New block created'}])
-    },
-
-    /**
-     * Load the block
-     */
-    loadBlock (props) {
-      store.set('currentFactory', props.block)
-      this.$store.commit('tally', 'reloads')
-      this.$q.notify({
-        type: 'positive',
-        message: `Block "${props.block.name}" loaded!`,
-        timeout: 3000
-      })
     },
 
     /**
