@@ -144,7 +144,7 @@ export default {
       },
 
       // is the splitter in horizontal or vertical mode
-      splitter: store.get('splitter') || window.innerWidth / 3,
+      splitter: store.get('splitter', window.innerWidth / 3),
 
       // Contains our block preview
       previewWorkspace: null,

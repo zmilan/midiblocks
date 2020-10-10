@@ -1,5 +1,5 @@
 <template lang="pug">
-DialogConfirm(:value='value'  @input='$emit("input", $event)'
+DialogConfirm(:value='value' @input='$emit("input", $event)'
   @accept='deleteBlock'
   bg='negative'
   icon='fas fa-trash'
@@ -30,7 +30,7 @@ export default {
     deleteBlock () {
       let name = this.blocks[this.block.uuid].name
       let blocks = Object.assign({}, this.blocks)
-      let currentFactory = store.get('currentFactory')
+      let currentFactory = store.get('currentFactory', {})
 
       // Delete block
       delete blocks[this.block.uuid]

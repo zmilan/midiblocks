@@ -59,6 +59,7 @@ export default {
 
   data () {
     return {
+      // The block to use inside a dialog
       dialogBlock: null,
       
       // Dialog models
