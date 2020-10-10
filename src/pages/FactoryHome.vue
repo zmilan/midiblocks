@@ -45,13 +45,6 @@ q-page.full-height
     title='Create new block?')
       p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
-  DialogConfirm(v-model='dialog.deleteConfirm'
-    @accept='deleteBlock'
-    bg='negative'
-    icon='fas fa-trash'
-    title='Delete block?')
-      p Are you sure you want to delete this block? This cannot be undone!
-
   DialogConfirm(v-model='dialog.editSettings'
     @accept='updateSettings'
     bg='primary'
@@ -259,24 +252,6 @@ export default {
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
-    },
-
-    /**
-     * Deletes the block and creates a new one
-     */
-    deleteBlock () {
-      let blocks = store.get('blocks')
-      let name = blocks[this.block.uuid].name
-      delete blocks[this.block.uuid]
-      store.set('blocks', blocks)
-
-      this.$q.notify({
-        type: 'positive',
-        message: `Block "${name}" deleted`,
-        timeout: 2000
-      })
-      this.createNewBlock()
-      this.$store.commit('set', ['lastEvent', {log: `Block "${name}" deleted`}])
     },
 
     /**
