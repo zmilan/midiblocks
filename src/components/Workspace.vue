@@ -8,7 +8,7 @@
 
     //- Quasar Toolbox
     .q-pa-sm.flex.column
-      q-list
+      q-list(dense)
         template(v-for='category in toolbox')
           q-separator(v-if='category.tag === "sep"')
           q-item(v-else clickable :style='"color:" + category.colour' @click='toggleToolboxFlyout(category, $event)' :active='isFlyoutOpen && isFlyoutOpen === category.name')
@@ -16,7 +16,7 @@
               q-icon(:style='"color:" + category.colour' :name='category.icon')
             q-item-section.gt-sm
               q-item-label(:style='"color:" + category.colour') {{category.name}}
-      q-list(style='flex: 0 0 auto')
+      q-list(dense style='flex: 0 0 auto')
         slot
 
   .min-height-inherit.position-relative(@click='closeToolboxFLyout')
