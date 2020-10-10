@@ -30,13 +30,17 @@ export default {
     deleteBlock () {
       let name = this.blocks[this.block.uuid].name
       let blocks = Object.assign({}, this.blocks)
+      let currentFactory = store.get('currentFactory')
 
       // Delete block
-      // @todo move this to store action
       delete blocks[this.block.uuid]
       this.$store.commit('set', ['blocks', blocks])
       store.set('blocks', blocks)
-      store.remove('currentFactory')
+
+      // Reset factory
+      if (this.block.uuid === currentFactory.uuid) {
+        store.remove('currentFactory')
+      }
 
       // Notifications
       this.$q.notify({
