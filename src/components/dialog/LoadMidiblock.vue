@@ -1,5 +1,5 @@
 <template lang="pug">
-q-dialog(v-model='value' maximized @input='$emit("input", $event)')
+q-dialog(:value='value' maximized @input='$emit("input", $event)')
   q-card.full-height.flex.column
     q-card-section(style='flex: 0 0 auto')
       .text-h6

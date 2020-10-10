@@ -54,6 +54,9 @@ export default {
                 timeout: 3000
               })
 
+              this.$store.commit('set', ['blocks', store.get('blocks')])
+              this.$store.commit('set', ['midiblocks', store.get('midiblocks')])
+
               this.$store.commit('tally', 'reloads')
             })
             .catch(err => this.showError(err))

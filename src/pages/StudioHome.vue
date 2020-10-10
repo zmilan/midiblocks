@@ -217,6 +217,7 @@ export default {
       midiblocks[this.block.uuid] = this.saveData
       store.set('midiblocks', midiblocks)
       store.set('isStudioUnsaved', false)
+      this.$store.commit('set', ['midiblocks', midiblocks])
       this.isUnsaved = false
 
       this.$q.notify({

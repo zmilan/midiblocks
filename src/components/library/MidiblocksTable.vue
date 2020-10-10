@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  q-table.midiblocks-table(:data='Object.values(midiblocks)' :columns='columns' row-key='uuid')
+  q-table.midiblocks-table(:data='midiblockValues' :columns='columns' row-key='uuid')
     template(v-slot:body-cell-actions='props')
       q-td(:props='props')
         q-btn.q-mr-xl(color='negative' @click='deleteMidiblock(props)' icon='fas fa-trash') Delete
@@ -22,7 +22,11 @@ export default {
   components: {DialogDeleteMidiblock},
 
   computed: {
-    ...mapState(['midiblocks'])
+    ...mapState(['midiblocks']),
+
+    midiblockValues () {
+      return Object.values(this.midiblocks)
+    }
   },
 
   data () {
