@@ -2,11 +2,12 @@
 q-table.midiblocks-table(:data='Object.values(midiblocks)' :columns='columns' row-key='uuid')
   template(v-slot:body-cell-actions='props')
     q-td(:props='props')
-      slot(:midiblock='midiblocks[props.key]')
+      q-btn(color='secondary' @click='loadMidiblock(props)' icon='fas fa-folder-open') Load Midiblock
 </template>
 
 <script>
 import store from 'store'
+import {mapState} from 'vuex'
 
 /**
  * Displays a table containing all available midiblocks
@@ -14,7 +15,9 @@ import store from 'store'
 export default {
   name: 'MidiblocksTable',
 
-  props: ['midiblocks'],
+  computed: {
+    ...mapState(['midiblocks'])
+  },
 
   data () {
     return {
@@ -46,6 +49,30 @@ export default {
           align: 'left'
         }
       ]
+    }
+  },
+
+  methods: {
+    /**
+     * Loads the midiblock
+     */
+    loadMidiblock (props) {
+      const midiblock = this.midiblocks[props.key]
+      
+      // Load block
+      store.set('currentStudio', midiblock)
+      this.$q.notify({
+        type: 'positive',
+        message: `Midilock "${midiblock.title}" loaded!`,
+        timeout: 3000
+      })
+
+      // Reroute
+      if (this.$route.name === 'Studio') {
+        this.$store.commit('tally', 'reloads')
+      } else {
+        this.$router.push({name: 'Studio'})
+      }
     }
   }
 }
