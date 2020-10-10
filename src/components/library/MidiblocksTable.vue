@@ -1,13 +1,17 @@
 <template lang="pug">
-q-table.midiblocks-table(:data='Object.values(midiblocks)' :columns='columns' row-key='uuid')
-  template(v-slot:body-cell-actions='props')
-    q-td(:props='props')
-      q-btn(color='secondary' @click='loadMidiblock(props)' icon='fas fa-folder-open') Load Midiblock
+div
+  q-table.midiblocks-table(:data='Object.values(midiblocks)' :columns='columns' row-key='uuid')
+    template(v-slot:body-cell-actions='props')
+      q-td(:props='props')
+        q-btn.q-mr-xl(color='negative' @click='deleteMidiblock(props)' icon='fas fa-trash') Delete
+        q-btn(color='secondary' @click='loadMidiblock(props)' icon='fas fa-folder-open') Load
+  DialogDeleteMidiblock(v-model='dialog.deleteMidiblock' :midiblock='dialogMidiblock')   
 </template>
 
 <script>
 import store from 'store'
 import {mapState} from 'vuex'
+import DialogDeleteMidiblock from '../dialog/DeleteMidiblock'
 
 /**
  * Displays a table containing all available midiblocks
@@ -15,12 +19,23 @@ import {mapState} from 'vuex'
 export default {
   name: 'MidiblocksTable',
 
+  components: {DialogDeleteMidiblock},
+
   computed: {
     ...mapState(['midiblocks'])
   },
 
   data () {
     return {
+      // The midiblock to use inside a dialog
+      dialogMidiblock: null,
+      
+      // Dialog models
+      dialog: {
+        deleteMidiblock: false
+      },
+      
+      // Table columns
       columns: [
         {
           label: 'Title',
@@ -73,6 +88,14 @@ export default {
       } else {
         this.$router.push({name: 'Studio'})
       }
+    },
+
+    /**
+     * Delete the midiblock
+     */
+    deleteMidiblock (props) {
+      this.dialogMidiblock = this.midiblocks[props.key]
+      this.dialog.deleteMidiblock = true
     }
   }
 }
