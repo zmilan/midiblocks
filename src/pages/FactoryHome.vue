@@ -54,6 +54,8 @@ q-page.full-height
       q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
   DialogLoadBlock(v-model='dialog.loadBlock')
+
+  DialogDeleteBlock(v-model='dialog.deleteConfirm' :block='block')
 </template>
 
 <script>
@@ -62,6 +64,7 @@ import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import ColorPicker from '../components/ColorPicker'
 import DialogLoadBlock from '../components/dialog/LoadBlock'
+import DialogDeleteBlock from '../components/dialog/DeleteBlock'
 import DialogConfirm from '../components/dialog/Confirm'
 import Blockly from 'blockly'
 import store from 'store'
@@ -75,7 +78,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm},
+  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm, DialogDeleteBlock},
 
   computed: {
     /**
