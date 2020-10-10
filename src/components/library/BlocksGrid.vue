@@ -3,7 +3,7 @@
   .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.name')
     q-card
       q-card-section
-        Workspace(:options='options' :blocks='[block]' :midiblocks='[midiblocks]' :inline='true' :toolbox='toolbox')
+        Workspace(:options='options' :blocks='[block]' :inline='true' :toolbox='toolbox')
       q-separator
       q-card-section
         h3 {{block.name}}
@@ -28,12 +28,6 @@ import {mapState} from 'vuex'
  */
 export default {
   name: 'BlocksGrid',
-
-  props: {
-    midiblocks: {
-      type: Object
-    }
-  },
 
   components: {Workspace, DialogDeleteBlock},
 
@@ -90,6 +84,7 @@ export default {
      * Load the block
      */
     loadBlock (block) {
+      // Load block
       store.set('currentFactory', block)
       this.$q.notify({
         type: 'positive',
@@ -97,6 +92,7 @@ export default {
         timeout: 3000
       })
 
+      // Reroute
       if (this.$route.name === 'Factory') {
         this.$store.commit('tally', 'reloads')
       } else {

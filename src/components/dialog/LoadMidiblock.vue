@@ -7,8 +7,6 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
         span.q-ml-md Load Midiblock
     q-card-section
       MidiblocksTable(:midiblocks='midiblocks')
-        template(slot-scope='props')
-          q-btn(color='secondary' @click='$emit("load", props)' icon='fas fa-folder-open') Load Midiblock
     q-card-actions(style='flex: 0 0 auto')
       q-btn.full-width(color='negative' @click='$emit("input", $event.target.value)') Cancel
 </template>
@@ -16,6 +14,7 @@ q-dialog(v-model='value' maximized @input='$emit("input", $event)')
 <script>
 import MidiblocksTable from '../library/MidiblocksTable'
 import store from 'store'
+import {mapState} from 'vuex'
 
 /**
  * Displays a dialog box for grabbing a Midiblock
@@ -23,8 +22,12 @@ import store from 'store'
 export default {
   name: 'DialogLoadBlock',
 
-  props: ['value', 'type', 'midiblocks'],
+  props: ['value', 'type'],
 
-  components: {MidiblocksTable}
+  components: {MidiblocksTable},
+
+  computed: {
+    ...mapState(['midiblocks'])
+  },
 }
 </script>
