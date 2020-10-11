@@ -35,13 +35,6 @@ q-page.full-height
     title='Create new Midiblock?')
       p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
 
-  DialogConfirm(v-model='dialog.deleteConfirm'
-    @accept='deleteBlock'
-    bg='negative'
-    icon='fas fa-trash'
-    title='Delete midiblock?')
-      p Are you sure you want to delete this midiblock? This cannot be undone!
-
   DialogConfirm(v-model='dialog.editSettings'
     @accept='updateSettings'
     bg='primary'
@@ -51,19 +44,23 @@ q-page.full-height
       q-input.q-mb-md(ref='autofocus' label='Title' color='secondary' v-model='meta._title' filled)
       q-input(label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
       
-  DialogLoadMidiblock(v-model='dialog.loadBlock' @load='loadMidiblock' :midiblocks='allMidiblocks')
+  DialogLoadMidiblock(v-model='dialog.loadBlock')
+
+  DialogDeleteMidiblock(v-model='dialog.deleteConfirm' :midiblock='block')
 </template>
 
 <script>
 import {throttle, cloneDeep, set} from 'lodash'
+import {mapState} from 'vuex'
 import Workspace from '../components/Workspace'
 import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
+import DialogDeleteMidiblock from '../components/dialog/DeleteMidiblock'
 import DialogConfirm from '../components/dialog/Confirm'
 import store from 'store'
 import webmidi from 'webmidi'
 import Blockly from 'blockly'
 import toolbox from '../assets/toolboxes/studio'
-import { v4 as uuidv4 } from 'uuid'
+import {v4 as uuidv4} from 'uuid'
 
 /**
  * @todo document
@@ -71,7 +68,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'MainLayout',
 
-  components: {Workspace, DialogConfirm, DialogLoadMidiblock},
+  components: {Workspace, DialogConfirm, DialogLoadMidiblock, DialogDeleteMidiblock},
 
   computed: {
     /**
@@ -162,9 +159,6 @@ export default {
     const currentStudio = store.get('currentStudio', {})
 
     return {
-      // @todo move this to store
-      allMidiblocks: store.get('midiblocks', {}),
-      
       // Whether the autosave has been saved to a midiblock or not
       isUnsaved: store.get('isStudioUnsaved'),
       
@@ -204,7 +198,7 @@ export default {
       toolbox: this.getToolbox(),
 
       // Spliter width in pixels
-      splitter: store.get('splitter') || window.innerWidth / 3
+      splitter: store.get('splitter', window.innerWidth / 3)
     }
   },
 
@@ -226,6 +220,7 @@ export default {
       midiblocks[this.block.uuid] = this.saveData
       store.set('midiblocks', midiblocks)
       store.set('isStudioUnsaved', false)
+      this.$store.commit('set', ['midiblocks', midiblocks])
       this.isUnsaved = false
 
       this.$q.notify({
@@ -242,37 +237,6 @@ export default {
       store.remove('currentStudio')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New midiblock created'}])
-    },
-
-    /**
-     * Loads the midiblock
-     */
-    loadMidiblock (props) {
-      store.set('currentStudio', props.midiblock)
-      this.$store.commit('tally', 'reloads')
-      this.$q.notify({
-        type: 'positive',
-        message: `Midilock "${props.midiblock.title}" loaded!`,
-        timeout: 3000
-      })
-    },
-    
-    /**
-     * Deletes the midiblock
-     */
-    deleteBlock () {
-      let midiblocks = store.get('midiblocks', {})
-      let title = midiblocks[this.block.uuid].title
-      delete midiblocks[this.block.uuid]
-      store.set('midiblocks', midiblocks)
-
-      this.$q.notify({
-        type: 'positive',
-        message: `Midiblock "${title}" deleted`,
-        timeout: 2000
-      })
-      this.createNewBlock()
-      this.$store.commit('set', ['lastEvent', {log: `Midiblock "${title}" deleted`}])
     },
 
     /**

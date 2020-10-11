@@ -3,16 +3,11 @@ q-page.full-height
   section.content
     h1 Library
 
-    div.center-children(v-if='post.isChecking')
-      q-spinner(color='primary' size='5em')
-
-    div(v-else v-html='post.content')
-
     h4 Midiblocks
-    MidiblocksTable(:midiblocks='allMidiblocks')
+    MidiblocksTable
 
     h4 Building blocks
-    BlocksGrid(:blocks='allBlocks')
+    BlocksGrid
 </template>
 
 <script>
@@ -24,28 +19,6 @@ import store from 'store'
 export default {
   name: 'LibraryHome',
 
-  components: {BlocksGrid, MidiblocksTable},
-
-  computed: {
-    ...mapState(['post'])
-  },
-
-  data () {
-    return {
-      allBlocks: store.get('blocks'),
-      allMidiblocks: store.get('midiblocks')
-    }
-  },
-
-  mounted () {
-    // @todo uncomment once a backend is added
-    // this.$store.dispatch('apiGet', 'library')
-    //   .then(resp => {
-    //     this.blocks = resp.data.blocks
-    //   })
-    //   .catch(err => {
-    //     this.$root.$emit('error', err)
-    //   })
-  }
+  components: {BlocksGrid, MidiblocksTable}
 }
 </script>

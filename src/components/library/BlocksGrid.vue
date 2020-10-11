@@ -3,18 +3,25 @@
   .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.name')
     q-card
       q-card-section
-        Workspace(:options='options' :blocks='[block]' :midiblocks='[midiblocks]' :inline='true' :toolbox='toolbox')
+        Workspace(:options='options' :blocks='[block]' :inline='true' :toolbox='toolbox')
       q-separator
       q-card-section
         h3 {{block.name}}
         p.pre {{block.description}}
       q-card-actions(align='right')
-        slot(:block='block')
+        template(slot-scope='props')
+          q-btn(color='negative' @click='deleteBlock(block)' icon='fas fa-trash') Delete
+          q-space
+          q-btn(color='secondary' @click='loadBlock(block)' icon='fas fa-folder-open') Load
+
+  DialogDeleteBlock(v-model='dialog.deleteBlock' :block='dialogBlock')
 </template>
 
 <script>
 import Workspace from '../Workspace'
+import DialogDeleteBlock from '../dialog/DeleteBlock'
 import store from 'store'
+import {mapState} from 'vuex'
 
 /**
  * Displays a grid of blocks in the users current library
@@ -22,18 +29,11 @@ import store from 'store'
 export default {
   name: 'BlocksGrid',
 
-  props: {
-    blocks: {
-      type: Object
-    },
-    midiblocks: {
-      type: Object
-    }
-  },
-
-  components: {Workspace},
+  components: {Workspace, DialogDeleteBlock},
 
   computed: {
+    ...mapState(['blocks']),
+    
     toolbox () {
       let toolbox = []
 
@@ -59,6 +59,15 @@ export default {
 
   data () {
     return {
+      // The block to use inside a dialog
+      dialogBlock: null,
+      
+      // Dialog models
+      dialog: {
+        deleteBlock: false
+      },
+      
+      // Blockly workspace
       options: {
         trashcan: false,
         zoom: {
@@ -68,6 +77,36 @@ export default {
           startScale: 0.75
         }
       }
+    }
+  },
+
+  methods: {
+    /**
+     * Load the block
+     */
+    loadBlock (block) {
+      // Load block
+      store.set('currentFactory', block)
+      this.$q.notify({
+        type: 'positive',
+        message: `Block "${block.name}" loaded!`,
+        timeout: 3000
+      })
+
+      // Reroute
+      if (this.$route.name === 'Factory') {
+        this.$store.commit('tally', 'reloads')
+      } else {
+        this.$router.push({name: 'Factory'})
+      }
+    },
+
+    /**
+     * Delete the block
+     */
+    deleteBlock (block) {
+      this.dialogBlock = block
+      this.dialog.deleteBlock = true
     }
   }
 }

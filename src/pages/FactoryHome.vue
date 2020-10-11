@@ -45,13 +45,6 @@ q-page.full-height
     title='Create new block?')
       p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
 
-  DialogConfirm(v-model='dialog.deleteConfirm'
-    @accept='deleteBlock'
-    bg='negative'
-    icon='fas fa-trash'
-    title='Delete block?')
-      p Are you sure you want to delete this block? This cannot be undone!
-
   DialogConfirm(v-model='dialog.editSettings'
     @accept='updateSettings'
     bg='primary'
@@ -60,7 +53,9 @@ q-page.full-height
     accept-label='Update')
       q-input(ref='autofocus' label='Description' color='secondary' v-model='meta._description' type='textarea' filled)
 
-  DialogLoadBlock(v-model='dialog.loadBlock' @load='loadBlock' :blocks='allBlocks')
+  DialogLoadBlock(v-model='dialog.loadBlock')
+
+  DialogDeleteBlock(v-model='dialog.deleteConfirm' :block='block')
 </template>
 
 <script>
@@ -69,6 +64,7 @@ import Workspace from '../components/Workspace'
 import CodeEditor from '../components/CodeEditor'
 import ColorPicker from '../components/ColorPicker'
 import DialogLoadBlock from '../components/dialog/LoadBlock'
+import DialogDeleteBlock from '../components/dialog/DeleteBlock'
 import DialogConfirm from '../components/dialog/Confirm'
 import Blockly from 'blockly'
 import store from 'store'
@@ -82,7 +78,7 @@ import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'FactoryHome',
 
-  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm},
+  components: {Workspace, CodeEditor, ColorPicker, DialogLoadBlock, DialogConfirm, DialogDeleteBlock},
 
   computed: {
     /**
@@ -120,8 +116,6 @@ export default {
     const currentFactory = store.get('currentFactory', {})
     
     return {
-      allBlocks: store.get('blocks', {}),
-      
       // Whether the workspace is ready or not
       hasLoaded: false,
 
@@ -153,7 +147,7 @@ export default {
       },
 
       // is the splitter in horizontal or vertical mode
-      splitter: store.get('splitter') || window.innerWidth / 3,
+      splitter: store.get('splitter', window.innerWidth / 3),
 
       // Contains our block preview
       previewWorkspace: null,
@@ -238,19 +232,6 @@ export default {
     },
 
     /**
-     * Load the block
-     */
-    loadBlock (props) {
-      store.set('currentFactory', props.block)
-      this.$store.commit('tally', 'reloads')
-      this.$q.notify({
-        type: 'positive',
-        message: `Block "${props.block.name}" loaded!`,
-        timeout: 3000
-      })
-    },
-
-    /**
      * Shows settings modal, reset its fields, focus element
      */
     showSettings () {
@@ -274,24 +255,6 @@ export default {
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
-    },
-
-    /**
-     * Deletes the block and creates a new one
-     */
-    deleteBlock () {
-      let blocks = store.get('blocks')
-      let name = blocks[this.block.uuid].name
-      delete blocks[this.block.uuid]
-      store.set('blocks', blocks)
-
-      this.$q.notify({
-        type: 'positive',
-        message: `Block "${name}" deleted`,
-        timeout: 2000
-      })
-      this.createNewBlock()
-      this.$store.commit('set', ['lastEvent', {log: `Block "${name}" deleted`}])
     },
 
     /**
