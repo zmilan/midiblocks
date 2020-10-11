@@ -3,9 +3,54 @@ q-page.full-height
   q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse :limits='[0, 100]')
     //- Block preview and code editor
     template(v-slot:after)
-      .flex.column.min-height-inherit
-        #preview(style='flex: 0 1 250px')
-        CodeEditor(ref='code' @onCodeChange='onCodeChange' :value='block.code')
+      .flex.min-height-inherit
+        .min-height-inherit.position-relative.workspace-toolbox(v-if='splitter === 100' style='flex: 0 0 auto')
+          .q-pa-sm.flex.column.min-height-inherit(style='flex-wrap: no-wrap')
+            //- @todo make this a component as it's used in workspace too
+            q-space
+            
+            //- View change
+            q-list(dense style='flex: 0 0 auto')
+              q-item(@click='changeView' clickable)
+                q-item-section(avatar)
+                  q-icon(color='secondary' name='fas fa-columns')
+                q-item-section.gt-sm
+                  q-item-label.text-secondary Change view
+
+            q-space
+
+            //- CRUD
+            q-list(dense style='flex: 0 0 auto')
+              q-item(@click='saveBlock' clickable)
+                q-item-section(avatar)
+                  q-icon(color='secondary' name='fas fa-save')
+                q-item-section.gt-sm
+                  q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+                  q-item-label.text-secondary Save Block
+              q-item.q-mb-lg(@click='showSettings' clickable)
+                q-item-section(avatar)
+                  q-icon(name='fas fa-cogs')
+                q-item-section.gt-sm
+                  q-item-label Block Settings
+              q-item(@click='dialog.confirmNew = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='positive' name='fas fa-file')
+                q-item-section.gt-sm
+                  q-item-label.text-positive New Block
+              q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='positive' name='fas fa-folder-open')
+                q-item-section.gt-sm
+                  q-item-label.text-positive Load Block
+              q-item(@click='dialog.deleteConfirm = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='negative' name='fas fa-trash')
+                q-item-section.gt-sm
+                  q-item-label.text-negative Delete Block
+
+        .flex.column.min-height-inherit
+          #preview(style='flex: 0 1 250px')
+          CodeEditor(ref='code' @onCodeChange='onCodeChange' :value='block.code')
 
     //- Workspace
     template(v-slot:before)
