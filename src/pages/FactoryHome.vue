@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse)
+  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse :limits='[0, 100]')
     //- Block preview and code editor
     template(v-slot:after)
       .flex.column.min-height-inherit
@@ -11,6 +11,18 @@ q-page.full-height
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
+        //- View change
+        template(v-slot:extraControls)
+          q-list(dense style='flex: 0 0 auto')
+            q-item(@click='changeView' clickable)
+              q-item-section(avatar)
+                q-icon(color='secondary' name='fas fa-columns')
+              q-item-section.gt-sm
+                q-item-label.text-secondary Change view
+
+          q-space
+
+        //- CRUD
         q-item(@click='saveBlock' clickable)
           q-item-section(avatar)
             q-icon(color='secondary' name='fas fa-save')
@@ -182,6 +194,7 @@ export default {
 
     // Listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+    window.addEventListener('resize', this.onResize)
 
     // Autosave with CTRL+S
     this.$mousetrap.bindGlobal('ctrl+s', ev => {
@@ -192,6 +205,7 @@ export default {
 
   destroyed () {
     this.$mousetrap.unbind('ctrl+s')
+    window.removeEventListener('resize', this.onResize)
   },
 
   methods: {
@@ -255,6 +269,25 @@ export default {
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
+    },
+
+    /**
+     * Monitor resize
+     */
+    onResize: throttle(function (ev) {
+      console.log('onResize', ev)
+    }, 50, {leading: true, trailing: true}),
+
+    /**
+     * Changes the view by adjusting the splitter
+     */
+    changeView () {
+      switch (this.splitter) {
+        case 0: this.splitter = 50; break
+        case 50: this.splitter = 100; break
+        case 100: this.splitter = 0; break
+        default: this.splitter = 50
+      }
     },
 
     /**

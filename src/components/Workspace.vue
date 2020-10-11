@@ -16,6 +16,7 @@
               q-icon(:style='"color:" + category.colour' :name='category.icon')
             q-item-section.gt-sm
               q-item-label(:style='"color:" + category.colour') {{category.name}}
+      slot(name='extraControls')
       q-list(dense style='flex: 0 0 auto')
         slot
 
