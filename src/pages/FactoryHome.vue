@@ -1,6 +1,6 @@
 <template lang="pug">
 q-page.full-height
-  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' unit='px' reverse)
+  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse)
     //- Block preview and code editor
     template(v-slot:after)
       .flex.column.min-height-inherit
@@ -147,7 +147,7 @@ export default {
       },
 
       // is the splitter in horizontal or vertical mode
-      splitter: store.get('splitter', window.innerWidth / 3),
+      splitter: store.get('splitter', 50),
 
       // Contains our block preview
       previewWorkspace: null,
