@@ -1,10 +1,11 @@
 <template lang="pug">
-.flex.min-height-inherit
+.flex.min-height-inherit(v-touch:start='onTouch' v-touch:end='onTouch')
   .min-height-inherit.position-relative.workspace-toolbox(
+    ref='quasarToolbox'
     :class='{blocklyToolboxDelete: !!blockBeingDragged}'
     v-if='!inline' style='flex: 0 0 auto'
-    @mouseenter='isMouseInQuasarToolbox = true'
-    @mouseleave='isMouseInQuasarToolbox = false')
+    @mouseleave='isMouseInQuasarToolbox = false'
+    @mouseenter='isMouseInQuasarToolbox = true')
 
     //- Quasar Toolbox
     .q-pa-sm.flex.column
@@ -16,6 +17,7 @@
               q-icon(:style='"color:" + category.colour' :name='category.icon')
             q-item-section.gt-sm
               q-item-label(:style='"color:" + category.colour') {{category.name}}
+      slot(name='extraControls')
       q-list(dense style='flex: 0 0 auto')
         slot
 
@@ -67,7 +69,9 @@ export default {
 
       // Useful for re-showing a category toolbox (eg, after creating a variable)
       lastClickedCategory: null,
-      isMouseInQuasarToolbox: false
+      isMouseInQuasarToolbox: false,
+      // Whether the toolbox was touched via pointer event (vs clicked via mouse event)
+      wasToolboxTouched: false
     }
   },
 
@@ -119,13 +123,35 @@ export default {
     onChange (ev) {
       this.$emit('change', ev)
 
+      // Store the block
       if (ev.element === 'dragStart') {
         this.blockBeingDragged = ev
       } else if (ev.element === 'dragStop') {
-        if (this.isMouseInQuasarToolbox) {
+        // Delete the block when dragging into toolbox with mouse event...
+        if (!this.wasToolboxTouched && this.isMouseInQuasarToolbox) {
           this.blockly.getBlockById(ev.blockId).dispose()
+        // ...or with touch/pointer event)
+        } else if (this.wasToolboxTouched) {
+          const block = this.blockly.getBlockById(ev.blockId)
+          const x = block.svgGroup_.children[0].getBoundingClientRect().x 
+          const toolbox = this.$refs.quasarToolbox.getBoundingClientRect()
+
+          if (x < toolbox.x + toolbox.width) {
+            block.dispose()
+          }
         }
+
         this.blockBeingDragged = false
+        this.wasToolboxTouched = false
+      }
+    },
+
+    /**
+     * Sets a flag to help with deleting blocks on mobile
+     */
+    onTouch (ev) {
+      if (ev.type === 'touchstart') {
+        this.wasToolboxTouched = true
       }
     },
 

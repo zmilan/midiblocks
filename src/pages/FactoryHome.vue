@@ -1,16 +1,93 @@
 <template lang="pug">
 q-page.full-height
-  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' unit='px' reverse)
+  q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse :limits='[0, 100]')
     //- Block preview and code editor
     template(v-slot:after)
-      .flex.column.min-height-inherit
-        #preview(style='flex: 0 1 250px')
-        CodeEditor(ref='code' @onCodeChange='onCodeChange' :value='block.code')
+      .flex.min-height-inherit(style='flex-wrap: nowrap')
+        .min-height-inherit.position-relative.workspace-toolbox(v-if='splitter === 100' style='flex: 0 0 auto')
+          .q-pa-sm.flex.column.min-height-inherit
+            //- @todo make this a component as it's used in workspace too
+            q-space
+            
+            //- View change
+            q-list(dense style='flex: 0 0 auto')
+              q-item(@click='splitter = 0' clickable)
+                q-item-section(avatar)
+                  q-icon(:color='splitter === 0 ? "active" : "tertiary"' name='fas fa-window-maximize')
+                q-item-section.gt-sm
+                  q-item-label.text-tertiary Block view
+              q-item(@click='splitter = 50' clickable)
+                q-item-section(avatar)
+                  q-icon(:color='splitter === 50 ? "active" : "tertiary"' name='fas fa-columns')
+                q-item-section.gt-sm
+                  q-item-label.text-tertiary Split view
+              q-item(@click='splitter = 100' clickable)
+                q-item-section(avatar)
+                  q-icon(:color='splitter === 100 ? "active" : "tertiary"' name='fas fa-code')
+                q-item-section.gt-sm
+                  q-item-label.text-tertiary Code view
+
+            q-space
+
+            //- CRUD
+            q-list(dense style='flex: 0 0 auto')
+              q-item(@click='saveBlock' clickable)
+                q-item-section(avatar)
+                  q-icon(color='secondary' name='fas fa-save')
+                q-item-section.gt-sm
+                  q-badge(v-if='isUnsaved' color='negative' floating) Unsaved changes
+                  q-item-label.text-secondary Save Block
+              q-item.q-mb-lg(@click='showSettings' clickable)
+                q-item-section(avatar)
+                  q-icon(name='fas fa-cogs')
+                q-item-section.gt-sm
+                  q-item-label Block Settings
+              q-item(@click='dialog.confirmNew = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='positive' name='fas fa-file')
+                q-item-section.gt-sm
+                  q-item-label.text-positive New Block
+              q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='positive' name='fas fa-folder-open')
+                q-item-section.gt-sm
+                  q-item-label.text-positive Load Block
+              q-item(@click='dialog.deleteConfirm = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='negative' name='fas fa-trash')
+                q-item-section.gt-sm
+                  q-item-label.text-negative Delete Block
+
+        .flex.column.min-height-inherit
+          #preview(style='flex: 0 1 250px')
+          CodeEditor(ref='code' @onCodeChange='onCodeChange' :value='block.code')
 
     //- Workspace
     template(v-slot:before)
       ColorPicker
       Workspace.fill(ref='workspace' :toolbox='toolbox' :blocks='[]' :options='options' @change='workspaceEventHandler')
+        //- View change
+        template(v-slot:extraControls)
+          q-list(dense style='flex: 0 0 auto')
+            q-item(@click='splitter = 0' clickable)
+              q-item-section(avatar)
+                q-icon(:color='splitter === 0 ? "active" : "tertiary"' name='fas fa-window-maximize')
+              q-item-section.gt-sm
+                q-item-label.text-tertiary Block view
+            q-item(@click='splitter = 50' clickable)
+              q-item-section(avatar)
+                q-icon(:color='splitter === 50 ? "active" : "tertiary"' name='fas fa-columns')
+              q-item-section.gt-sm
+                q-item-label.text-tertiary Split view
+            q-item(@click='splitter = 100' clickable)
+              q-item-section(avatar)
+                q-icon(:color='splitter === 100 ? "active" : "tertiary"' name='fas fa-code')
+              q-item-section.gt-sm
+                q-item-label.text-tertiary Code view
+
+          q-space
+
+        //- CRUD
         q-item(@click='saveBlock' clickable)
           q-item-section(avatar)
             q-icon(color='secondary' name='fas fa-save')
@@ -102,9 +179,10 @@ export default {
 
   watch: {
     /**
-     * Resize main splitter
+     * Trigger window resize event on splitter change
      */
     splitter: throttle(function () {
+      // Resize event
       store.set('splitter', this.splitter)
       setTimeout(() => {
         window.dispatchEvent(new Event('resize'))
@@ -147,7 +225,7 @@ export default {
       },
 
       // is the splitter in horizontal or vertical mode
-      splitter: store.get('splitter', window.innerWidth / 3),
+      splitter: store.get('splitter', 50),
 
       // Contains our block preview
       previewWorkspace: null,
@@ -178,6 +256,11 @@ export default {
         Blockly.Xml.textToDom('<xml xmlns="https://developers.google.com/blockly/xml"><block type="factory_base" deletable="false" movable="false"></block></xml>'),
         this.$refs.workspace.blockly
       )
+    }
+
+    // Set splitter eg for mobile
+    if (window.innerWidth < 900 && this.splitter !== 100) {
+      this.splitter = 0
     }
 
     // Listeners
