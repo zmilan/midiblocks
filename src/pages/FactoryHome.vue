@@ -260,7 +260,6 @@ export default {
 
     // Listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
-    window.addEventListener('resize', this.onResize)
 
     // Autosave with CTRL+S
     this.$mousetrap.bindGlobal('ctrl+s', ev => {
@@ -271,7 +270,6 @@ export default {
 
   destroyed () {
     this.$mousetrap.unbind('ctrl+s')
-    window.removeEventListener('resize', this.onResize)
   },
 
   methods: {
@@ -336,13 +334,6 @@ export default {
       this.block.code = code
       this.autosave()
     },
-
-    /**
-     * Monitor resize
-     */
-    onResize: throttle(function (ev) {
-      console.log('onResize', ev)
-    }, 50, {leading: true, trailing: true}),
 
     /**
      * Handles Workspace events
