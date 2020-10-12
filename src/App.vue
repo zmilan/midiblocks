@@ -33,36 +33,6 @@ export default {
     ...mapState(['reloads'])
   },
 
-  watch: {
-    /**
-     * Check query string for new API domain and fetches post content
-     */
-    $route (to) {
-      if (to.query.apiDomain) {
-        this.$store.commit('set', ['api.domain', to.query.apiDomain])
-      }
-
-      // Load post data
-      this.$store.commit('set', ['post.isChecking', true])
-      this.$store.dispatch('apiGet', {
-        path: 'post',
-        url: this.$route.path
-      })
-        .then(resp => {
-          const data = resp.data || {}
-
-          if (data.content) {
-            data.content = this.$markdown.render(data.content)
-          }
-          
-          this.$store.commit('set', ['post', data]);
-        })
-        .finally(() => {
-          this.$store.commit('set', ['post.isChecking', false]);
-        })
-    }
-  },
-
   data () {
     return {
       // Will display different modals based on error messages
@@ -79,10 +49,12 @@ export default {
     set(window, 'app.$', this)
 
     // Load default workspace if no localstorage
-    if (!localStorage.currentFactory) {
+    if (!localStorage.blocks) {
       Object.keys(defaultWorkspace.localStorage).forEach(key => {
         store.set(key, defaultWorkspace.localStorage[key])
       })
+      this.$store.commit('set', ['blocks', defaultWorkspace.localStorage.blocks])
+      this.$store.commit('set', ['midiblocks', defaultWorkspace.localStorage.midiblocks])
     }
 
     /**

@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {get, set, trimEnd} from 'lodash'
-import axios from 'axios'
-import localStorageAPI from '../assets/js/localstorage-api'
+import {get, set} from 'lodash'
 import store from 'store'
 
 Vue.use(Vuex)
@@ -21,15 +19,6 @@ export default function (/* { ssrContext } */) {
       // Used to force rerender a component by updating a :key set to this
       reloads: 0,
       
-      /**
-       * Represents the api
-       */
-      // @todo Remove this for now
-      api: {
-        domain: process.env.DEV ? 'http://midiblocks.local' : 'https://midiblocks.com',
-        base: 'wp-json/midiblocks'
-      },
-
       /**
        * Blocks library
        */
@@ -87,12 +76,6 @@ export default function (/* { ssrContext } */) {
       }
     },
 
-    getters: {
-      endpoint: state => endpoint => {
-        return trimEnd(state.api.domain, '/') + '/' + trimEnd(state.api.base, '/') + '/' + endpoint
-      }
-    },
-
     mutations: {
       /**
        * Helper for setting any state
@@ -121,39 +104,6 @@ export default function (/* { ssrContext } */) {
        */
       tally (state, path) {
         set(state, path, get(state, path) + 1)
-      }
-    },
-
-    actions: {
-      /**
-       * GET data from storage, either from an API or localstorage
-       * @todo remove
-       * 
-       * @param {*} param0 
-       * @param {*} payload 
-       */
-      apiGet ({getters}, payload) {
-        let path
-        let params = {}
-        
-        if (typeof payload === 'string') {
-          path = payload
-        } else {
-          path = payload.path
-          delete payload.path
-          params = payload
-        }
-
-        if (Vue.prototype.$q.config.storageMode === 'remote') {
-          return axios.get(getters.endpoint(path), params)
-        } else {
-          return new Promise((resolve) => {
-            path = path.replace(/\//g, '.')
-            resolve({
-              data: get(localStorageAPI.get, path)(params)
-            })
-          })
-        }
       }
     }
   })

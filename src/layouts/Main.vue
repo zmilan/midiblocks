@@ -16,8 +16,8 @@ q-layout(view='lHh Lpr lFf')
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered :breakpoint='1400')
     q-toolbar.bg-primary.text-white
     q-list.q-pa-sm
-      template(v-if='boot.mainNavPanel')
-        MainNavLink(v-for='link in boot.mainNavPanel.links' :key='link.title' v-bind='link')
+      template(v-if='mainNavPanel')
+        MainNavLink(v-for='link in mainNavPanel.links' :key='link.title' v-bind='link')
       .text-center(v-else)
         q-spinner(color='primary')
     q-space
@@ -91,8 +91,34 @@ export default {
   
   data () {
     return {
-      // @todo remove
-      boot: {},
+      mainNavPanel: {
+        links: [
+          {
+            title: 'Home',
+            description: 'Get an overview of what Midiblocks is about',
+            link: '/',
+            icon: 'fas fa-home'
+          },
+          {
+            title: 'Studio',
+            description: 'Visually map and program your MIDI devices',
+            link: '/studio',
+            icon: 'fas fa-puzzle-piece fa-flip-both'
+          },
+          {
+            title: 'Factory',
+            description: 'Create custom blocks with JavaScript',
+            link: '/factory',
+            icon: 'fas fa-laptop-code'
+          },
+          {
+            title: 'Library',
+            description: 'Browse our library of user created Midiblocks and learn how to use them',
+            link: '/library',
+            icon: 'fas fa-cubes'
+          }
+        ]
+      },
 
       columns: {
         error: [
@@ -125,21 +151,6 @@ export default {
    * - Binds global navigation shortcuts
    */
   mounted () {
-    this.$nextTick(() => {
-      // Load boot data
-      this.boot = get(window, 'app.boot', {})
-      if (!this.boot.mainNavPanel) {
-        this.$store.dispatch('apiGet', 'boot')
-          .then(({data}) => {
-            this.boot = data
-            set(window, 'app.boot', data)
-          })
-          .catch(err => {
-            this.$root.$emit('error', err)
-          })
-      }
-    })
-
     this.$mousetrap.bind('s', ev => {
       ev.preventDefault()
       this.$router.push({name: 'Studio'})
