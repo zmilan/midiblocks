@@ -11,11 +11,21 @@ q-page.full-height
             
             //- View change
             q-list(dense style='flex: 0 0 auto')
-              q-item(@click='changeView' clickable)
+              q-item(@click='splitter = 0' clickable)
                 q-item-section(avatar)
-                  q-icon(color='secondary' :name='viewIcon')
+                  q-icon(:color='splitter === 0 ? "active" : "tertiary"' name='fas fa-window-maximize')
                 q-item-section.gt-sm
-                  q-item-label.text-secondary Change view
+                  q-item-label.text-tertiary Block view
+              q-item(@click='splitter = 50' clickable)
+                q-item-section(avatar)
+                  q-icon(:color='splitter === 50 ? "active" : "tertiary"' name='fas fa-columns')
+                q-item-section.gt-sm
+                  q-item-label.text-tertiary Split view
+              q-item(@click='splitter = 100' clickable)
+                q-item-section(avatar)
+                  q-icon(:color='splitter === 100 ? "active" : "tertiary"' name='fas fa-code')
+                q-item-section.gt-sm
+                  q-item-label.text-tertiary Code view
 
             q-space
 
@@ -59,11 +69,21 @@ q-page.full-height
         //- View change
         template(v-slot:extraControls)
           q-list(dense style='flex: 0 0 auto')
-            q-item(@click='changeView' clickable)
+            q-item(@click='splitter = 0' clickable)
               q-item-section(avatar)
-                q-icon(color='secondary' :name='viewIcon')
+                q-icon(:color='splitter === 0 ? "active" : "tertiary"' name='fas fa-window-maximize')
               q-item-section.gt-sm
-                q-item-label.text-secondary Change view
+                q-item-label.text-tertiary Block view
+            q-item(@click='splitter = 50' clickable)
+              q-item-section(avatar)
+                q-icon(:color='splitter === 50 ? "active" : "tertiary"' name='fas fa-columns')
+              q-item-section.gt-sm
+                q-item-label.text-tertiary Split view
+            q-item(@click='splitter = 100' clickable)
+              q-item-section(avatar)
+                q-icon(:color='splitter === 100 ? "active" : "tertiary"' name='fas fa-code')
+              q-item-section.gt-sm
+                q-item-label.text-tertiary Code view
 
           q-space
 
@@ -159,29 +179,15 @@ export default {
 
   watch: {
     /**
-     * - Trigger window resize event on splitter change
-     * - Change view changer icon
+     * Trigger window resize event on splitter change
      */
-    splitter: {
-      immediate: true,
-      handler: throttle(function () {
-        // Resize event
-        store.set('splitter', this.splitter)
-        setTimeout(() => {
-          window.dispatchEvent(new Event('resize'))
-        })
-
-        // Change icon
-        let $icon = 'columns'
-
-        switch (this.splitter) {
-          case 50: $icon = 'code'; break
-          case 100: $icon = 'window-maximize'; break
-        }
-        this.viewIcon = `fas fa-${$icon}`
-        console.log(this.splitter, this.viewIcon)
-      }, 50, {leading: true, trailing: true})
-    }
+    splitter: throttle(function () {
+      // Resize event
+      store.set('splitter', this.splitter)
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'))
+      })
+    }, 50, {leading: true, trailing: true})
   },
 
   data () {
@@ -193,8 +199,6 @@ export default {
 
       // True when autosaved but not manually saved
       isUnsaved: !!store.get('isFactoryUnsaved'),
-
-      viewIcon: 'fas fa-columns',
 
       // Models for dialogs
       dialog: {
@@ -339,18 +343,6 @@ export default {
     onResize: throttle(function (ev) {
       console.log('onResize', ev)
     }, 50, {leading: true, trailing: true}),
-
-    /**
-     * Changes the view by adjusting the splitter
-     */
-    changeView () {
-      switch (this.splitter) {
-        case 0: this.splitter = 50; break
-        case 50: this.splitter = 100; break
-        case 100: this.splitter = 0; break
-        default: this.splitter = 50
-      }
-    },
 
     /**
      * Handles Workspace events
