@@ -258,6 +258,11 @@ export default {
       )
     }
 
+    // Set splitter eg for mobile
+    if (window.innerWidth < 900 && this.splitter !== 100) {
+      this.splitter = 0
+    }
+
     // Listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
 

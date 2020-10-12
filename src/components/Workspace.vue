@@ -136,7 +136,7 @@ export default {
           const x = block.svgGroup_.children[0].getBoundingClientRect().x 
           const toolbox = this.$refs.quasarToolbox.getBoundingClientRect()
 
-          if (x < toolbox.x + toolbox.width / 2) {
+          if (x < toolbox.x + toolbox.width) {
             block.dispose()
           }
         }
