@@ -104,11 +104,16 @@ q-page.full-height
             q-icon(color='positive' name='fas fa-file')
           q-item-section.gt-sm
             q-item-label.text-positive New Block
-        q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+        q-item(@click='dialog.loadBlock = true' clickable)
           q-item-section(avatar)
             q-icon(color='positive' name='fas fa-folder-open')
           q-item-section.gt-sm
             q-item-label.text-positive Load Block
+        q-item.q-mb-lg(@click='dialog.remixConfirm = true' clickable)
+          q-item-section(avatar)
+            q-icon(color='positive' name='fas fa-copy')
+          q-item-section.gt-sm
+            q-item-label.text-positive Remix Block
         q-item(@click='dialog.deleteConfirm = true' clickable)
           q-item-section(avatar)
             q-icon(color='negative' name='fas fa-trash')
@@ -121,6 +126,13 @@ q-page.full-height
     icon='fas fa-file'
     title='Create new block?')
       p Are you sure you'd like to create a new block? Any unsaved changes will be lost.
+
+  DialogConfirm(v-model='dialog.remixConfirm'
+    @accept='remixBlock'
+    icon='fas fa-copy'
+    title='Remix this block?')
+      p Any unsaved changes to the current block will be lost.
+      p Are you sure you'd like to create a copy of this block and open it?
 
   DialogConfirm(v-model='dialog.editSettings'
     @accept='updateSettings'
@@ -205,7 +217,8 @@ export default {
         confirmNew: false,
         deleteConfirm: false,
         loadBlock: false,
-        editSettings: false
+        editSettings: false,
+        remixConfirm: false
       },
 
       // Block data
@@ -294,6 +307,7 @@ export default {
       const blocks = store.get('blocks', {})
       blocks[this.block.uuid] = this.saveData
       store.set('blocks', blocks)
+      this.$store.commit('set', ['blocks', blocks])
       store.set('isFactoryUnsaved', false)
       this.isUnsaved = false
 
@@ -312,6 +326,20 @@ export default {
       store.remove('currentFactory')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New block created'}])
+    },
+
+    /**
+     * Create a clone of a block
+     */
+    remixBlock () {
+      this.block.uuid = uuidv4()
+      this.getRootBlock().setFieldValue(this.getRootBlock().getFieldValue('name') + '_remix', 'name')
+      this.$forceUpdate()
+
+      this.autosave()
+      this.saveBlock()
+      
+      this.$store.commit('tally', 'reloads')
     },
 
     /**
