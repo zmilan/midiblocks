@@ -3,9 +3,9 @@ q-page.full-height
   q-splitter#factory-splitter.min-height-inherit.q-pt-appbar(v-model='splitter' reverse :limits='[0, 100]')
     //- Block preview and code editor
     template(v-slot:after)
-      .flex.min-height-inherit
+      .flex.min-height-inherit(style='flex-wrap: nowrap')
         .min-height-inherit.position-relative.workspace-toolbox(v-if='splitter === 100' style='flex: 0 0 auto')
-          .q-pa-sm.flex.column.min-height-inherit(style='flex-wrap: no-wrap')
+          .q-pa-sm.flex.column.min-height-inherit
             //- @todo make this a component as it's used in workspace too
             q-space
             
@@ -13,7 +13,7 @@ q-page.full-height
             q-list(dense style='flex: 0 0 auto')
               q-item(@click='changeView' clickable)
                 q-item-section(avatar)
-                  q-icon(color='secondary' name='fas fa-columns')
+                  q-icon(color='secondary' :name='viewIcon')
                 q-item-section.gt-sm
                   q-item-label.text-secondary Change view
 
@@ -61,7 +61,7 @@ q-page.full-height
           q-list(dense style='flex: 0 0 auto')
             q-item(@click='changeView' clickable)
               q-item-section(avatar)
-                q-icon(color='secondary' name='fas fa-columns')
+                q-icon(color='secondary' :name='viewIcon')
               q-item-section.gt-sm
                 q-item-label.text-secondary Change view
 
@@ -159,14 +159,29 @@ export default {
 
   watch: {
     /**
-     * Resize main splitter
+     * - Trigger window resize event on splitter change
+     * - Change view changer icon
      */
-    splitter: throttle(function () {
-      store.set('splitter', this.splitter)
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'))
-      })
-    }, 50, {leading: true, trailing: true})
+    splitter: {
+      immediate: true,
+      handler: throttle(function () {
+        // Resize event
+        store.set('splitter', this.splitter)
+        setTimeout(() => {
+          window.dispatchEvent(new Event('resize'))
+        })
+
+        // Change icon
+        let $icon = 'columns'
+
+        switch (this.splitter) {
+          case 50: $icon = 'code'; break
+          case 100: $icon = 'window-maximize'; break
+        }
+        this.viewIcon = `fas fa-${$icon}`
+        console.log(this.splitter, this.viewIcon)
+      }, 50, {leading: true, trailing: true})
+    }
   },
 
   data () {
@@ -178,6 +193,8 @@ export default {
 
       // True when autosaved but not manually saved
       isUnsaved: !!store.get('isFactoryUnsaved'),
+
+      viewIcon: 'fas fa-columns',
 
       // Models for dialogs
       dialog: {
