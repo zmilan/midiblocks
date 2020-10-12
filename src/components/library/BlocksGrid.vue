@@ -1,12 +1,12 @@
 <template lang="pug">
 .row.q-col-gutter-md
-  .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.name')
+  .col-12.col-sm-6.col-lg-4(v-for='block in blocks' :key='block.json.type')
     q-card
       q-card-section
         Workspace(:options='options' :blocks='[block]' :inline='true' :toolbox='toolbox')
       q-separator
       q-card-section
-        h3 {{block.name}}
+        h3 {{block.json.type}}
         p.pre {{block.description}}
       q-card-actions(align='right')
         template(slot-scope='props')
@@ -24,6 +24,7 @@ import Workspace from '../Workspace'
 import DialogDeleteBlock from '../dialog/DeleteBlock'
 import store from 'store'
 import {mapState} from 'vuex'
+import {cloneDeep} from 'lodash'
 import {v4 as uuidv4} from 'uuid'
 
 /**
@@ -92,7 +93,7 @@ export default {
       store.set('currentFactory', block)
       this.$q.notify({
         type: 'positive',
-        message: `Block "${block.name}" loaded!`,
+        message: `Block "${block.json.type}" loaded!`,
         timeout: 3000
       })
 
@@ -116,12 +117,15 @@ export default {
      * Remix a block
      */
     remixBlock (block) {
-      block = Object.assign({}, block)
+      const oldName = block.name
+      block = cloneDeep(block)
       block.uuid = uuidv4()
-      block.name += '_remixed'
+      block.json.type = block.name += '_remixed'
+      block.workspace = block.workspace.replace(`<field name="name">${oldName}</field>`, `<field name="name">${block.name}</field>`)
 
       this.$store.commit('set', [`blocks["${block.uuid}"]`, block])
       store.set('currentFactory', block)
+      store.set('isFactoryUnsaved', false)
       store.set('blocks', this.blocks)
       this.$q.notify({
         type: 'positive',

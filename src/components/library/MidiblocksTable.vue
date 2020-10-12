@@ -114,6 +114,7 @@ export default {
 
       this.$store.commit('set', [`midiblocks["${block.uuid}"]`, block])
       store.set('currentStudio', block)
+      store.set('isStudioUnsaved', false)
       store.set('midiblocks', this.midiblocks)
       this.$q.notify({
         type: 'positive',
