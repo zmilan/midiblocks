@@ -47,11 +47,16 @@ q-page.full-height
                   q-icon(color='positive' name='fas fa-file')
                 q-item-section.gt-sm
                   q-item-label.text-positive New Block
-              q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+              q-item(@click='dialog.loadBlock = true' clickable)
                 q-item-section(avatar)
                   q-icon(color='positive' name='fas fa-folder-open')
                 q-item-section.gt-sm
                   q-item-label.text-positive Load Block
+              q-item.q-mb-lg(@click='dialog.remixConfirm = true' clickable)
+                q-item-section(avatar)
+                  q-icon(color='positive' name='fas fa-copy')
+                q-item-section.gt-sm
+                  q-item-label.text-positive Remix Block
               q-item(@click='dialog.deleteConfirm = true' clickable)
                 q-item-section(avatar)
                   q-icon(color='negative' name='fas fa-trash')

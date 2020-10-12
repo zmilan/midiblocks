@@ -17,11 +17,16 @@ q-page.full-height
         q-icon(color='positive' name='fas fa-file')
       q-item-section.gt-sm
         q-item-label.text-positive New Midiblock
-    q-item.q-mb-lg(@click='dialog.loadBlock = true' clickable)
+    q-item(@click='dialog.loadBlock = true' clickable)
       q-item-section(avatar)
         q-icon(color='positive' name='fas fa-folder-open')
       q-item-section.gt-sm
         q-item-label.text-positive Load Midiblock
+    q-item.q-mb-lg(@click='dialog.remixConfirm = true' clickable)
+      q-item-section(avatar)
+        q-icon(color='positive' name='fas fa-copy')
+      q-item-section.gt-sm
+        q-item-label.text-positive Remix Midiblock
     q-item(@click='dialog.deleteConfirm = true' clickable)
       q-item-section(avatar)
         q-icon(color='negative' name='fas fa-trash')
@@ -30,10 +35,17 @@ q-page.full-height
 
   //- Dialogs
   DialogConfirm(v-model='dialog.confirmNew'
-    @accept='createNewBlock'
+    @accept='createNewMidiblock'
     icon='fas fa-file'
     title='Create new Midiblock?')
       p Are you sure you'd like to create a new Midiblock? Any unsaved changes will be lost.
+
+  DialogConfirm(v-model='dialog.remixConfirm'
+    @accept='remixMidiblock'
+    icon='fas fa-copy'
+    title='Remix this midiblock?')
+      p Any unsaved changes to the current midiblock will be lost.
+      p Are you sure you'd like to create a copy of this midiblock and open it?
 
   DialogConfirm(v-model='dialog.editSettings'
     @accept='updateSettings'
@@ -189,7 +201,8 @@ export default {
         confirmNew: false,
         deleteConfirm: false,
         editSettings: false,
-        loadBlock: false
+        loadBlock: false,
+        remixConfirm: false
       },
       
       // Blockly options
@@ -233,10 +246,24 @@ export default {
     /**
      * Creates a new midiblock
      */
-    createNewBlock () {
+    createNewMidiblock () {
+      this.block.uuid = uuidv4()
       store.remove('currentStudio')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New midiblock created'}])
+    },
+
+    /**
+     * Create a clone of a midiblock
+     */
+    remixMidiblock () {
+      this.block.uuid = uuidv4()
+      this.meta.title += ' [Remixed]'
+
+      this.autosave()
+      this.saveMidiblock()
+      
+      this.$store.commit('tally', 'reloads')
     },
 
     /**
