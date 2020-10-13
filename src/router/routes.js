@@ -26,18 +26,6 @@ const routes = [
     ]
   },
 
-  {
-    path: '/readonly',
-    component: () => import('layouts/Blank.vue'),
-    children: [
-      {
-        name: 'ReadOnly',
-        path: ':id',
-        component: () => import('pages/ReadOnly.vue')
-      }
-    ]
-  },
-
   // Always leave this as last one,
   // but you can also remove it
   {

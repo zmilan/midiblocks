@@ -1,14 +1,14 @@
 <div align="center">
-  <h1><a href="https://midiblocks.com"><img height=80 src="https://midiblocks.com/wp-content/uploads/2020/09/midiblocks-colorized-light.png"></a></h1>
-  <h2>A visual MIDI mapping and scripting platform</h2>
+  <h1><a href="https://midiblocks.com"><img height=80 src="./src/assets/logo-title.png"></a></h1>
+  <h2>A visual, all-in-one MIDI mapping, scripting, and live coding platform for driving highly collaborative MIDI experiences.</h2>
   <br>
   <p><a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></p>
-  <h3>🚧 This repo is still in development and not 100% ready 🚧</h3>
+  <h3>🚧 This repo is still in development (target demo date: 10/18/20) 🚧</h3>
 </div>
 
 <br>
 
-![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot.jpg)
+![](https://i.imgur.com/VnvGtig.jpg)
 
 ## TL:DR;
 ```bash
@@ -16,104 +16,85 @@ git clone https://github.com/midiblocks/midiblocks
 cd midiblocks
 npm install
 npm start
-# Open browser tab to: http://localhost:8080/
+# Point your browser to http://localhost:8080
 ```
 
 
 
 # Contents
-<table>
-  <tr>
-    <td>
-      <ul>
-        <li>
-          <a href="#about">About</a>
-          <ul>
-            <li><a href="#motivation">Motivation</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#milestones">Milestones</a></li>
-            <li><a href="#keyboard-shortcuts">Keyboard Shortcuts</a></li>
-          </ul>
-          <br>
-        </li>
-      </ul>
-    </td>
-    <td>
-      <ul>
-        <li>
-          <a href="#setup">Setup</a>
-          <ul>
-            <li><a href="#prereqs">Prereqs</a></li>
-            <li><a href="#installing">Installing</a></li>
-            <li><a href="#browser-support">Browser support</a></li>
-            <li><a href="#limitations">Limitations</a></li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-    <td>
-      <ul>
-        <li>
-          <a href="#dev">Dev</a>
-          <ul>
-            <li><a href="#command-line-scripts">Command line scripts</a></li>
-            <li><a href="#dev-notes">Dev Notes</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#api">API</a>
-          <ul>
-            <li><a href="#querystrings">Querystrings</a></li>
-          </ul>
-        </li>
-      </ul>
-    </td>
-    <td>
-      <ul>
-        <li>
-          <a href="#license">License</a>
-        </li>
-      </ul>
-      <br>
-      <br>
-      <br>
-      <br>
-    </td>
-  </tr>
-</table>
-
+- [About](#about)
+  - [The Studio](#the-studio)
+  - [The Factory](#the-factory)
+  - [The Library](#the-library)
+- [Motivation](#motivation)
+<!-- @todo Move these into corresponding about section -->
+- [Keyboard shortcuts](#keyboard-shortcuts)
+- [Setup](#setup)
+  - [Prereqs](#prereqs)
+  - [Installing](#installing)
+  - [Browser support](#browser-support)
+- [Dev](#dev)
+  - [Command line scripts](#command-line-scripts)
+  - [window.app](#windowapp)
+  - [localStorage](#localstorage)
+- [License](#license)
 
 
 # About
-**Midiblocks is an [a11y](https://www.a11yproject.com/) friendly [Visual Language](https://en.wikipedia.org/wiki/Visual_programming_language) to help you map and script MIDI devices with libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/)/[q5.js](https://github.com/LingDong-/q5xjs), and more ✨**
 
-Midiblocks are small programs that are assembled visually using blocks ([powered by Google's Blockly](https://developers.google.com/blockly)). These blocks are triggered based on events like: [Browser Events](https://developer.mozilla.org/en-US/docs/Web/Events), [MIDI Events](https://webmidijs.org/docs/v2.5.1/classes/Input.html#events), [Webhooks](https://zapier.com/blog/what-are-webhooks/), and more. For example, here are three stages of a simple midiblock being composed with 3 blocks:
+**Midiblocks is a visual, all-in-one MIDI mapping, scripting, and live coding platform for driving highly collaborative MIDI experiences.**
 
-<!-- @todo Create GIF -->
-![](https://midiblocks.com/wp-content/uploads/2020/09/latest-screenshot.jpg)
-
-You can also create custom blocks using JavaScript that others can use with our [monaco based](https://microsoft.github.io/monaco-editor/) IDE (more info coming soon). Currently code runs in a sandboxed environment using [JS Interpreter](https://github.com/NeilFraser/JS-Interpreter), though there are some [limitations](#limitations) which we'll be addressing over time.
-
-![](https://i.imgur.com/iR58fER.jpg)
-
-A core set of blocks will be provided for offline use (the default setup), but connecting to a remote midiblocks server will also be possible as well. In fact we're working on a [WordPress plugin](https://github.com/MIDIBlocks/midiblocks-wordpress-server) that turns your WordPress site into a self-documented, versioned Midiblocks server!
+Some things Midiblocks can (eventually) help you do:
+- Quickly map MIDI to JavaScript variables, functions, and events on any web site or web service
+- Use MIDI to drive custom apps with libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/midiblocks/handsfree), and others
+- Send MIDI to your native [Digtal Audio Workstations (DAWs)](https://en.wikipedia.org/wiki/Digital_audio_workstation#List_of_notable_commercial_DAWs) and apps
+- Works on mobile with no internet required
+- Work on projects collaboratively
 
 > 🚧 More info coming soon
 
-## Motivation
+## The Studio
+
+![](https://i.imgur.com/VnvGtig.jpg)
 
 > 🚧 More info coming soon
 
-## Features
+## The Factory
+
+![](https://i.imgur.com/NOOzES6.jpg)
 
 > 🚧 More info coming soon
 
-## Milestones
-- Create a MIDI mapper and scripter that can be used by anyone, even those without prior coding experience
-- A "GitHub/NPM for MIDI" that lets you quickly create, import, fork, and share MIDI mappings and scripts
-- Create integrations with creativity libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), and [handsfree.js](https://github.com/midiblocks/handsfree)
+## The Library
 
-## Keyboard Shortcuts
+![](https://i.imgur.com/7LL7s5h.jpg)
+
+> 🚧 More info coming soon
+
+
+
+---
+
+
+
+
+# Motivation
+
+[Handsfree.js](https://github.com/midiblocks/handsfree) began as an effort to help a friend recovering from a stroke use the web handsfree. I had originally intended it to simply wrap a "face pointer" [I had built earlier](https://github.com/midiblocks/handsfree) in a browser extension, but quickly discovered that more functionality would be needed to get it to where it could work with literally any website (social media, apps, games, web services, code sandboxes, etc).
+
+About a year later I was invited to the [Studio for Creative Inquiry](https://www.cmu.edu/cfa/studio/index.html), where I met many inspiring artists and creative technologists.
+
+> 🚧 More info coming soon
+
+
+
+
+---
+
+
+
+
+# Keyboard Shortcuts
 
 <table>
   <thead>
@@ -157,7 +138,6 @@ A core set of blocks will be provided for offline use (the default setup), but c
 - Run `npm install` from the project root to install dependencies (> 250Mb)
 - Run `npm start` from the project's root to start the app at [localhost:8080](http://localhost:8080)
 
-
 ## Browser Support
 This project works in all browsers that natively support the [Web MIDI API](https://webaudio.github.io/web-midi-api/). Currently, the following browsers have built-in support:
 
@@ -169,12 +149,6 @@ This project works in all browsers that natively support the [Web MIDI API](http
 For more info, including on how to support Firefox, Internet Explorer, and Safari see the [WebMidi docs](https://github.com/djipco/webmidi#browser-support)
 
 > Starting with version 77, [Chrome deprecates Web MIDI usage on insecure origins](https://www.chromestatus.com/feature/5138066234671104). This means that, going forward, the page will need to be hosted on a secure origin (e.g. https://, localhost: or file:///) and the user will need to explicitely authorize usage (no matter if sysex is used or not).
-
-
-
-## Limitations
-
-- Sandboxed code runs roughly 200x slower, but we'll provide workarounds as we work to lower this
 
 
 
@@ -199,33 +173,45 @@ npm run build
 
 # DEPLOY
 # ----------
-# Push the app to firebase (must have Firebase Tools: npm i -g firebase-tools)
+# Push the app to firebase. Must have:
+# - Firebase Tools: npm i -g firebase-tools
+# - Initialized with: firebase init
 npm run deploy
 ```
 
-## Dev Notes
-- On startup, we check `!!window.app.boot` and either use it to populate the first render if it exists or load from server if it doesn't
+## `window.app`
+The following is available through your dev console:
 
-
-
--------------------------------------------------------------------------------
-
-
-
-# API
-
-## Querystrings
-
-Add the following to your URL to apply the commented effect:
-
-```bash
-# Override the api baseurl (useful for testing between enviroments)
-?apiDomain=https://example.com
+```js
+window.app = {
+  $,        // Main Vue instance
+  $studio,  // The Studio component (only present when on that route)
+  $factory  // The Factory component (only present when on that route)
+}
 ```
 
+> 🚧 More info coming soon
+
+## localStorage
+The following is available on the pages localStorage:
+
+```js
+{
+  blocks: [],           // All loaded Factory Blocks
+  midiblocks: [],       // All loaded Studio Midiblocks
+  currentFactory: {},   // The Factory's last state (autosave)
+  currentStudio: {},    // The Studio's last state (autosave)
+  splitter: 50
+}
+```
+
+> 🚧 More info coming soon
+
 
 
 -------------------------------------------------------------------------------
+
+
 
 
 
