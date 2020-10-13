@@ -1,5 +1,5 @@
 <div align="center">
-  <h1><a href="https://midiblocks.com"><img height=80 src="./src/assets/logo-title.png"></a></h1>
+  <h1><a href="https://midiblocks.com"><img height=120 src="https://i.imgur.com/R4nxK4o.jpg"></a></h1>
   <h2>A visual, all-in-one MIDI mapping, scripting, and live coding platform for driving highly collaborative MIDI experiences.</h2>
   <br>
   <p><a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></p>
