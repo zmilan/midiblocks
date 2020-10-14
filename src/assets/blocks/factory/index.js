@@ -4,8 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import Blockly from 'blockly'
+import fieldNameCheck from './util/fieldNameCheck'
 import './base'
 import './color'
+import './midi/device-dropdown'
 
 var FIELD_MESSAGE = 'fields %1 %2';
 var FIELD_ARGS = [
@@ -170,24 +172,24 @@ Blockly.Blocks['field_number'] = {
   }
 };
 
-Blockly.Blocks['field_angle'] = {
-  // Angle input.
-  init: function() {
-    this.setColour('2EC4B6');
-    this.appendDummyInput()
-        .appendField('angle input')
-        .appendField(new Blockly.FieldAngle('90'), 'ANGLE')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
-    this.setPreviousStatement(true, 'Field');
-    this.setNextStatement(true, 'Field');
-    this.setTooltip('An input field for the user to enter an angle.');
-    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=372');
-  },
-  onchange: function() {
-    fieldNameCheck(this);
-  }
-};
+// Blockly.Blocks['field_angle'] = {
+//   // Angle input.
+//   init: function() {
+//     this.setColour('2EC4B6');
+//     this.appendDummyInput()
+//         .appendField('angle input')
+//         .appendField(new Blockly.FieldAngle('90'), 'ANGLE')
+//         .appendField(',')
+//         .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+//     this.setPreviousStatement(true, 'Field');
+//     this.setNextStatement(true, 'Field');
+//     this.setTooltip('An input field for the user to enter an angle.');
+//     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=372');
+//   },
+//   onchange: function() {
+//     fieldNameCheck(this);
+//   }
+// };
 
 Blockly.Blocks['field_dropdown'] = {
   // Dropdown menu.
@@ -331,24 +333,24 @@ Blockly.Blocks['field_checkbox'] = {
   }
 };
 
-Blockly.Blocks['field_colour'] = {
-  // Colour input.
-  init: function() {
-    this.setColour('2EC4B6');
-    this.appendDummyInput()
-        .appendField('colour')
-        // .appendField(new Blockly.FieldColour('#00ff00'), 'COLOUR')
-        .appendField(',')
-        .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
-    this.setPreviousStatement(true, 'Field');
-    this.setNextStatement(true, 'Field');
-    this.setTooltip('Colour input field.');
-    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=495');
-  },
-  onchange: function() {
-    fieldNameCheck(this);
-  }
-};
+// Blockly.Blocks['field_colour'] = {
+//   // Colour input.
+//   init: function() {
+//     this.setColour('2EC4B6');
+//     this.appendDummyInput()
+//         .appendField('colour')
+//         // .appendField(new Blockly.FieldColour('#00ff00'), 'COLOUR')
+//         .appendField(',')
+//         .appendField(new Blockly.FieldTextInput('NAME'), 'FIELDNAME');
+//     this.setPreviousStatement(true, 'Field');
+//     this.setNextStatement(true, 'Field');
+//     this.setTooltip('Colour input field.');
+//     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=495');
+//   },
+//   onchange: function() {
+//     fieldNameCheck(this);
+//   }
+// };
 
 Blockly.Blocks['field_variable'] = {
   // Dropdown for variables.
@@ -369,29 +371,29 @@ Blockly.Blocks['field_variable'] = {
   }
 };
 
-Blockly.Blocks['field_image'] = {
-  // Image.
-  init: function() {
-    this.setColour('2EC4B6');
-    var src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
-    this.appendDummyInput()
-        .appendField('image')
-        .appendField(new Blockly.FieldTextInput(src), 'SRC');
-    this.appendDummyInput()
-        .appendField('width')
-        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
-        .appendField('height')
-        .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
-        .appendField('alt text')
-        .appendField(new Blockly.FieldTextInput('*'), 'ALT');
-    this.setPreviousStatement(true, 'Field');
-    this.setNextStatement(true, 'Field');
-    this.setTooltip('Static image (JPEG, PNG, GIF, SVG, BMP).\n' +
-                    'Retains aspect ratio regardless of height and width.\n' +
-                    'Alt text is for when collapsed.');
-    this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=567');
-  }
-};
+// Blockly.Blocks['field_image'] = {
+//   // Image.
+//   init: function() {
+//     this.setColour('2EC4B6');
+//     var src = 'https://www.gstatic.com/codesite/ph/images/star_on.gif';
+//     this.appendDummyInput()
+//         .appendField('image')
+//         .appendField(new Blockly.FieldTextInput(src), 'SRC');
+//     this.appendDummyInput()
+//         .appendField('width')
+//         .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'WIDTH')
+//         .appendField('height')
+//         .appendField(new Blockly.FieldNumber('15', 0, NaN, 1), 'HEIGHT')
+//         .appendField('alt text')
+//         .appendField(new Blockly.FieldTextInput('*'), 'ALT');
+//     this.setPreviousStatement(true, 'Field');
+//     this.setNextStatement(true, 'Field');
+//     this.setTooltip('Static image (JPEG, PNG, GIF, SVG, BMP).\n' +
+//                     'Retains aspect ratio regardless of height and width.\n' +
+//                     'Alt text is for when collapsed.');
+//     this.setHelpUrl('https://www.youtube.com/watch?v=s2_xaEvcVI0#t=567');
+//   }
+// };
 
 Blockly.Blocks['type_group'] = {
   // Group of types.
@@ -606,31 +608,6 @@ Blockly.Blocks['type_other'] = {
     });
   }
 };
-
-/**
- * Check to see if more than one field has this name.
- * Highly inefficient (On^2), but n is small.
- * @param {!Blockly.Block} referenceBlock Block to check.
- */
-function fieldNameCheck(referenceBlock) {
-  if (!referenceBlock.workspace) {
-    // Block has been deleted.
-    return;
-  }
-  var name = referenceBlock.getFieldValue('FIELDNAME').toLowerCase();
-  var count = 0;
-  var blocks = referenceBlock.workspace.getAllBlocks(false);
-  for (var i = 0, block; block = blocks[i]; i++) {
-    var otherName = block.getFieldValue('FIELDNAME');
-    if (!block.disabled && !block.getInheritedDisabled() &&
-        otherName && otherName.toLowerCase() == name) {
-      count++;
-    }
-  }
-  var msg = (count > 1) ?
-      'There are ' + count + ' field blocks\n with this name.' : null;
-  referenceBlock.setWarningText(msg);
-}
 
 /**
  * Check to see if more than one input has this name.

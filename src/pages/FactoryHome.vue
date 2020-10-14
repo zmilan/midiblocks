@@ -565,6 +565,7 @@ export default {
         const json = this.block.json
         Blockly.Blocks[json.type || 'unnamed'] = {
           init: function() {
+            console.log(json)
             this.jsonInit(json)
           }
         }
@@ -684,6 +685,7 @@ export default {
      */
     getFieldsJson (block) {
       let fields = []
+      let options = []
       
       while (block) {
         if (!block.disabled && !block.getInheritedDisabled()) {
@@ -724,13 +726,13 @@ export default {
               fields.push(obj)
             break
 
-            case 'field_angle':
-              fields.push({
-                type: block.type,
-                name: block.getFieldValue('FIELDNAME'),
-                angle: Number(block.getFieldValue('ANGLE'))
-              })
-            break
+            // case 'field_angle':
+            //   fields.push({
+            //     type: block.type,
+            //     name: block.getFieldValue('FIELDNAME'),
+            //     angle: Number(block.getFieldValue('ANGLE'))
+            //   })
+            // break
 
             case 'field_checkbox':
               fields.push({
@@ -740,13 +742,13 @@ export default {
               })
             break
 
-            case 'field_colour':
-              fields.push({
-                type: block.type,
-                name: block.getFieldValue('FIELDNAME'),
-                colour: block.getFieldValue('COLOUR')
-              })
-            break
+            // case 'field_colour':
+            //   fields.push({
+            //     type: block.type,
+            //     name: block.getFieldValue('FIELDNAME'),
+            //     colour: block.getFieldValue('COLOUR')
+            //   })
+            // break
 
             case 'field_variable':
               fields.push({
@@ -757,7 +759,6 @@ export default {
             break
 
             case 'field_dropdown':
-              let options = []
               for (let i = 0; i < block.optionCount_; i++) {
                 options[i] = [block.getFieldValue('USER' + i), block.getFieldValue('CPU' + i)]
               }
@@ -771,15 +772,30 @@ export default {
               }
             break
 
-            case 'field_image':
-              fields.push({
-                type: block.type,
-                src: block.getFieldValue('SRC'),
-                width: Number(block.getFieldValue('WIDTH')),
-                height: Number(block.getFieldValue('HEIGHT')),
-                alt: block.getFieldValue('ALT')
-              })
+            /**
+             * Dynamically generate MIDI device selector options
+             */
+            case 'field_midi_device_dropdown':
+              options = [['MIDI is disabled', 'DISABLED']]
+
+              if (options.length) {
+                fields.push({
+                  type: block.type,
+                  name: block.getFieldValue('FIELDNAME'),
+                  options: options
+                })
+              }
             break
+
+            // case 'field_image':
+            //   fields.push({
+            //     type: block.type,
+            //     src: block.getFieldValue('SRC'),
+            //     width: Number(block.getFieldValue('WIDTH')),
+            //     height: Number(block.getFieldValue('HEIGHT')),
+            //     alt: block.getFieldValue('ALT')
+            //   })
+            // break
           }
         }
 
