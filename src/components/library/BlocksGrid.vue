@@ -7,7 +7,7 @@
       q-separator
       q-card-section
         h3 {{block.json.type}}
-        p.pre {{block.description}}
+        p.pre-wrap {{block.description}}
       q-card-actions(align='right')
         template(slot-scope='props')
           q-btn(size='sm' color='negative' @click='deleteBlock(block)' icon='fas fa-trash') Delete
