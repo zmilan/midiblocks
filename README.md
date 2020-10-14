@@ -80,10 +80,6 @@ Some things Midiblocks can (eventually) help you do:
 
 # Motivation
 
-[Handsfree.js](https://github.com/midiblocks/handsfree) began as an effort to help a friend recovering from a stroke use the web handsfree. I had originally intended it to simply wrap a "face pointer" [I had built earlier](https://github.com/midiblocks/handsfree) in a browser extension, but quickly discovered that more functionality would be needed to get it to where it could work with literally any website (social media, apps, games, web services, code sandboxes, etc).
-
-About a year later I was invited to the [Studio for Creative Inquiry](https://www.cmu.edu/cfa/studio/index.html), where I met many inspiring artists and creative technologists.
-
 > 🚧 More info coming soon
 
 

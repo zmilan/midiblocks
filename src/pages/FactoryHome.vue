@@ -565,7 +565,6 @@ export default {
         const json = this.block.json
         Blockly.Blocks[json.type || 'unnamed'] = {
           init: function() {
-            console.log(json)
             this.jsonInit(json)
           }
         }
@@ -776,6 +775,7 @@ export default {
              * Dynamically generate MIDI device selector options
              */
             case 'field_midi_device_dropdown':
+              console.log('CHECKING')
               options = [['MIDI is disabled', 'DISABLED']]
 
               if (options.length) {

@@ -1,5 +1,4 @@
 import Blockly from 'blockly'
-import fieldNameCheck from '../util/fieldNameCheck'
 
 /**
  * A MIDI device dropdown selector
