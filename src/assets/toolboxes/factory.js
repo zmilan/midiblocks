@@ -61,10 +61,10 @@ export default [
         tag: 'block',
         type: 'field_number'
       },
-      {
-        tag: 'block',
-        type: 'field_angle'
-      },
+      // {
+      //   tag: 'block',
+      //   type: 'field_angle'
+      // },
       {
         tag: 'block',
         type: 'field_dropdown'
@@ -73,18 +73,22 @@ export default [
         tag: 'block',
         type: 'field_checkbox'
       },
-      {
-        tag: 'block',
-        type: 'field_colour'
-      },
+      // {
+      //   tag: 'block',
+      //   type: 'field_colour'
+      // },
       {
         tag: 'block',
         type: 'field_variable'
       },
       {
         tag: 'block',
-        type: 'field_image'
+        type: 'field_midi_device_dropdown'
       }
+      // {
+      //   tag: 'block',
+      //   type: 'field_image'
+      // }
     ]
   },   
   {
