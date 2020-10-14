@@ -2,8 +2,9 @@
   <h1><a href="https://github.com/midiblocks/midiblocks"><img height=120 src="https://i.imgur.com/R4nxK4o.jpg"></a></h1>
   <h2>A visual, all-in-one MIDI mapping, scripting, and live coding platform for driving highly collaborative MIDI experiences.</h2>
   <br>
+  <h3>🚧 This repo is still in development (target date 📅 10/26/20) 🚧</h3>
+  <br>
   <p><a href="https://github.com/google/blockly"><img src="https://tinyurl.com/built-on-blockly"></a></p>
-  <h3>🚧 This repo is still in development (target demo date: 10/18/20) 🚧</h3>
 </div>
 
 <br>
@@ -47,8 +48,8 @@ npm start
 Some things Midiblocks can (eventually) help you do:
 - Quickly map MIDI to JavaScript variables, functions, and events on any web site or web service
 - Use MIDI to drive custom apps with libraries like [magenta.js](https://magenta.tensorflow.org/), [ml5.js](https://ml5js.org/), [p5.js](https://p5js.org/), [handsfree.js](https://github.com/midiblocks/handsfree), and others
-- Send MIDI to your native [Digtal Audio Workstations (DAWs)](https://en.wikipedia.org/wiki/Digital_audio_workstation#List_of_notable_commercial_DAWs) and apps
-- Works on mobile with no internet required
+- Send MIDI to your native [Digital Audio Workstations (DAWs)](https://en.wikipedia.org/wiki/Digital_audio_workstation#List_of_notable_commercial_DAWs) and apps
+- Work on mobile with no internet required
 - Work on projects collaboratively
 
 > 🚧 More info coming soon
@@ -126,7 +127,7 @@ Some things Midiblocks can (eventually) help you do:
 # Setup
 ## Prereqs
 - [Git](https://git-scm.com/downloads)
-- [NodeJS LTS (eg 10.x.x or 12.x.x)](https://nodejs.org/en/)
+- [NodeJS LTS (eg 12.x.x)](https://nodejs.org/en/)
 
 ## Installing
 - Open terminal and clone this repository with: `git clone https://github.com/midiblocks/midiblocks`
@@ -144,7 +145,7 @@ This project works in all browsers that natively support the [Web MIDI API](http
 
 For more info, including on how to support Firefox, Internet Explorer, and Safari see the [WebMidi docs](https://github.com/djipco/webmidi#browser-support)
 
-> Starting with version 77, [Chrome deprecates Web MIDI usage on insecure origins](https://www.chromestatus.com/feature/5138066234671104). This means that, going forward, the page will need to be hosted on a secure origin (e.g. https://, localhost: or file:///) and the user will need to explicitely authorize usage (no matter if sysex is used or not).
+> Starting with version 77, [Chrome deprecates Web MIDI usage on insecure origins](https://www.chromestatus.com/feature/5138066234671104). This means that, going forward, the page will need to be hosted on a secure origin (e.g. https://, localhost: or file:///) and the user will need to authorize usage (no matter if sysex is used or not). [Firebase](https://firebase.google.com/products/hosting), [Netflify](https://www.netlify.com/), Github, and others provide free hosting.
 
 
 
@@ -176,7 +177,7 @@ npm run deploy
 ```
 
 ## `window.app`
-The following is available through your dev console:
+The following is available through your browser's dev console:
 
 ```js
 window.app = {
@@ -189,7 +190,7 @@ window.app = {
 > 🚧 More info coming soon
 
 ## localStorage
-The following is available on the pages localStorage:
+The following is available inside `localStorage`:
 
 ```js
 {
