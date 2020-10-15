@@ -13,9 +13,10 @@ q-layout(view='lHh Lpr lFf')
 
       //- Studio controls
       template(v-if='$route.name === "Studio" && studio.hasBookmarks')
+        span.q-mr-sm 📌
         q-btn-group(push dense)
-          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-left')
-          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-right')
+          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-left' @click='$root.$emit("studio.prevBookmark")')
+          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-right' @click='$root.$emit("studio.nextBookmark")')
         q-space
 
       //- MIDI toggle
