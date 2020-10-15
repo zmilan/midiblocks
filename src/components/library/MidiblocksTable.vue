@@ -3,9 +3,9 @@ div
   q-table.midiblocks-table(:data='midiblockValues' :columns='columns' row-key='uuid')
     template(v-slot:body-cell-actions='props')
       q-td(:props='props')
-        q-btn.q-mr-lg(size='sm' color='negative' @click='deleteMidiblock(props)' icon='fas fa-trash') Delete
+        q-btn.q-mr-lg(size='sm' color='secondary' @click='loadMidiblock(props)' icon='fas fa-folder-open') Load
         q-btn.q-mr-lg(size='sm' color='tertiary' @click='remixMidiblock(props)' icon='fas fa-copy') Remix
-        q-btn(size='sm' color='secondary' @click='loadMidiblock(props)' icon='fas fa-folder-open') Load
+        q-btn(size='sm' color='negative' @click='deleteMidiblock(props)' icon='fas fa-trash') Delete
   DialogDeleteMidiblock(v-model='dialog.deleteMidiblock' :midiblock='dialogMidiblock')
 </template>
 
