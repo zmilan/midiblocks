@@ -4,13 +4,24 @@ q-layout(view='lHh Lpr lFf')
   q-header.main-header-left-pixel-gap-fix
     q-toolbar
       q-btn(flat dense round icon='fas fa-bars' aria-label='Menu' @click='leftDrawerOpen = !leftDrawerOpen')
-      q-toolbar-title
+      q-toolbar-title(style='flex: 0 0 auto')
         router-link.text-decoration-none.text-white(:to='{name: "Home"}')
           img.gt-sm.q-mr-sm(src='~assets/logo-title.png' height=32 style='vertical-align: middle')
           img.lt-md.q-mr-sm(src='~assets/logo-title-favicon.png' height=32 style='vertical-align: middle')
         small.gt-xs.q-ml-sm.text-secondary(style='font-size: .65em; display: inline-block; transform: translate(0, -3px)') {{version}}
       q-space
-      q-toggle.no-select(color='negative' dark v-model='isMIDIActive') MIDI is {{isMIDIActive ? 'enabled' : 'disabled'}}
+
+      //- Studio controls
+      template(v-if='$route.name === "Studio" && studio.hasBookmarks')
+        q-btn-group(push dense)
+          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-left')
+          q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-right')
+        q-space
+
+      //- MIDI toggle
+      q-toggle.no-select(color='negative' dark v-model='isMIDIActive')
+        | MIDI
+        span.gt-sm.q-ml-sm {{isMIDIActive ? 'enabled' : 'disabled'}}
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered :breakpoint='1400')
@@ -76,7 +87,7 @@ export default {
   components: {ImporterExporter, MainNavLink, DialogConfirm},
 
   computed: {
-    ...mapState(['user', 'lastEvent', 'eventLogs'])
+    ...mapState(['user', 'lastEvent', 'eventLogs', 'studio'])
   },
 
   watch: {
