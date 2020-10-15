@@ -145,6 +145,9 @@ export default {
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
     this.$root.$on('studio.prevBookmark', this.prevBookmark)
     this.$root.$on('studio.nextBookmark', this.nextBookmark)
+    for (let i = 0; i < 10; i++) {
+      this.$mousetrap.bind(i.toString(), this.onNumberKeypress)
+    }
 
     // Autosave with CTRL+S
     this.$mousetrap.bindGlobal('ctrl+s', ev => {
@@ -157,6 +160,9 @@ export default {
     this.$mousetrap.unbind('ctrl+s')
     this.$root.$off('studio.prevBookmark', this.prevBookmark)
     this.$root.$off('studio.nextBookmark', this.nextBookmark)
+    for (let i = 0; i < 10; i++) {
+      this.$mousetrap.unbind(i, this.onNumberKeypress)
+    }
   },
 
   watch: {
@@ -317,6 +323,19 @@ export default {
       this.currentBookmark = index
       
       this.$refs.workspace.blockly.centerOnBlock(bookmarks[this.currentBookmark].id)
+    },
+
+    /**
+     * Navigates to the bookmark if it exists
+     * @param {Event} ev
+     */
+    onNumberKeypress (ev) {
+      const bookmarks = this.getSortedBookmarks()
+      
+      if (+ev.key <= bookmarks.length) {
+        this.$refs.workspace.blockly.centerOnBlock(bookmarks[ev.key - 1].id)
+        this.currentBookmark = +ev.key - 1
+      }
     },
 
     /**
