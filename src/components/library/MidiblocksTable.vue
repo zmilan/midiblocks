@@ -51,13 +51,6 @@ export default {
           align: 'left'
         },
         {
-          label: 'Updated',
-          field: 'updated',
-          name: 'updated',
-          sortable: true,
-          align: 'left'
-        },
-        {
           label: 'Description',
           field: 'description',
           name: 'description',
@@ -134,6 +127,9 @@ export default {
 </script>
 
 <style lang="sass">
-.midiblocks-table tbody tr td:nth-child(3)
-  white-space: pre
+.midiblocks-table tbody tr td:nth-child(1)
+  font-size: 1.25em
+  font-weight: bold
+.midiblocks-table tbody tr td:nth-child(2)
+  white-space: pre-wrap
 </style>

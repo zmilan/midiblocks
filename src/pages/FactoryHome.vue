@@ -104,7 +104,7 @@ q-page.full-height
             q-icon(name='fas fa-cogs')
           q-item-section.gt-sm
             q-item-label Block Settings
-        q-item(@click='dialog.confirmNew = true' clickable)
+        q-item(@click='onNewBlock' clickable)
           q-item-section(avatar)
             q-icon(color='positive' name='fas fa-file')
           q-item-section.gt-sm
@@ -328,6 +328,7 @@ export default {
      */
     createNewBlock () {
       this.block.uuid = uuidv4()
+      store.set('isFactoryUnsaved', false)
       store.remove('currentFactory')
       this.$store.commit('tally', 'reloads')
       this.$store.commit('set', ['lastEvent', {log: 'New block created'}])
@@ -371,6 +372,19 @@ export default {
     onCodeChange (code) {
       this.block.code = code
       this.autosave()
+    },
+
+    /**
+     * Shows a confirm if a save is needed, otherwise creates a new block
+     */
+    onNewBlock () {
+      console.log('onNewBlock')
+      
+      if (this.isUnsaved) {
+        this.dialog.confirmNew = true
+      } else {
+        this.createNewBlock()
+      }
     },
 
     /**
