@@ -26,6 +26,13 @@ export default function (/* { ssrContext } */) {
       midiblocks: store.get('midiblocks', {}),
 
       /**
+       * Global Studio props
+       */
+      studio: {
+        hasBookmarks: true
+      },
+
+      /**
        * Contains information about the last app-level event
        */
       lastEvent: {

@@ -62,7 +62,7 @@ q-page.full-height
 </template>
 
 <script>
-import {throttle, cloneDeep, set} from 'lodash'
+import {throttle, cloneDeep, set, sortBy} from 'lodash'
 import {mapState} from 'vuex'
 import Workspace from '../components/Workspace'
 import DialogLoadMidiblock from '../components/dialog/LoadMidiblock'
@@ -143,6 +143,11 @@ export default {
 
     // Setup listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
+    this.$root.$on('studio.prevBookmark', this.prevBookmark)
+    this.$root.$on('studio.nextBookmark', this.nextBookmark)
+    for (let i = 0; i < 10; i++) {
+      this.$mousetrap.bind(i.toString(), this.onNumberKeypress)
+    }
 
     // Autosave with CTRL+S
     this.$mousetrap.bindGlobal('ctrl+s', ev => {
@@ -153,6 +158,11 @@ export default {
 
   destroyed () {
     this.$mousetrap.unbind('ctrl+s')
+    this.$root.$off('studio.prevBookmark', this.prevBookmark)
+    this.$root.$off('studio.nextBookmark', this.nextBookmark)
+    for (let i = 0; i < 10; i++) {
+      this.$mousetrap.unbind(i.toString())
+    }
   },
 
   watch: {
@@ -181,6 +191,9 @@ export default {
           enable: false
         }
       },
+
+      // Current bookmark index
+      currentBookmark: -1,
 
       block: {
         uuid: currentStudio.uuid || uuidv4()
@@ -282,6 +295,56 @@ export default {
       this.meta.title = this.meta._title
       this.meta.description = this.meta._description
       this.autosave()
+    },
+
+    /**
+     * Go to next bookmark
+     */
+    nextBookmark () {
+      const bookmarks = this.getSortedBookmarks()
+      
+      // Wrap value
+      let index = this.currentBookmark + 1
+      if (index > bookmarks.length - 1) index = 0
+      this.currentBookmark = index
+      
+      this.$refs.workspace.blockly.centerOnBlock(bookmarks[this.currentBookmark].id)
+    },
+
+    /**
+     * Go to previous bookmark
+     */
+    prevBookmark () {
+      const bookmarks = this.getSortedBookmarks()
+      
+      // Wrap value
+      let index = this.currentBookmark - 1
+      if (index < 0) index = bookmarks.length - 1
+      this.currentBookmark = index
+      
+      this.$refs.workspace.blockly.centerOnBlock(bookmarks[this.currentBookmark].id)
+    },
+
+    /**
+     * Navigates to the bookmark if it exists
+     * @param {Event} ev
+     */
+    onNumberKeypress (ev) {
+      const bookmarks = this.getSortedBookmarks()
+      const key = +ev.key || 10
+      
+      if (key <= bookmarks.length) {
+        this.$refs.workspace.blockly.centerOnBlock(bookmarks[key - 1].id)
+        this.currentBookmark = key - 1
+      }
+    },
+
+    /**
+     * Returns a list of bookmarks, sorted by their $index
+     * @return {Array} Sorted list of bookmark blocks
+     */
+    getSortedBookmarks () {
+      return sortBy(this.$refs.workspace.blockly.getBlocksByType('bookmark'), [bookmark => bookmark.getFieldValue('index')])
     },
     
     /**
