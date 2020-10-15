@@ -161,7 +161,7 @@ export default {
     this.$root.$off('studio.prevBookmark', this.prevBookmark)
     this.$root.$off('studio.nextBookmark', this.nextBookmark)
     for (let i = 0; i < 10; i++) {
-      this.$mousetrap.unbind(i, this.onNumberKeypress)
+      this.$mousetrap.unbind(i.toString())
     }
   },
 
