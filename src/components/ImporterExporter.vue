@@ -13,13 +13,27 @@ q-btn.full-width(type='a' color='secondary' icon='fas fa-user' @click='showModal
         q-btn(flat @click='isDialogVisible = false') Cancel
         q-file.hidden(ref='file' v-model='file')
         q-space
+        q-btn(color='negative' icon='fas fa-recycle' @click='dialog.confirmReset = true') Reset
+        q-space
         q-btn(color='secondary' icon='fas fa-file-import' @click='importState') Import
         q-btn(color='secondary' icon='fas fa-file-export' @click='exportState') Export
+
+  //- Dialogs
+  DialogConfirm(v-model='dialog.confirmReset'
+    bg='negative'
+    icon='fas fa-recycle'
+    title='Reset everything?'
+    accept-label='Reset'
+    @accept='reset')
+      p This will reset everything to the <a href="https://github.com/MIDIBlocks/midiblocks/releases">most recent Midiblocks release</a>.
+      p You'll lose your current workspaces, but get all the latest core workspaces.
+      p You'll still be able to import your own workspaces after.
 </template>
 
 <script>
 import store from 'store'
 import fileDownload from 'js-file-download'
+import DialogConfirm from './dialog/Confirm'
 
 /**
  * Button with dialog for Importing/Exporting app states
@@ -27,8 +41,13 @@ import fileDownload from 'js-file-download'
 export default {
   name: 'ImporterExporter',
 
+  components: {DialogConfirm},
+
   data: () => {
     return {
+      dialog: {
+        confirmReset: false
+      },
       file: null,
       isDialogVisible: false
     }
@@ -115,6 +134,14 @@ export default {
         timeout: 5000
       })
       console.warn('Error importing file:', err)
+    },
+
+    /**
+     * Resets all data
+     */
+    reset () {
+      localStorage.clear()
+      window.location.reload()
     }
   }
 }
