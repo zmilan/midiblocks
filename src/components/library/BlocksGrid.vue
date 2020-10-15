@@ -7,14 +7,14 @@
       q-separator
       q-card-section
         h3 {{block.json.type}}
-        p.pre {{block.description}}
+        p.pre-wrap {{block.description}}
       q-card-actions(align='right')
         template(slot-scope='props')
-          q-btn(size='sm' color='negative' @click='deleteBlock(block)' icon='fas fa-trash') Delete
+          q-btn(size='sm' color='secondary' @click='loadBlock(block)' icon='fas fa-folder-open') Load
           q-space
           q-btn(size='sm' color='tertiary' @click='remixBlock(block)' icon='fas fa-copy') Remix
           q-space
-          q-btn(size='sm' color='secondary' @click='loadBlock(block)' icon='fas fa-folder-open') Load
+          q-btn(size='sm' color='negative' @click='deleteBlock(block)' icon='fas fa-trash') Delete
 
   DialogDeleteBlock(v-model='dialog.deleteBlock' :block='dialogBlock')
 </template>

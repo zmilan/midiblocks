@@ -24,6 +24,14 @@ export default [
     children: []
   },
   {
+    tag: 'category',
+    category: 'misc',
+    name: 'Misc.',
+    icon: 'fas fa-archive',
+    colour: '#ffffff',
+    children: []
+  },
+  {
     tag: 'sep',
     children: []
   },

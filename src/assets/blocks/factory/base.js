@@ -12,10 +12,12 @@ Blockly.Blocks['factory_base'] = {
 
     // Category Dropdown
     let dropdown = new Blockly.FieldDropdown([
+      ['misc.', 'misc'],
       ['events', 'event'],
       ['event modifiers', 'event_modifier'],
       ['send events', 'event_send']
     ])
+
     this.appendDummyInput()
       .appendField('category')
       .appendField(dropdown, 'category')
