@@ -331,10 +331,11 @@ export default {
      */
     onNumberKeypress (ev) {
       const bookmarks = this.getSortedBookmarks()
+      const key = +ev.key || 10
       
-      if (+ev.key <= bookmarks.length) {
-        this.$refs.workspace.blockly.centerOnBlock(bookmarks[ev.key - 1].id)
-        this.currentBookmark = +ev.key - 1
+      if (key <= bookmarks.length) {
+        this.$refs.workspace.blockly.centerOnBlock(bookmarks[key - 1].id)
+        this.currentBookmark = key - 1
       }
     },
 
