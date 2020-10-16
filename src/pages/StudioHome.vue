@@ -140,6 +140,7 @@ export default {
         this.$refs.workspace.blockly
       )
     }
+    this.checkBookmarks()
 
     // Setup listeners
     this.$refs.workspace.blockly.addChangeListener(Blockly.Events.disableOrphans)
@@ -364,9 +365,18 @@ export default {
         case Blockly.Events.VAR_DELETE:
         case Blockly.Events.VAR_RENAME:
           this.$refs.workspace.run()
+          this.checkBookmarks()
           this.hasLoaded && this.autosave()
-        break;
+        break
       }
+    },
+
+    /**
+     * Checks if there are bookmarks and toggles the pagers
+     */
+    checkBookmarks () {
+      const bookmarks = this.$refs.workspace.blockly.getBlocksByType('bookmark')
+      this.$store.commit('set', ['studio.hasBookmarks', !!bookmarks.length])
     },
 
     /**
