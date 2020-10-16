@@ -22,6 +22,11 @@ const routes = [
         name: 'Factory',
         path: '/factory',
         component: () => import('pages/FactoryHome.vue')
+      },
+      {
+        name: 'Settings',
+        path: '/settings',
+        component: () => import('pages/SettingsHome.vue')
       }
     ]
   },

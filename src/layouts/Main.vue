@@ -30,8 +30,6 @@ q-layout(view='lHh Lpr lFf')
     q-list.q-pa-sm
       template(v-if='mainNavPanel')
         MainNavLink(v-for='link in mainNavPanel.links' :key='link.title' v-bind='link')
-      .text-center(v-else)
-        q-spinner(color='primary')
     q-space
     q-list.q-pb-sm(dense)
       q-item
@@ -128,6 +126,12 @@ export default {
             description: 'Browse our library of user created Midiblocks and learn how to use them',
             link: '/library',
             icon: 'fas fa-cubes'
+          },
+          {
+            title: 'Settings',
+            description: 'Toggle Handsfree mode and other settings',
+            link: '/settings',
+            icon: 'fas fa-cogs'
           }
         ]
       },
