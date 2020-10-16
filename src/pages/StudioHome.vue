@@ -367,7 +367,7 @@ export default {
           this.$refs.workspace.run()
           this.checkBookmarks()
           this.hasLoaded && this.autosave()
-        break;
+        break
       }
     },
 
