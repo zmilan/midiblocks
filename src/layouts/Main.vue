@@ -12,7 +12,7 @@ q-layout(view='lHh Lpr lFf')
       q-space
 
       //- Studio controls
-      template(v-if='$route.name === "Studio" && studio.hasBookmarks')
+      template(v-if='studio.hasBookmarks && $route.name === "Studio"')
         span.q-mr-sm 📌
         q-btn-group(push dense)
           q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-left' @click='$root.$emit("studio.prevBookmark")')
