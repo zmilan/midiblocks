@@ -30,7 +30,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['reloads'])
+    ...mapState(['reloads', 'settings'])
   },
 
   data () {

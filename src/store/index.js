@@ -26,6 +26,13 @@ export default function (/* { ssrContext } */) {
       midiblocks: store.get('midiblocks', {}),
 
       /**
+       * Settings
+       */
+      settings: {
+        isFacePointerActive: false,
+      },
+
+      /**
        * Global Studio props
        */
       studio: {

@@ -20,6 +20,7 @@
     "blockly": "^3.20200625.2",
     "core-js": "^3.6.5",
     "geteventlisteners": "^1.1.0",
+    "handsfree": "^7.0.3",
     "js-file-download": "^0.4.12",
     "js-interpreter": "^2.2.0",
     "markdown-it": "^11.0.0",
