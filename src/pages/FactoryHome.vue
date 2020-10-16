@@ -378,8 +378,6 @@ export default {
      * Shows a confirm if a save is needed, otherwise creates a new block
      */
     onNewBlock () {
-      console.log('onNewBlock')
-      
       if (this.isUnsaved) {
         this.dialog.confirmNew = true
       } else {
