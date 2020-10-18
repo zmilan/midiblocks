@@ -43,21 +43,13 @@ export default {
   },
 
   watch: {
+    /**
+     * Toggle Handsfree and persist the state
+     */
     settings: {
       deep: true,
       handler (settings) {
-        let handsfree = window.handsfree
-        
-        /**
-         * Enable Handsfree
-         */
-        if (settings.isFacePointerActive && !handsfree) {
-          handsfree = window.handsfree = new window.Handsfree({
-            weboji: true
-          })
-          handsfree.start()
-          console.log('started', handsfree)
-        }
+        this.toggleHandsfree()
       }
     }
   },
@@ -102,6 +94,9 @@ export default {
       this.$store.commit('push', ['eventLogs.warn', {log: args[0]}])
       warn(...args)
     }
+
+    // APIs
+    this.toggleHandsfree()
   },
 
   destroyed () {
@@ -116,6 +111,31 @@ export default {
     goHome () {
       this.$router.push({name: 'Home'})
       this.errors.generic = ''
+    },
+
+    /**
+     * Toggle Handsfree on/off and persist the state
+     */
+    toggleHandsfree () {
+      let handsfree = window.handsfree
+      
+      // Start
+      if (this.settings.isFacePointerActive && !handsfree) {
+        handsfree = window.handsfree = new window.Handsfree({
+          weboji: true
+        })
+        handsfree.start()
+      } else if (handsfree) {
+        handsfree.start()
+      }
+
+      // Stop
+      if (!this.settings.isFacePointerActive && handsfree) {
+        handsfree.stop()
+      }
+
+      // Persist
+      store.set('facepointer.active', this.settings.isFacePointerActive)
     }
   }
 }
