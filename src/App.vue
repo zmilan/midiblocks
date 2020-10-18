@@ -42,6 +42,26 @@ export default {
     }
   },
 
+  watch: {
+    settings: {
+      deep: true,
+      handler (settings) {
+        let handsfree = window.handsfree
+        
+        /**
+         * Enable Handsfree
+         */
+        if (settings.isFacePointerActive && !handsfree) {
+          handsfree = window.handsfree = new window.Handsfree({
+            weboji: true
+          })
+          handsfree.start()
+          console.log('started', handsfree)
+        }
+      }
+    }
+  },
+
   mounted () {
     this.$root.$on('prepareRoute', this.prepareRoute)
     this.$root.$on('error', this.onError)
