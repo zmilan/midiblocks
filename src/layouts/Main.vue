@@ -19,6 +19,12 @@ q-layout(view='lHh Lpr lFf')
           q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-right' @click='$root.$emit("studio.nextBookmark")')
         q-space
 
+      //- Handsfree toggle
+      //- @todo Hide this when not active (eg, use this more as a killswitch instead of an always available toggle)
+      q-toggle.no-select(color='negative' dark v-model='settings.isFacePointerActive')
+        | Handsfree
+        span.gt-sm.q-ml-sm {{settings.isFacePointerActive ? 'enabled' : 'disabled'}}
+
       //- MIDI toggle
       q-toggle.no-select(color='negative' dark v-model='isMIDIActive')
         | MIDI
@@ -86,7 +92,7 @@ export default {
   components: {ImporterExporter, MainNavLink, DialogConfirm},
 
   computed: {
-    ...mapState(['user', 'lastEvent', 'eventLogs', 'studio'])
+    ...mapState(['user', 'lastEvent', 'eventLogs', 'studio', 'settings'])
   },
 
   watch: {
