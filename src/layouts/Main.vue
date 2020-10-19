@@ -20,15 +20,14 @@ q-layout(view='lHh Lpr lFf')
         q-space
 
       //- Handsfree toggle
-      //- @todo Hide this when not active (eg, use this more as a killswitch instead of an always available toggle)
-      q-toggle.no-select(color='negative' dark v-model='settings.isFacePointerActive')
+      q-toggle.no-select(v-if='settings.isFacePointerActive' color='negative' dark v-model='settings.isFacePointerActive')
         | Handsfree
-        span.gt-sm.q-ml-sm {{settings.isFacePointerActive ? 'enabled' : 'disabled'}}
+        span.gt-sm.q-ml-xs {{settings.isFacePointerActive ? 'enabled' : 'disabled'}}
 
       //- MIDI toggle
       q-toggle.no-select(color='negative' dark v-model='isMIDIActive')
         | MIDI
-        span.gt-sm.q-ml-sm {{isMIDIActive ? 'enabled' : 'disabled'}}
+        span.gt-sm.q-ml-xs {{isMIDIActive ? 'enabled' : 'disabled'}}
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered :breakpoint='1400')
