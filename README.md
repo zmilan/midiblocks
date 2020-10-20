@@ -9,7 +9,7 @@
     <td valign="top" width="50%">
       <h2>👋 <a href="https://github.com/midiblocks/handsfree">Handsfree.js</a></h2>
       <i>The Face Pointer used in Midiblocks, which helps you interact with pages, desktops, robots, and more handsfree!</i><br><br>
-      <img src="https://media3.giphy.com/media/9xttCkOB9GPMvTeStO/giphy.gif">
+      <img src="https://media0.giphy.com/media/wAtSnBu8kQZex6v8dI/giphy.gif">
     </td>
   </tr>
 </table>
