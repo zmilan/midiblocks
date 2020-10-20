@@ -19,10 +19,15 @@ q-layout(view='lHh Lpr lFf')
           q-btn(color='tertiary' size='sm' icon='fas fa-caret-square-right' @click='$root.$emit("studio.nextBookmark")')
         q-space
 
+      //- Handsfree toggle
+      q-toggle.no-select(v-if='settings.isFacePointerActive' color='negative' dark v-model='settings.isFacePointerActive')
+        | Handsfree
+        span.gt-sm.q-ml-xs {{settings.isFacePointerActive ? 'enabled' : 'disabled'}}
+
       //- MIDI toggle
       q-toggle.no-select(color='negative' dark v-model='isMIDIActive')
         | MIDI
-        span.gt-sm.q-ml-sm {{isMIDIActive ? 'enabled' : 'disabled'}}
+        span.gt-sm.q-ml-xs {{isMIDIActive ? 'enabled' : 'disabled'}}
 
   //- Sidebar
   q-drawer.main-sidebar.flex-drawer(v-model='leftDrawerOpen' show-if-above bordered :breakpoint='1400')
@@ -86,7 +91,7 @@ export default {
   components: {ImporterExporter, MainNavLink, DialogConfirm},
 
   computed: {
-    ...mapState(['user', 'lastEvent', 'eventLogs', 'studio'])
+    ...mapState(['user', 'lastEvent', 'eventLogs', 'studio', 'settings'])
   },
 
   watch: {
