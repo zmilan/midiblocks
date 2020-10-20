@@ -21,6 +21,7 @@ import Prompt from './components/Prompt'
 import {mapState} from 'vuex'
 import defaultWorkspace from './assets/workspaces/default'
 import store from 'store'
+import Handsfree from 'handsfree'
 
 export default {
   name: 'App',
@@ -121,7 +122,7 @@ export default {
       
       // Start
       if (this.settings.isFacePointerActive && !handsfree) {
-        handsfree = window.handsfree = new window.Handsfree({
+        handsfree = window.handsfree = new Handsfree({
           weboji: true
         })
         handsfree.start()
