@@ -123,6 +123,7 @@ export default {
       // Start
       if (this.settings.isFacePointerActive && !handsfree) {
         handsfree = window.handsfree = new Handsfree({
+          assetsPath: document.location.origin + '/assets/',
           weboji: true
         })
         handsfree.start()
