@@ -21,7 +21,6 @@ import Prompt from './components/Prompt'
 import {mapState} from 'vuex'
 import defaultWorkspace from './assets/workspaces/default'
 import store from 'store'
-import Handsfree from 'handsfree'
 
 export default {
   name: 'App',
@@ -118,25 +117,8 @@ export default {
      * Toggle Handsfree on/off and persist the state
      */
     toggleHandsfree () {
-      let handsfree = window.handsfree
-      
-      // Start
-      if (this.settings.isFacePointerActive && !handsfree) {
-        handsfree = window.handsfree = new Handsfree({
-          assetsPath: document.location.origin + '/assets/',
-          weboji: true
-        })
-        handsfree.start()
-      } else if (handsfree) {
-        handsfree.start()
-      }
-
-      // Stop
-      if (!this.settings.isFacePointerActive && handsfree) {
-        handsfree.stop()
-      }
-
-      // Persist
+      this.settings.isFacePointerActive && this.$handsfree.start()
+      !this.settings.isFacePointerActive && this.$handsfree.isStarted && this.$handsfree.stop()
       store.set('facepointer.active', this.settings.isFacePointerActive)
     }
   }
