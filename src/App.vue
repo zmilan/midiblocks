@@ -118,7 +118,7 @@ export default {
      */
     toggleHandsfree () {
       this.settings.isFacePointerActive && this.$handsfree.start()
-      !this.settings.isFacePointerActive && this.$handsfree.isStarted && this.$handsfree.stop()
+      !this.settings.isFacePointerActive && this.$handsfree.isLooping && this.$handsfree.stop()
       store.set('facepointer.active', this.settings.isFacePointerActive)
     }
   }
