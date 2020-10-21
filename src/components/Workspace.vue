@@ -179,7 +179,15 @@ export default {
      * Handle clicking on elements handsfree
      */
     onBlocklyHandsfreeClick (ev) {
-      if (this.handsfree.dragger) return
+      // Drop block if dragging
+      if (this.handsfree.dragger) {
+        this.handsfree.dragger.endBlockDrag(ev, {
+          x: this.$handsfree.weboji.data.pointer.x - this.handsfree.orig.x,
+          y: this.$handsfree.weboji.data.pointer.y - this.handsfree.orig.y
+        })
+        this.handsfree.dragger = null
+        return
+      }
       
       const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
       this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
@@ -202,7 +210,6 @@ export default {
           x: this.$handsfree.weboji.data.pointer.x - this.handsfree.orig.x,
           y: this.$handsfree.weboji.data.pointer.y - this.handsfree.orig.y
         })
-        console.log('onHandsfree', data)
       }
     },
 
