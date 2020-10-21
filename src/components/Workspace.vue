@@ -62,6 +62,7 @@ export default {
 
   data () {
     return {
+      // Workspace
       blockly: null,
       interpreter: null,
       isFlyoutOpen: false,
@@ -107,10 +108,14 @@ export default {
 
     // Add blocks
     this.addBlocks()
+
+    // Handsfree
+    document.addEventListener('handsfree-blockly-click', this.onBlocklyHandsfreeClick)
   },
 
   beforeDestroy () {
     this.$root.$off('blockly.prompt.submit', this.onPromptSubmit)
+    document.removeEventListener('handsfree-blockly-click', this.onBlocklyHandsfreeClick)
   },
 
   methods: {
@@ -153,6 +158,19 @@ export default {
       if (ev.type === 'touchstart') {
         this.wasToolboxTouched = true
       }
+    },
+
+    /**
+     * Handle clicking on elements handsfree
+     */
+    onBlocklyHandsfreeClick (ev) {
+      const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+
+      const dragger = new Blockly.BlockDragger($block, this.blockly)
+      dragger.startBlockDrag({
+        x: 0,
+        y: 0
+      })
     },
 
     /**
