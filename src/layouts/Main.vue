@@ -20,7 +20,7 @@ q-layout(view='lHh Lpr lFf')
         q-space
 
       //- Handsfree toggle
-      q-toggle.no-select(v-if='settings.isFacePointerActive' color='negative' dark v-model='settings.isFacePointerActive')
+      q-toggle.no-select(v-if='settings.isFacePointerActive || settings.isFacePointerToggleAlwaysOn' color='negative' dark v-model='settings.isFacePointerActive')
         | Handsfree
         span.gt-sm.q-ml-xs {{settings.isFacePointerActive ? 'enabled' : 'disabled'}}
 
