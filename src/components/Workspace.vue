@@ -179,6 +179,8 @@ export default {
      * Handle clicking on elements handsfree
      */
     onBlocklyHandsfreeClick (ev) {
+      let $block
+      
       // Drop block if dragging
       if (this.handsfree.dragger) {
         this.handsfree.dragger.endBlockDrag(ev, {
@@ -192,20 +194,21 @@ export default {
       // Determine if inside a Workspace or toolbox
       if (this.isInToolbox(ev.detail.$closestBlockly)) {
         const flyout = this.blockly.getToolbox().getFlyout()
-        const $block = flyout.getWorkspace().getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
-        flyout.createBlock($block)
+        $block = flyout.getWorkspace().getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+        $block = flyout.createBlock($block)
       } else {
         // Start dragging
-        const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
-        this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
-        this.handsfree.dragger.startBlockDrag({
-          x: 0,
-          y: 0
-        })
-        this.handsfree.orig = {
-          x: this.$handsfree.weboji.data.pointer.x,
-          y: this.$handsfree.weboji.data.pointer.y
-        }
+        $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+      }
+
+      this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
+      this.handsfree.dragger.startBlockDrag({
+        x: 0,
+        y: 0
+      })
+      this.handsfree.orig = {
+        x: this.$handsfree.weboji.data.pointer.x,
+        y: this.$handsfree.weboji.data.pointer.y
       }
     },
 
