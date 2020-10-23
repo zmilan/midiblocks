@@ -179,6 +179,8 @@ export default {
      * Handle clicking on elements handsfree
      */
     onBlocklyHandsfreeClick (ev) {
+      let $block
+      
       // Drop block if dragging
       if (this.handsfree.dragger) {
         this.handsfree.dragger.endBlockDrag(ev, {
@@ -188,8 +190,17 @@ export default {
         this.handsfree.dragger = null
         return
       }
-      
-      const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+
+      // Determine if inside a Workspace or toolbox
+      if (this.isInToolbox(ev.detail.$closestBlockly)) {
+        const flyout = this.blockly.getToolbox().getFlyout()
+        $block = flyout.getWorkspace().getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+        $block = flyout.createBlock($block)
+      } else {
+        // Start dragging
+        $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+      }
+
       this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
       this.handsfree.dragger.startBlockDrag({
         x: 0,
@@ -211,6 +222,24 @@ export default {
           y: this.$handsfree.weboji.data.pointer.y - this.handsfree.orig.y
         })
       }
+    },
+
+    /**
+     * Determines if the passed element is inside a toolbox
+     */
+    isInToolbox ($el) {
+      let parent = $el.parentNode
+      let isToolbox = false
+
+      while (parent.parentNode && !isToolbox) {
+        if (parent.classList.contains('blocklyFlyout')) {
+          isToolbox = true
+        } else {
+          parent = parent.parentNode
+        }
+      }
+
+      return isToolbox
     },
 
     /**
