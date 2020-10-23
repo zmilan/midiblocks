@@ -188,16 +188,24 @@ export default {
         this.handsfree.dragger = null
         return
       }
-      
-      const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
-      this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
-      this.handsfree.dragger.startBlockDrag({
-        x: 0,
-        y: 0
-      })
-      this.handsfree.orig = {
-        x: this.$handsfree.weboji.data.pointer.x,
-        y: this.$handsfree.weboji.data.pointer.y
+
+      // Determine if inside a Workspace or toolbox
+      if (this.isInToolbox(ev.detail.$closestBlockly)) {
+        const flyout = this.blockly.getToolbox().getFlyout()
+        const $block = flyout.getWorkspace().getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+        flyout.createBlock($block)
+      } else {
+        // Start dragging
+        const $block = this.blockly.getBlockById(ev.detail.$closestBlockly.getAttribute('data-id'))
+        this.handsfree.dragger = new Blockly.BlockDragger($block, this.blockly)
+        this.handsfree.dragger.startBlockDrag({
+          x: 0,
+          y: 0
+        })
+        this.handsfree.orig = {
+          x: this.$handsfree.weboji.data.pointer.x,
+          y: this.$handsfree.weboji.data.pointer.y
+        }
       }
     },
 
@@ -211,6 +219,24 @@ export default {
           y: this.$handsfree.weboji.data.pointer.y - this.handsfree.orig.y
         })
       }
+    },
+
+    /**
+     * Determines if the passed element is inside a toolbox
+     */
+    isInToolbox ($el) {
+      let parent = $el.parentNode
+      let isToolbox = false
+
+      while (parent.parentNode && !isToolbox) {
+        if (parent.classList.contains('blocklyFlyout')) {
+          isToolbox = true
+        } else {
+          parent = parent.parentNode
+        }
+      }
+
+      return isToolbox
     },
 
     /**
