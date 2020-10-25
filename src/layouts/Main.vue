@@ -137,6 +137,12 @@ export default {
             description: 'Toggle Handsfree mode and other settings',
             link: '/settings',
             icon: 'fas fa-cogs'
+          },
+          {
+            title: 'Documentation',
+            description: 'Learn how to use Midiblocks and Handsfree.js',
+            link: '/docs',
+            icon: 'fas fa-book'
           }
         ]
       },

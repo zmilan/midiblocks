@@ -27,6 +27,12 @@ const routes = [
         name: 'Settings',
         path: '/settings',
         component: () => import('pages/SettingsHome.vue')
+      },
+
+      {
+        name: 'Handsfree.js Docs',
+        path: '/docs',
+        component: () => import('pages/docs/Index.vue')
       }
     ]
   },
